@@ -1,0 +1,22 @@
+# Executable cli binary
+bin/
+
+cache/
+out/
+lib/
+
+# Localhost deploy scripts
+records/*/31337/*
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+out/
+
+/.idea/
+
+yarn-error.log
+
+.env.local

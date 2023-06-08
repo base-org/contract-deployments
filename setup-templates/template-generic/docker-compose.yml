@@ -1,0 +1,24 @@
+version: "3"
+
+# Using a named volume for the go root (where packages are installed) so that
+# filesystem performance on a Mac is acceptable (if we bind-mount to the host,
+# then Mac FS performance is poor).
+volumes:
+  go_root_volume:
+
+services:
+  main:
+    image: 652969937640.dkr.ecr.us-east-1.amazonaws.com/containers/golang:v1-18
+    volumes:
+      - $PWD/..:$PWD/..
+      - go_root_volume:/go
+    working_dir: $PWD
+    env_file:
+      - ../.env
+    command: echo
+
+  foundry-main:
+    image: ghcr.io/foundry-rs/foundry:nightly-cd7850bfb64a4babb07bf5dd6fe5ebac664449cf
+    volumes:
+      - $PWD/..:$PWD/..
+    working_dir: $PWD
