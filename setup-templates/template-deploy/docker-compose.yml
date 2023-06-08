@@ -8,7 +8,7 @@ volumes:
 
 services:
   main:
-    image: 652969937640.dkr.ecr.us-east-1.amazonaws.com/containers/golang:v1-18
+    image: golang:1.18
     volumes:
       - $PWD/..:$PWD/..
       - go_root_volume:/go
