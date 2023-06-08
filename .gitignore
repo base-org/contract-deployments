@@ -5,8 +5,9 @@ cache/
 out/
 lib/
 
-# Localhost deploy scripts
-records/*/31337/*
+# Localhost and run-latest deploy scripts
+**/records/**/**/run-latest.json
+localhost/*/records/
 
 # Test binary, built with `go test -c`
 *.test
