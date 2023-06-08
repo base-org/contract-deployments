@@ -13,8 +13,8 @@ services:
       - $PWD/..:$PWD/..
       - go_root_volume:/go
     working_dir: $PWD
-    env_file:
-      - ../.env
+    environment:
+      - GO111MODULE=off
     command: echo
 
   foundry-main:

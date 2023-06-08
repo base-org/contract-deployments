@@ -1,7 +1,6 @@
 [profile.default]
 src = 'src'
 out = 'out'
-script = 'execute'
 libs = ['lib']
 broadcast = 'records'
 fs_permissions = [ {access = "read-write", path = "./"} ]

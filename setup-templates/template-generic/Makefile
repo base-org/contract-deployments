@@ -1,21 +1,18 @@
 include ../.env
 include .env
 
-run_go = docker-compose -f docker-compose.yml run --rm main $(1)
-run_foundry = docker-compose -f docker-compose.yml run --rm foundry-main "$(1)"
-
 ##
 # Solidity Setup / Testing
 ##
 solidity-deps:
-	$(call run_foundry, forge install github.com/foundry-rs/forge-std --no-commit \
+	forge install github.com/foundry-rs/forge-std --no-commit \
 		github.com/OpenZeppelin/openzeppelin-contracts@v4.7.3 \
 		github.com/OpenZeppelin/openzeppelin-contracts-upgradeable@v4.7.3 \
-		github.com/rari-capital/solmate.git@8f9b23f8838670afda0fd8983f2c41e8037ae6bc) && \
+		github.com/rari-capital/solmate.git@8f9b23f8838670afda0fd8983f2c41e8037ae6bc && \
 	make checkout-op-commit && make checkout-base-contracts-commit
 
 solidity-test:
-	$(call run_foundry, forge test --ffi -vvv)
+	forge test --ffi -vvv
 
 checkout-op-commit:
 	cd lib && rm -rf optimism && \
