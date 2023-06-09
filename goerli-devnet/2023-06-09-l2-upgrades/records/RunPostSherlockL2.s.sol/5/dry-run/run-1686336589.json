@@ -1,0 +1,33 @@
+{
+  "transactions": [
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0xA221e753e82626F96b83b3665F4fA92114a2a6f3",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://nodes-proxy-development.cbhq.net/geth/testnet-archive-goerli-lighthouse",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xd753a89450213a8d7f7acce3a615d71ebd97366d",
+        "to": "0xa221e753e82626f96b83b3665f4fa92114a2a6f3",
+        "gas": "0x11ccb",
+        "value": "0x0",
+        "data": "0xd4d9bdcdf52ee7dcdc85be58c9ee69919401d8f06cca7f0efbece8ec6b98ec5fcf3ce273",
+        "nonce": "0x29",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/anikaraghuvanshi/Documents/protocols/base-deployments/goerli-devnet/2023-06-09-l2-upgrades/records/RunPostSherlockL2.s.sol/5/dry-run/run-latest.json",
+  "returns": {},
+  "timestamp": 1686336589,
+  "chain": 5,
+  "multi": false,
+  "commit": "8c32e55"
+}
