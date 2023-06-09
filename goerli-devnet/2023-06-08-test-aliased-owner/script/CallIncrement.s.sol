@@ -15,24 +15,19 @@ contract SafeForcedInclusion is SafeBuilder {
 
         bytes memory data = abi.encodeCall(TestIncrement.increment, ());
         address to = 0xc1e40f9FD2bc36150e2711e92138381982988791; // TestIncrement contract on L2
-        address multicallAddress = 0xcA11bde05977b3631167028862bE2a173976CA11;
+        address optimismPortal = 0x61A7dc680a0f3F67aDc357453d3f51bDc70fAE1B;
+        uint64 gasLimit = 1000000; // TODO: tune this
 
         // Call increment()
         calls[0] = IMulticall3.Call3({
-            target: to,
+            target: optimismPortal,
             allowFailure: false,
-            callData: data
+            callData: abi.encodeCall(
+                OptimismPortal.depositTransaction,
+                (to, uint256(0), gasLimit, false, data)
+            )
         });
 
-        return abi.encodeCall(
-            OptimismPortal.depositTransaction,
-            (
-                multicallAddress,
-                uint256(0),
-                uint64(1000000),
-                false,
-                abi.encodeCall(IMulticall3.aggregate3, (calls))
-            )
-        );
+        return abi.encodeCall(IMulticall3.aggregate3, (calls));
     }
 }

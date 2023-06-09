@@ -1,0 +1,71 @@
+{
+  "transactions": [
+    {
+      "hash": "0xa41c7b044a4e4c19617b94a35cacd95d0ba6bcdcb2b13629736ac639b9bcf5cf",
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0xA221e753e82626F96b83b3665F4fA92114a2a6f3",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://nodes-proxy-development.cbhq.net/geth/testnet-archive-goerli-lighthouse",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xd753a89450213a8d7f7acce3a615d71ebd97366d",
+        "to": "0xa221e753e82626f96b83b3665f4fa92114a2a6f3",
+        "gas": "0x11ccb",
+        "value": "0x0",
+        "data": "0xd4d9bdcd1db98c22bd8dbaeb8a17dc7bf19acb1a2db890556f335127e257784c6f3a12b9",
+        "nonce": "0x27",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [
+    {
+      "transactionHash": "0xa41c7b044a4e4c19617b94a35cacd95d0ba6bcdcb2b13629736ac639b9bcf5cf",
+      "transactionIndex": "0x6",
+      "blockHash": "0xedfaea72d3299e35e1f26797765ee12b5b19cee1b5f5b58f1bdf3b77e2c54244",
+      "blockNumber": "0x8b9d79",
+      "from": "0xD753a89450213A8D7f7aCCE3a615d71ebD97366d",
+      "to": "0xA221e753e82626F96b83b3665F4fA92114a2a6f3",
+      "cumulativeGasUsed": "0x1a35f1",
+      "gasUsed": "0xce30",
+      "contractAddress": null,
+      "logs": [
+        {
+          "address": "0xA221e753e82626F96b83b3665F4fA92114a2a6f3",
+          "topics": [
+            "0xf2a0eb156472d1440255b0d7c1e19cc07115d1051fe605b0dce69acfec884d9c",
+            "0x1db98c22bd8dbaeb8a17dc7bf19acb1a2db890556f335127e257784c6f3a12b9",
+            "0x000000000000000000000000d753a89450213a8d7f7acce3a615d71ebd97366d"
+          ],
+          "data": "0x",
+          "blockHash": "0xedfaea72d3299e35e1f26797765ee12b5b19cee1b5f5b58f1bdf3b77e2c54244",
+          "blockNumber": "0x8b9d79",
+          "transactionHash": "0xa41c7b044a4e4c19617b94a35cacd95d0ba6bcdcb2b13629736ac639b9bcf5cf",
+          "transactionIndex": "0x6",
+          "logIndex": "0xa",
+          "removed": false
+        }
+      ],
+      "status": "0x1",
+      "logsBloom": "0x00000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000008000000000100040000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000004000000000000000000000000000000100000010000002000",
+      "type": "0x2",
+      "effectiveGasPrice": "0xb2d05e83"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/anikaraghuvanshi/Documents/protocols/base-deployments/goerli-devnet/2023-06-08-test-aliased-owner/records/CallIncrement.s.sol/5/run-latest.json",
+  "returns": {
+    "0": {
+      "internal_type": "bool",
+      "value": "false"
+    }
+  },
+  "timestamp": 1686321989,
+  "chain": 5,
+  "multi": false,
+  "commit": "e919a2d"
+}

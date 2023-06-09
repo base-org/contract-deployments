@@ -24,7 +24,7 @@ checkout-op-commit:
 	git reset --hard FETCH_HEAD && cd ../..
 
 checkout-base-contracts-commit:
-	chmod 600 ../../tmp/tmpsshkey && ssh-add -K ../../tmp/tmpsshkey && \
+	chmod 600 ../../tmp/tmpsshkey && ssh-add ../../tmp/tmpsshkey && \
 	cd lib && rm -rf base-contracts && \
 	mkdir base-contracts && cd base-contracts && \
 	git init && \
@@ -42,4 +42,4 @@ deploy-test-increment:
 	forge script --rpc-url $(L2_RPC_URL) DeployTestIncrement --private-key $(PRIVATE_KEY) --sig "run(address,address)" $(DEPLOYER) $(OWNER_L2_ALIAS) --broadcast
 
 call-increment:
-	forge script -vvvv --rpc-url $(L1_RPC_URL) SafeForcedInclusion --sender $(SENDER) --private-key $(SIGNER_PRIVATE_KEY) --sig "run(address)" $(OWNER_L1)
+	forge script -vvvv --rpc-url $(L1_RPC_URL) SafeForcedInclusion --sender $(SENDER) --private-key $(SIGNER_PRIVATE_KEY) --sig "run(address)" $(OWNER_L1) --broadcast
