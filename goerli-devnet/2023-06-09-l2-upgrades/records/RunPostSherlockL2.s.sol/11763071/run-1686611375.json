@@ -1,0 +1,35 @@
+{
+  "transactions": [
+    {
+      "hash": "0x58c49009501c09905dfd6f18becb5d423cbaa627c9c1f2a1fb36e63ed23562a8",
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x7768171512911988ACfCE3Fd295A4Cf8AA8E8dBA",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://base-goerli-alpha.cbhq.net",
+      "transaction": {
+        "type": "0x02",
+        "from": "0xd753a89450213a8d7f7acce3a615d71ebd97366d",
+        "to": "0x7768171512911988acfce3fd295a4cf8aa8e8dba",
+        "gas": "0xb16c",
+        "value": "0x0",
+        "data": "0xd4d9bdcde5ac304204bda32befb73a51153693b9de4c2ec989a084cc907aa0bfff2312b9",
+        "nonce": "0x1d",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x58c49009501c09905dfd6f18becb5d423cbaa627c9c1f2a1fb36e63ed23562a8"
+  ],
+  "path": "/Users/anikaraghuvanshi/Documents/protocols/base-deployments/goerli-devnet/2023-06-09-l2-upgrades/records/RunPostSherlockL2.s.sol/11763071/run-latest.json",
+  "returns": {},
+  "timestamp": 1686611375,
+  "chain": 11763071,
+  "multi": false,
+  "commit": "367c2fd"
+}
