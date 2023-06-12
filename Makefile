@@ -1,5 +1,5 @@
-PROJECT_DIR = $(network)/$(shell date --iso=date)-$(task)
-DEPLOY_DIR = $(network)/$(shell date --iso=date)-deploy
+PROJECT_DIR = $(network)/$(shell date +'%Y-%m-%d')-$(task)
+DEPLOY_DIR = $(network)/$(shell date +'%Y-%m-%d')-deploy
 
 # Run `make setup-task network=<network> task=<task>`
 setup-task:
