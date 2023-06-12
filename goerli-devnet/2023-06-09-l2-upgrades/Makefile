@@ -36,6 +36,9 @@ checkout-base-contracts-commit:
 # Foundry commands
 ##
 
-# upgrade L2 contracts using forced inclusion on L1
+# Upgrade L2 contracts
 l2-upgrade:
-	forge script -vvvv --rpc-url $(L1_RPC_URL) RunPostSherlockL2 --sig "run(uint256,address)" $(L2_CHAIN_ID) $(OWNER_L1) --private-key $(SIGNER_PRIVATE_KEY)
+	forge script -vvvv --rpc-url $(L2_RPC_URL) \
+	RunPostSherlockL2 \
+	--sig "run(uint256,address)" $(L2_CHAIN_ID) $(OWNER_L2) \
+	--private-key $(SIGNER_PRIVATE_KEY)
