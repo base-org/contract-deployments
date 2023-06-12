@@ -13,5 +13,6 @@ This directory can be used to do contract calls, upgrades or one-off deployments
 ### Process
 
 * Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts)  you intend to use in the `.env` file
+* `make solidity-deps`
 * See [forge script](https://book.getfoundry.sh/reference/forge/forge-script) documentation for how to use solidity scripts
 * It's recommended to specify any addresses that are passed into scripts in the `.env` file, to make it easier for reviewers.
