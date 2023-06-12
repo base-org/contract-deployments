@@ -18,6 +18,7 @@ solidity-test:
 
 .PHONY: checkout-op-commit
 checkout-op-commit:
+	[ -n "$(OP_COMMIT)" ] || (echo "OP_COMMIT must be set in .env" && exit 1)
 	rm -rf lib/optimism
 	mkdir -p lib/optimism
 	cd lib/optimism; \
@@ -28,6 +29,7 @@ checkout-op-commit:
 
 .PHONY: checkout-base-contracts-commit
 checkout-base-contracts-commit:
+	[ -n "$(BASE_CONTRACTS_COMMIT)" ] || (echo "BASE_CONTRACTS_COMMIT must be set in .env" && exit 1)
 	chmod 600 ../../tmp/tmpsshkey
 	ssh-add ../../tmp/tmpsshkey
 	rm -rf lib/base-contracts
