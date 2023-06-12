@@ -1,27 +1,39 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.15;
 
 import "forge-std/Script.sol";
 import "forge-std/StdJson.sol";
-import { LibSort } from "@eth-optimism-bedrock/scripts/libraries/LibSort.sol";
 import {
     OwnableUpgradeable
 } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { LibSort } from "@eth-optimism-bedrock/scripts/libraries/LibSort.sol";
+import { OptimismPortal } from "@eth-optimism-bedrock/contracts/L1/OptimismPortal.sol";
 import { IGnosisSafe, Enum } from "@eth-optimism-bedrock/scripts/interfaces/IGnosisSafe.sol";
 
 contract TransferOwnershipForcedInclusion is Script {
+    using stdJson for string;
     address[] internal approvals;
 
-    function run(address proxyAdmin, address oldOwner, address newOwner, address signer) public {
+    function run(
+        address proxyAdmin, address optimismPortal,
+        address oldOwner, address newOwner,
+        address signer
+    ) public {
         IGnosisSafe existingOwner = IGnosisSafe(payable(oldOwner));
+
+        uint64 gasLimit = 100000;
         bytes memory transferOwnerData = abi.encodeWithSignature("transferOwnership(address)", newOwner);
+        bytes memory optimismPortalData = abi.encodeCall(
+            OptimismPortal.depositTransaction,
+            (proxyAdmin, uint256(0), gasLimit, false, transferOwnerData)
+        );
         uint256 nonce = existingOwner.nonce();
 
         vm.startBroadcast(signer);
         bytes32 txHash = existingOwner.getTransactionHash({
-            to: proxyAdmin,
+            to: optimismPortal,
             value: 0,
-            data: transferOwnerData,
+            data: optimismPortalData,
             operation: Enum.Operation.Call,
             safeTxGas: 0,
             baseGas: 0,
@@ -32,7 +44,8 @@ contract TransferOwnershipForcedInclusion is Script {
         });
         existingOwner.approveHash(txHash);       
 
-        bool executed = executeIfThresholdMet(existingOwner, txHash, proxyAdmin, transferOwnerData);
+        bool executed = executeIfThresholdMet(existingOwner, txHash, optimismPortal, optimismPortalData);
+        console.log("executed?");
         console.log(executed);
         vm.stopBroadcast();
     }
@@ -70,7 +83,9 @@ contract TransferOwnershipForcedInclusion is Script {
             return true;
         } else {
             console.log("not enough approvals");
+            console.log("number of approvals now:");
             console.log(approvals.length);
+            console.log("number of approvals needed:");
             console.log(threshold);
         }
         return false;
@@ -97,5 +112,4 @@ contract TransferOwnershipForcedInclusion is Script {
         }
         return signatures;
     }
-
 }
