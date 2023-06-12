@@ -2,6 +2,7 @@
 src = 'src'
 out = 'out'
 libs = ['lib']
+script = 'execute'
 broadcast = 'records'
 fs_permissions = [ {access = "read-write", path = "./"} ]
 optimizer = true

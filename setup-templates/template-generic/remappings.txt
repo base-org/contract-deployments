@@ -3,3 +3,4 @@
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts
 @rari-capital/solmate/=lib/solmate.git/
 @gnosissafe/contracts/=lib/safe-contracts/contracts
+@base-contracts/=lib/base-contracts

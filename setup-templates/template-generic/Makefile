@@ -23,7 +23,7 @@ checkout-op-commit:
 	git reset --hard FETCH_HEAD && cd ../..
 
 checkout-base-contracts-commit:
-	chmod 600 ../../tmp/tmpsshkey && ssh-add -K ../../tmp/tmpsshkey && \
+	chmod 600 ../../tmp/tmpsshkey && ssh-add ../../tmp/tmpsshkey && \
 	cd lib && rm -rf base-contracts && \
 	mkdir base-contracts && cd base-contracts && \
 	git init && \
