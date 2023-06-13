@@ -1,6 +1,5 @@
 include ../.env
 include .env
-include .env.local
 
 ##
 # Solidity Setup / Testing
@@ -44,20 +43,10 @@ checkout-base-contracts-commit:
 ##
 # Foundry commands
 ##
-deploy-l2:
-	go run cmd/foundry_deploy_config_gen/main.go && \
-	forge script --rpc-url $(L2_RPC_URL) --private-key $(PRIVATE_KEY) DeployL2Implementations --broadcast --verify && \
-	jq --sort-keys . unsortedl2Impls.json > inputs/addresses-l2.json && \
-	rm unsortedl2Impls.json
-
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 1
 endif
 
-l2-upgrade:
-	forge script -vvvv --rpc-url $(L2_RPC_URL) \
-	RunPostSherlockL2 \
-	--sig "run(uint256,address)" $(L2_CHAIN_ID) $(OWNER_L2) \
-	--private-key $(SIGNER_PRIVATE_KEY) \
-	--sender $(SENDER) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+.PHONY: run
+run:
+	forge script --rpc-url $(RPC_URL) SetBatcherAddr --sender $(SENDER) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sig "run(address,address)" 0x4C35Ca57616E0d5fD808574772f632D8dA4eadCa 0xb15eea247ece011c68a614e4a77ad648ff495bc1 --broadcast
