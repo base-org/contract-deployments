@@ -46,7 +46,10 @@ checkout-base-contracts-commit:
 ##
 deploy-l2:
 	go run cmd/foundry_deploy_config_gen/main.go && \
-	forge script --rpc-url $(L2_RPC_URL) --private-key $(PRIVATE_KEY) DeployL2Implementations --broadcast --verify && \
+	forge script --rpc-url $(L2_RPC_URL) --private-key $(PRIVATE_KEY) \
+	DeployL2Implementations --broadcast --verify \
+	--verifier-url https://api-goerli.basescan.org/api --verifier etherscan \
+	--chain-id $(L2_CHAIN_ID) && \
 	jq --sort-keys . unsortedl2Impls.json > inputs/addresses-l2.json && \
 	rm unsortedl2Impls.json
 
