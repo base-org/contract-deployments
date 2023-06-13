@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
@@ -16,6 +17,7 @@ type DeployConfigParams struct {
 	FinalizationPeriodSeconds         uint64         `json:"finalizationPeriodSeconds"`
 	GasPriceOracleOverhead            uint64         `json:"gasPriceOracleOverhead"`
 	GasPriceOracleScalar              uint64         `json:"gasPriceOracleScalar"`
+	L1ChainId                         uint64         `json:"l1ChainId"`
 	L1FeeVaultRecipient               common.Address `json:"l1FeeVaultRecipient"`
 	L2BlockTime                       uint64         `json:"l2BlockTime"`
 	L2ChainId                         uint64         `json:"l2ChainId"`
@@ -42,6 +44,7 @@ type FoundryConfigParams struct {
 	FinalizationPeriodSeconds         uint64         `json:"finalizationPeriodSeconds"`
 	GasPriceOracleOverhead            uint64         `json:"gasPriceOracleOverhead"`
 	GasPriceOracleScalar              uint64         `json:"gasPriceOracleScalar"`
+	L1ChainId                         uint64         `json:"l1ChainId"`
 	L1FeeVaultRecipient               common.Address `json:"l1FeeVaultRecipient"`
 	L2BlockTime                       uint64         `json:"l2BlockTime"`
 	L2ChainId                         uint64         `json:"l2ChainId"`
@@ -91,6 +94,7 @@ func main() {
 	foundryConfigParams.FinalizationPeriodSeconds = deployConfigParams.FinalizationPeriodSeconds
 	foundryConfigParams.GasPriceOracleOverhead = deployConfigParams.GasPriceOracleOverhead
 	foundryConfigParams.GasPriceOracleScalar = deployConfigParams.GasPriceOracleScalar
+	foundryConfigParams.L1ChainId = deployConfigParams.L1ChainId
 	foundryConfigParams.L1FeeVaultRecipient = deployConfigParams.L1FeeVaultRecipient
 	foundryConfigParams.L2BlockTime = deployConfigParams.L2BlockTime
 	foundryConfigParams.L2ChainId = deployConfigParams.L2ChainId

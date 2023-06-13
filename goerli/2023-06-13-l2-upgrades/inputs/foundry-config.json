@@ -8,6 +8,7 @@
         "finalizationPeriodSeconds": 12,
         "gasPriceOracleOverhead": 2100,
         "gasPriceOracleScalar": 1000000,
+        "l1ChainId": 5,
         "l1FeeVaultRecipient": "0x0b933ffd030d2679986560c414d26093b9d3130f",
         "l2BlockTime": 2,
         "l2ChainId": 84531,

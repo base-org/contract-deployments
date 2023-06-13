@@ -8,6 +8,6 @@
   "L2StandardBridge": "0x1Df53C54847f8704FDb7ef96311a0aE3f11aAddF",
   "L2ToL1MessagePasser": "0x7433333Fb70AD795f1Fb418349Df6295dD221Bae",
   "OptimismMintableERC20Factory": "0xa57baDEdbc58e092C7C8A3ef1ca526ADFf08cC4B",
-  "OptimismMintableERC721Factory": "0x20E98ea17dEeC3C9d9EbA475c44cdc7F3Da45BDd",
+  "OptimismMintableERC721Factory": "0xaBf733c41e411D10B57b05C0c1684b34F954eDAF",
   "SequencerFeeVault": "0x54f0dBa33CcF80fbEAD24F35043896f29bD46c02"
 }
