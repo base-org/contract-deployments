@@ -4,6 +4,7 @@ bin/
 cache/
 out/
 lib/
+**/lib/
 
 # Localhost and run-latest deploy scripts
 **/records/**/**/run-latest.json
