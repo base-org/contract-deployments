@@ -14,7 +14,7 @@ Next, `cd` into the directory that was created for you and follow the steps in t
 ### Using the deploy template
 
 * Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts)  you intend to use in the `.env` file
-* `make solidity-deps`
+* `make deps`
 * Fill in the `inputs/deploy-config.json` and `inputs/misc-config.json` files with the input variables for the deployment.
 * See the example `make deploy` command. Modifications may need to be made if you're using a key for deployment that you do not have the private key for (e.g. a hardware wallet)
 * Run `make deploy` command
@@ -36,6 +36,6 @@ This template can be used to do contract calls, upgrades or one-off deployments
 #### Process
 
 * Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts)  you intend to use in the `.env` file
-* `make solidity-deps`
+* `make deps`
 * See [forge script](https://book.getfoundry.sh/reference/forge/forge-script) documentation for how to use solidity scripts
 * It's recommended to specify any addresses that are passed into scripts in the `.env` file, to make it easier for reviewers.
