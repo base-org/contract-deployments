@@ -104,7 +104,6 @@ func main() {
 	foundryConfigParams.L2ChainId = deployConfigParams.L2ChainId
 	foundryConfigParams.L2GenesisBlockGasLimit = uint64(deployConfigParams.L2GenesisBlockGasLimit)
 	foundryConfigParams.L2OutputOracleChallenger = deployConfigParams.L2OutputOracleChallenger
-	foundryConfigParams.L2OutputOracleChallenger = deployConfigParams.L2OutputOracleChallenger
 	foundryConfigParams.L2OutputOracleProposer = deployConfigParams.L2OutputOracleProposer
 	foundryConfigParams.L2OutputOracleStartingBlockNumber = deployConfigParams.L2OutputOracleStartingBlockNumber
 	foundryConfigParams.L2OutputOracleStartingTimestamp = deployConfigParams.L2OutputOracleStartingTimestamp

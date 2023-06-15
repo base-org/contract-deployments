@@ -9,7 +9,8 @@ solidity-deps: checkout-op-commit checkout-base-contracts-commit
 	forge install --no-commit github.com/foundry-rs/forge-std \
 		github.com/OpenZeppelin/openzeppelin-contracts@v4.7.3 \
 		github.com/OpenZeppelin/openzeppelin-contracts-upgradeable@v4.7.3 \
-		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc
+		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc \
+		github.com/safe-global/safe-contracts@v1.4.0
 
 .PHONY: solidity-test
 solidity-test:
@@ -42,10 +43,10 @@ checkout-base-contracts-commit:
 ##
 # Foundry commands
 ##
-ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 1
-endif
-
-.PHONY: run
-run:
-	forge script --rpc-url $(RPC_URL) SetBatcherAddr --sender $(SENDER) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sig "run(address,address)" 0x4C35Ca57616E0d5fD808574772f632D8dA4eadCa 0xb15eea247ece011c68a614e4a77ad648ff495bc1 --broadcast
+.PHONY: deploy
+deploy:
+	go run cmd/foundry_deploy_config_gen/main.go
+	forge script --rpc-url $(L1_RPC_URL) RunDeployBedrock
+	jq --sort-keys . unsorted.json > deployed/addresses.json
+	cp deployed/addresses.json ../addresses.json
+	rm unsorted.json inputs/foundry-config.json

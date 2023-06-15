@@ -9,8 +9,7 @@ solidity-deps: checkout-op-commit checkout-base-contracts-commit
 	forge install --no-commit --root . github.com/foundry-rs/forge-std \
 		github.com/OpenZeppelin/openzeppelin-contracts@v4.7.3 \
 		github.com/OpenZeppelin/openzeppelin-contracts-upgradeable@v4.7.3 \
-		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc \
-		github.com/safe-global/safe-contracts@v1.4.0
+		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc
 
 .PHONY: solidity-test
 solidity-test:
