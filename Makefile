@@ -9,25 +9,29 @@ TEMPLATE_DEPLOY = setup-templates/template-deploy
 # Run `make setup-task network=<network> task=<task>`
 setup-task:
 	rm -rf $(TEMPLATE_GENERIC)/cache $(TEMPLATE_GENERIC)/lib $(TEMPLATE_GENERIC)/out
-	cp -r setup-templates/template-generic $(PROJECT_DIR)
+	cp -r $(TEMPLATE_GENERIC) $(PROJECT_DIR)
 
 # Run `make setup-deploy network=<network>`
 setup-deploy:
 	rm -rf $(TEMPLATE_DEPLOY)/cache $(TEMPLATE_DEPLOY)/lib $(TEMPLATE_DEPLOY)/out
-	mkdir -p $(network) && cp -r setup-templates/template-deploy $(DEPLOY_DIR)
+	mkdir -p $(network) && cp -r $(TEMPLATE_DEPLOY) $(DEPLOY_DIR)
 
 ##
 # Solidity Setup
 ##
-.PHONY: solidity-deps
-solidity-deps:
-	rm -rf lib/
-	forge install --no-git --no-commit github.com/foundry-rs/forge-std \
+.PHONY: deps
+deps: clean-lib forge-deps checkout-op-commit checkout-base-contracts-commit
+
+.PHONY: clean-lib
+clean-lib:
+	rm -rf lib
+
+.PHONY: forge-deps
+forge-deps:
+	forge install --no-git github.com/foundry-rs/forge-std \
 		github.com/OpenZeppelin/openzeppelin-contracts@v4.7.3 \
 		github.com/OpenZeppelin/openzeppelin-contracts-upgradeable@v4.7.3 \
 		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc
-	make checkout-op-commit
-	make checkout-base-contracts-commit
 
 .PHONY: checkout-op-commit
 checkout-op-commit:
