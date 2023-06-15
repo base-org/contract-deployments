@@ -1,0 +1,66 @@
+{
+  "transactions": [
+    {
+      "hash": "0x3306847757bd7c4c25e45c72b23e9a5e17d061bc7b9998b2ec752deae0703371",
+      "transactionType": "CALL",
+      "contractName": null,
+      "contractAddress": "0x14536667Cd30e52C0b458BaACcB9faDA7046E056",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://nodes-proxy-development.cbhq.net/geth/mainnet-full-lighthouse",
+      "transaction": {
+        "type": "0x02",
+        "from": "0x8e5de5ca219e3ffc9cdeb2dc7d71b8a199cd2c4f",
+        "to": "0x14536667cd30e52c0b458baaccb9fada7046e056",
+        "gas": "0x11ccb",
+        "value": "0x0",
+        "data": "0xd4d9bdcd46d4e76ba5ee7ce00812736a4c1b49a37842384ab0e36c51d04e49fa169090f8",
+        "nonce": "0x1",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [
+    {
+      "transactionHash": "0x3306847757bd7c4c25e45c72b23e9a5e17d061bc7b9998b2ec752deae0703371",
+      "transactionIndex": "0x16",
+      "blockHash": "0x108ebacb907288da33f41bef2de58b6c26b7c4828de9ce56a1b1b92006a44410",
+      "blockNumber": "0x10ac3e6",
+      "from": "0x8e5de5cA219e3FFC9cdEb2Dc7D71B8a199cd2C4F",
+      "to": "0x14536667Cd30e52C0b458BaACcB9faDA7046E056",
+      "cumulativeGasUsed": "0x38bda4",
+      "gasUsed": "0xce30",
+      "contractAddress": null,
+      "logs": [
+        {
+          "address": "0x14536667Cd30e52C0b458BaACcB9faDA7046E056",
+          "topics": [
+            "0xf2a0eb156472d1440255b0d7c1e19cc07115d1051fe605b0dce69acfec884d9c",
+            "0x46d4e76ba5ee7ce00812736a4c1b49a37842384ab0e36c51d04e49fa169090f8",
+            "0x0000000000000000000000008e5de5ca219e3ffc9cdeb2dc7d71b8a199cd2c4f"
+          ],
+          "data": "0x",
+          "blockHash": "0x108ebacb907288da33f41bef2de58b6c26b7c4828de9ce56a1b1b92006a44410",
+          "blockNumber": "0x10ac3e6",
+          "transactionHash": "0x3306847757bd7c4c25e45c72b23e9a5e17d061bc7b9998b2ec752deae0703371",
+          "transactionIndex": "0x16",
+          "logIndex": "0x52",
+          "removed": false
+        }
+      ],
+      "status": "0x1",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000800000000100000000000000000000000000000000000000000000000000000000000000000000000040000000008000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000800008000000000000000000000000080000000000000000100000000000000000",
+      "type": "0x2",
+      "effectiveGasPrice": "0x48d190b05"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/anikaraghuvanshi/Documents/protocols/base-deployments/mainnet/2023-06-15-unpause-portal/records/UnpausePortal.s.sol/1/run-latest.json",
+  "returns": {},
+  "timestamp": 1686800969,
+  "chain": 1,
+  "multi": false,
+  "commit": "f826d66"
+}
