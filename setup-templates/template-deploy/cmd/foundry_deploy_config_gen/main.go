@@ -26,7 +26,9 @@ type DeployConfigParams struct {
 	L2OutputOracleProposer            common.Address `json:"l2OutputOracleProposer"`
 	L2OutputOracleStartingBlockNumber uint64         `json:"l2OutputOracleStartingBlockNumber"`
 	L2OutputOracleSubmissionInterval  uint64         `json:"l2OutputOracleSubmissionInterval"`
+	L2OutputOracleStartingTimestamp   uint64         `json:"l2OutputOracleStartingTimestamp"`
 	P2PSequencerAddress               common.Address `json:"p2pSequencerAddress"`
+	PortalGuardian                    common.Address `json:"portalGuardian"`
 	ProxyAdminOwner                   common.Address `json:"proxyAdminOwner"`
 	SequencerFeeVaultRecipient        common.Address `json:"sequencerFeeVaultRecipient"`
 }
@@ -52,8 +54,10 @@ type FoundryConfigParams struct {
 	L2OutputOracleChallenger          common.Address `json:"l2OutputOracleChallenger"`
 	L2OutputOracleProposer            common.Address `json:"l2OutputOracleProposer"`
 	L2OutputOracleStartingBlockNumber uint64         `json:"l2OutputOracleStartingBlockNumber"`
+	L2OutputOracleStartingTimestamp   uint64         `json:"l2OutputOracleStartingTimestamp"`
 	L2OutputOracleSubmissionInterval  uint64         `json:"l2OutputOracleSubmissionInterval"`
 	P2PSequencerAddress               common.Address `json:"p2pSequencerAddress"`
+	PortalGuardian                    common.Address `json:"portalGuardian"`
 	ProxyAdminOwnerL2                 common.Address `json:"proxyAdminOwnerL2"`
 	SequencerFeeVaultRecipient        common.Address `json:"sequencerFeeVaultRecipient"`
 }
@@ -102,8 +106,10 @@ func main() {
 	foundryConfigParams.L2OutputOracleChallenger = deployConfigParams.L2OutputOracleChallenger
 	foundryConfigParams.L2OutputOracleProposer = deployConfigParams.L2OutputOracleProposer
 	foundryConfigParams.L2OutputOracleStartingBlockNumber = deployConfigParams.L2OutputOracleStartingBlockNumber
+	foundryConfigParams.L2OutputOracleStartingTimestamp = deployConfigParams.L2OutputOracleStartingTimestamp
 	foundryConfigParams.L2OutputOracleSubmissionInterval = deployConfigParams.L2OutputOracleSubmissionInterval
 	foundryConfigParams.P2PSequencerAddress = deployConfigParams.P2PSequencerAddress
+	foundryConfigParams.PortalGuardian = deployConfigParams.PortalGuardian
 	foundryConfigParams.ProxyAdminOwnerL2 = deployConfigParams.ProxyAdminOwner
 	foundryConfigParams.SequencerFeeVaultRecipient = deployConfigParams.SequencerFeeVaultRecipient
 
