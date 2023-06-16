@@ -8,6 +8,7 @@ lib/
 # Localhost and run-latest deploy scripts
 **/records/**/**/run-latest.json
 localhost/*/records/
+**/records/**/**/dry-run/
 
 # Test binary, built with `go test -c`
 *.test

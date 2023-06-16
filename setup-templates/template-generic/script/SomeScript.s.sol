@@ -6,5 +6,8 @@ import "forge-std/Script.sol";
 contract SomeScript is Script {
     function setUp() public {}
 
-    function run() public {}
+    function run() public {
+        RunThis runThis = new RunThis();
+        runThis.run();
+    }
 }
