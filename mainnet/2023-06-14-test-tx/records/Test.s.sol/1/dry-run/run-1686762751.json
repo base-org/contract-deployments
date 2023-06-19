@@ -1,0 +1,52 @@
+{
+  "transactions": [
+    {
+      "hash": null,
+      "transactionType": "CREATE",
+      "contractName": "Test",
+      "contractAddress": "0x403F6A8BEAeef2e525cf5160421BE25F387A95A3",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://eth.llamarpc.com",
+      "transaction": {
+        "type": "0x02",
+        "from": "0x0996bb0f5d56bb72c85c50bd92a950e9756df117",
+        "gas": "0x259cb",
+        "value": "0x0",
+        "data": "0x608060405234801561001057600080fd5b5061012f806100206000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c80633fb5c1cb1460415780638381f58a146053578063d09de08a14606d575b600080fd5b6051604c3660046083565b600055565b005b605b60005481565b60405190815260200160405180910390f35b6051600080549080607c83609b565b9190505550565b600060208284031215609457600080fd5b5035919050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff820360f2577f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b506001019056fea2646970667358221220602f6eebf45cf93c902b46ceb9464fe37c74082a50c73f047be0ee8c2bbd589d64736f6c634300080f0033",
+        "nonce": "0x0",
+        "accessList": []
+      },
+      "additionalContracts": []
+    },
+    {
+      "hash": null,
+      "transactionType": "CALL",
+      "contractName": "Test",
+      "contractAddress": "0x403F6A8BEAeef2e525cf5160421BE25F387A95A3",
+      "function": "increment()",
+      "arguments": [],
+      "rpc": "https://eth.llamarpc.com",
+      "transaction": {
+        "type": "0x02",
+        "from": "0x0996bb0f5d56bb72c85c50bd92a950e9756df117",
+        "to": "0x403f6a8beaeef2e525cf5160421be25f387a95a3",
+        "gas": "0xea2e",
+        "value": "0x0",
+        "data": "0xd09de08a",
+        "nonce": "0x1",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [],
+  "path": "/Users/anikaraghuvanshi/Documents/protocols/base-deployments/mainnet/2023-06-14-test-tx/records/Test.s.sol/1/dry-run/run-latest.json",
+  "returns": {},
+  "timestamp": 1686762751,
+  "chain": 1,
+  "multi": false,
+  "commit": "cd8c737"
+}
