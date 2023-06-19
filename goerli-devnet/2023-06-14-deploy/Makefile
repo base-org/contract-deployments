@@ -3,7 +3,7 @@ include ../.env
 include .env
 
 ##
-# Deploy command
+# Foundry commands
 ##
 .PHONY: deploy
 deploy:
