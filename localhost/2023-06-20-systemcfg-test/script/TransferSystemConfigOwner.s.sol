@@ -10,9 +10,9 @@ import { SystemConfig } from "@eth-optimism-bedrock/contracts/L1/SystemConfig.so
 import { MultisigBuilder } from "@base-contracts/script/universal/MultisigBuilder.sol";
 
 contract TransferSystemConfigOwner is MultisigBuilder {
-    address constant internal SYSTEM_CONFIG_ADDR = 0x73a79Fab69143498Ed3712e519A88a918e1f4072;
-    address constant internal NEW_OWNER = 0x14536667Cd30e52C0b458BaACcB9faDA7046E056;
-    address constant internal CB_OWNER_SAFE = 0x9855054731540A48b28990B63DcF4f33d8AE46A1;
+    address constant internal SYSTEM_CONFIG_ADDR = 0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6;
+    address constant internal NEW_OWNER = 0x0000000000000000000000000000000000000001;
+    address constant internal CB_OWNER_SAFE = 0x41715Dd88D95c3c80248f19DAcE21015346069b8;
 
     /**
      * @notice Follow up assertions to ensure that the script ran to completion.
