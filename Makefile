@@ -63,10 +63,3 @@ checkout-base-contracts-commit:
 .PHONY: solidity-test
 solidity-test:
 	forge test --ffi -vvv
-
-##
-# Local deploy
-##
-.PHONY: deploy-local
-deploy-local:
-	cd localhost/2023-06-08-deploy && make deploy
