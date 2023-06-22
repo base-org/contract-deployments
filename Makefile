@@ -48,9 +48,10 @@ checkout-op-commit:
 checkout-base-contracts-commit:
 	[ -n "$(BASE_CONTRACTS_COMMIT)" ] || (echo "BASE_CONTRACTS_COMMIT must be set in .env" && exit 1)
 	chmod 600 ../../tmp/tmpsshkey
-	ssh-add ../../tmp/tmpsshkey
 	rm -rf lib/base-contracts
 	mkdir -p lib/base-contracts
+	eval `ssh-agent`; \
+	ssh-add ../../tmp/tmpsshkey; \
 	cd lib/base-contracts; \
 	git init; \
 	git remote add origin git@github.com:base-org/contracts.git; \
