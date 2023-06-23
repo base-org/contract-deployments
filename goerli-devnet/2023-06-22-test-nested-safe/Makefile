@@ -35,9 +35,6 @@ approve-l1:
 	TestNestedSafeL1 --sig "runApproval(address,bytes)" $(SIGNER_SAFE_1_L1) $(SIGNATURES) \
 	--private-key $(PRIVATE_KEY) --broadcast
 
-debug:
-	forge script --via-ir --rpc-url ${L1_RPC_URL} TestNestedSafeL1 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L1}
-
 # Step 3
 sign-l1:
 	chmod +x ./sign-l1.sh && ./sign-l1.sh
