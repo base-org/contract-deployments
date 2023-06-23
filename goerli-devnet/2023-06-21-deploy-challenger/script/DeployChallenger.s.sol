@@ -5,7 +5,8 @@ import "forge-std/Script.sol";
 import { Challenger1of2 } from "@base-contracts/src/Challenger1of2.sol";
 
 contract DeployChallenger is Script {
-    function run(address signer1, address signer2, address l2OutputOracleProxy) public {
+    function run(address deployer, address signer1, address signer2, address l2OutputOracleProxy) public {
+        vm.broadcast(deployer);
         Challenger1of2 challenger1of2 = new Challenger1of2(signer1, signer2, l2OutputOracleProxy);
         require(challenger1of2.OP_SIGNER() == signer1, "OP_SIGNER not set correctly");
         require(challenger1of2.OTHER_SIGNER() == signer2, "OTHER_SIGNER not set correctly");
