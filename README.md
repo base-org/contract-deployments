@@ -23,7 +23,8 @@ Next, `cd` into the directory that was created for you and follow the steps in t
 
 ### Using the generic template
 
-This template can be used to do contract calls, upgrades or one-off deployments
+This template can be used to do contract calls, upgrades or one-off deployments.
+Specifically for contract ownership transfers, there is an example file `TransferOwner.s.sol`, which can be used to setup the ownership transfer task.
 
 #### Directory structure
 
