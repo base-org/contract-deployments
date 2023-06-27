@@ -13,5 +13,5 @@ sign:
 
 run:
 	forge script --via-ir --rpc-url $(L2_RPC_URL) \
-	TransferL1Owner --sig "run(bytes)" $(SIGNATURES) \
+	TransferL2Owner --sig "run(bytes)" $(SIGNATURES) \
 	--private-key $(PRIVATE_KEY) --broadcast
