@@ -49,7 +49,7 @@ example-step-1:
 	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
 	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
 	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
 
 .PHONY: example-step-2
 example-step-2:
@@ -63,7 +63,7 @@ example-step-3:
 	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
 	--sig "signTransaction(address)" $(SAFE_2_ADDR) | \
 	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
 
 .PHONY: example-step-4
 example-step-4:
