@@ -20,7 +20,7 @@ example-ledger:
 ##
 # MultisigBuilder commands
 # The following commands can be used for tasks that utilize the MultisigBuilder.
-# Note that --ledger --hd-path <PATH> can be replaced with --private-key $(PRIVATE_KEY)
+# Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
 # in any command when using a local key.
 ##
 
@@ -40,7 +40,7 @@ example-run:
 ##
 # NestedMultisigBuilder commands
 # The following commands can be used for tasks that utilize the NestedMultisigBuilder.
-# Note that --ledger --hd-path <PATH> can be replaced with --private-key $(PRIVATE_KEY)
+# Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
 # in any command when using a local key.
 ##
 
