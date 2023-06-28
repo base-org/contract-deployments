@@ -7,7 +7,8 @@ include .env.local
 # Foundry commands
 ##
 get-impl-addr:
-	cast storage $(L1_BLOCK_PROXY) $(IMPL_STORAGE_SLOT) --rpc-url $(L2_RPC_URL)
+	cast call $(L2_PROXY_ADMIN_CONTRACT) "getProxyImplementation(address)(address)" \
+	$(L1_BLOCK_PROXY) --rpc-url $(L2_RPC_URL)
 
 .PHONY: step-1
 step-1:
