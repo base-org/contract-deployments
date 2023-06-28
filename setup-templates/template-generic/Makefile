@@ -25,13 +25,13 @@ example-ledger:
 ##
 
 .PHONY: example-sign
-sign:
+example-sign:
 	forge script --via-ir --rpc-url $(RPC_URL) $(script) --sig "sign()" | \
 	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign ---ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
 
 .PHONY: example-run
-run:
+example-run:
 	forge script --via-ir --rpc-url $(RPC_URL) \
 	$(script) --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
