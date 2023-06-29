@@ -7,19 +7,21 @@ import {
 import "@base-contracts/script/universal/MultisigBuilder.sol";
 
 contract TransferL1Owner is MultisigBuilder {
-    address constant internal PROXY_ADMIN_OWNER = 0xbc0Fc544736b7d610D9b05F31B182C8154BEf336;
+    address constant internal PROXY_ADMIN = 0xbc0Fc544736b7d610D9b05F31B182C8154BEf336;
     address constant internal OLD_OWNER = 0x4C35Ca57616E0d5fD808574772f632D8dA4eadCa;
     address constant internal NEW_OWNER = 0x444b8C3E4eA49cE15A93D96AfA83D421F6049524;
 
     function _postCheck() internal override view {
         // perform post execution checks
+        ProxyAdmin proxyAdmin = new ProxyAdmin(PROXY_ADMIN);
+        require(proxyAdmin.owner() == NEW_OWNER, "Deploy: proxyAdmin owner is incorrect");
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
 
         calls[0] = IMulticall3.Call3({
-            target: PROXY_ADMIN_OWNER,
+            target: PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 OwnableUpgradeable.transferOwnership,
