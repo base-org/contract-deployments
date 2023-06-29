@@ -5,6 +5,7 @@ import {
     OwnableUpgradeable
 } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@base-contracts/script/universal/MultisigBuilder.sol";
+import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
 contract TransferL1Owner is MultisigBuilder {
     address constant internal PROXY_ADMIN = 0xbc0Fc544736b7d610D9b05F31B182C8154BEf336;
@@ -13,7 +14,7 @@ contract TransferL1Owner is MultisigBuilder {
 
     function _postCheck() internal override view {
         // perform post execution checks
-        ProxyAdmin proxyAdmin = new ProxyAdmin(PROXY_ADMIN);
+        ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN);
         require(proxyAdmin.owner() == NEW_OWNER, "Deploy: proxyAdmin owner is incorrect");
     }
 
