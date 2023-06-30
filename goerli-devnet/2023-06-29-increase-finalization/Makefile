@@ -1,7 +1,7 @@
 include ../../Makefile
 include ../.env
-include .env
 include ../.env.local
+include .env
 
 ##
 # Foundry commands
@@ -13,24 +13,47 @@ deploy-new-impl:
 	--private-key $(PRIVATE_KEY) --broadcast
 
 ##
-# NestedMultisigBuilder commands
+# Commands to upgrade to L2OO which contains longer finalization period
 ##
 
 .PHONY: step-1
 step-1:
-	forge script --via-ir --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) UpgradeL2OutputOracle \
 	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
 	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --private-key $(PRIVATE_KEY))
 
 .PHONY: step-2
 step-2:
-	forge script --via-ir --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) UpgradeL2OutputOracle \
 	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) \
 	--private-key $(PRIVATE_KEY)
 
 .PHONY: step-3
 step-3:
-	forge script --via-ir --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) UpgradeL2OutputOracle \
+	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) "" \
+	--private-key $(PRIVATE_KEY)
+
+##
+# Commands to revert back to L2OO which contains faster finalization period
+##
+
+.PHONY: step-1-revert
+step-1-revert:
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) RevertL2OutputOracle \
+	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
+	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	(cd lib/base-contracts && go run ./cmd/sign --private-key $(PRIVATE_KEY))
+
+.PHONY: step-2-revert
+step-2-revert:
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) RevertL2OutputOracle \
+	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) \
+	--private-key $(PRIVATE_KEY)
+
+.PHONY: step-3-revert
+step-3-revert:
+	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) RevertL2OutputOracle \
 	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) "" \
 	--private-key $(PRIVATE_KEY)
