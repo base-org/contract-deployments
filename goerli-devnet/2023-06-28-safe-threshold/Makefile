@@ -1,7 +1,7 @@
 include ../../Makefile
 include ../.env
 include .env
-include .env.local
+include ../.env.local
 
 ##
 # Foundry commands
