@@ -20,7 +20,7 @@ contract DeleteL2Outputs is MultisigBuilder {
 
         L2OutputOracle l2OutputOracle = L2OutputOracle(L2_OUTPUT_ORACLE_PROXY);
         bytes memory deleteL2OutputData = abi.encodeCall(
-            L2OutputOracle.deleteL2Outputs, (l2OutputOracle.latestOutputIndex())
+            L2OutputOracle.deleteL2Outputs, (l2OutputOracle.latestOutputIndex() - 10)
         );
 
         calls[0] = IMulticall3.Call3({
