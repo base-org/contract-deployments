@@ -8,12 +8,12 @@ import "@base-contracts/script/universal/MultisigBuilder.sol";
 import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
 contract TestL2Safe is MultisigBuilder {
-    // address constant internal PROXY_ADMIN_CONTRACT = ;
-    // address constant internal PROXY_CONTRACT = ;
-    // address constant internal OLD_IMPLEMENTATION = ;
-    // address constant internal NEW_IMPLEMENTATION = ;
-    // address constant internal L2_SAFE = 0xd94e416cf2c7167608b2515b7e4102b41efff94f;
-    // address constant internal NEW_OWNER = address(1);
+    address constant internal PROXY_ADMIN_CONTRACT = 0x5170619f82f277c2B6BD3A9173CCb74D10B4B7d1;
+    address constant internal PROXY_CONTRACT = 0x96ffD33D44792B73C573B9D773A2Af4623924aEE;
+    address constant internal OLD_IMPLEMENTATION = 0xa56bCd3A713e2857b453ED38aD3052Bb7953e798;
+    address constant internal NEW_IMPLEMENTATION = 0x004BC95c786dc50b42cC573458cC39ba82d98C09;
+    address constant internal L2_SAFE = 0xd94E416cf2c7167608B2515B7e4102B41efff94f;
+    address constant internal NEW_OWNER = address(1);
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN_CONTRACT);

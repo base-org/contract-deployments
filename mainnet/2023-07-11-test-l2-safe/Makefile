@@ -8,7 +8,7 @@ include .env
 .PHONY: deploy-test
 deploy-test:
 	forge script --rpc-url $(L2_RPC_URL) DeployTestProxy \
-	--sig "run(address, address)" $(DEPLOYER) $(L2_SAFE) --broadcast
+	--sig "run(address, address)" $(DEPLOYER) $(L2_SAFE)
 
 ##
 # MultisigBuilder commands
