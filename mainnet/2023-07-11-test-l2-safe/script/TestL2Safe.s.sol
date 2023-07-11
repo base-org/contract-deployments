@@ -12,7 +12,7 @@ contract TestL2Safe is MultisigBuilder {
     // address constant internal PROXY_CONTRACT = ;
     // address constant internal OLD_IMPLEMENTATION = ;
     // address constant internal NEW_IMPLEMENTATION = ;
-    // address constant internal OLD_OWNER = 0xd94e416cf2c7167608b2515b7e4102b41efff94f;
+    // address constant internal L2_SAFE = 0xd94e416cf2c7167608b2515b7e4102b41efff94f;
     // address constant internal NEW_OWNER = address(1);
 
     function _postCheck() internal override view {
@@ -61,6 +61,6 @@ contract TestL2Safe is MultisigBuilder {
     }
 
     function _ownerSafe() internal override view returns (address) {
-        return OLD_OWNER;
+        return L2_SAFE;
     }
 }
