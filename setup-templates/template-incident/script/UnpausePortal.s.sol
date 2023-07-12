@@ -13,7 +13,7 @@ contract UnpausePortal is MultisigBuilder {
     //      goerli value: 0x4C35Ca57616E0d5fD808574772f632D8dA4eadCa
 
     function _postCheck() internal override view {
-        OptimismPortal optimismPortal = OptimismPortal(OPTIMISM_PORTAL_PROXY);
+        OptimismPortal optimismPortal = OptimismPortal(payable(OPTIMISM_PORTAL_PROXY));
         require(optimismPortal.paused() == false, "UnpausePortal: Portal did not get unpaused");
     }
 
@@ -21,7 +21,7 @@ contract UnpausePortal is MultisigBuilder {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
 
         calls[0] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: OPTIMISM_PORTAL_PROXY,
             allowFailure: false,
             callData: abi.encodeCall(
                 OptimismPortal.unpause, ()

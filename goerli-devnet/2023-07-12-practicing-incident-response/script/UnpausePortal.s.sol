@@ -4,17 +4,13 @@ pragma solidity 0.8.15;
 import "@base-contracts/script/universal/MultisigBuilder.sol";
 import "@eth-optimism-bedrock/contracts/L1/OptimismPortal.sol";
 
-contract PausePortal is MultisigBuilder {
-    // address constant internal OPTIMISM_PORTAL_PROXY = <TODO: insert OptimismPortalProxy address>;
-    //      mainnet value: 0x49048044D57e1C92A77f79988d21Fa8fAF74E97e
-    //      goerli value: 0xe93c8cD0D409341205A592f8c4Ac1A5fe5585cfA
-    // address constant internal GUARDIAN = <TODO: insert multisig which is Guardian address>;
-    //      mainnet value: 0x14536667Cd30e52C0b458BaACcB9faDA7046E056
-    //      goerli value: 0x4C35Ca57616E0d5fD808574772f632D8dA4eadCa
+contract UnpausePortal is MultisigBuilder {
+    address constant internal OPTIMISM_PORTAL_PROXY = 0x61A7dc680a0f3F67aDc357453d3f51bDc70fAE1B;
+    address constant internal GUARDIAN = 0xA221e753e82626F96b83b3665F4fA92114a2a6f3;
 
     function _postCheck() internal override view {
         OptimismPortal optimismPortal = OptimismPortal(payable(OPTIMISM_PORTAL_PROXY));
-        require(optimismPortal.paused() == true, "PausePortal: Portal did not get paused");
+        require(optimismPortal.paused() == false, "UnpausePortal: Portal did not get unpaused");
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
@@ -24,7 +20,7 @@ contract PausePortal is MultisigBuilder {
             target: OPTIMISM_PORTAL_PROXY,
             allowFailure: false,
             callData: abi.encodeCall(
-                OptimismPortal.pause, ()
+                OptimismPortal.unpause, ()
             )
         });
 
