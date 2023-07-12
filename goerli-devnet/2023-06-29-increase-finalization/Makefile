@@ -50,10 +50,10 @@ step-1-revert:
 step-2-revert:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) RevertL2OutputOracle \
 	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) \
-	--private-key $(PRIVATE_KEY)
+	--private-key $(PRIVATE_KEY) --broadcast
 
 .PHONY: step-3-revert
 step-3-revert:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) RevertL2OutputOracle \
 	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) "" \
-	--private-key $(PRIVATE_KEY)
+	--private-key $(PRIVATE_KEY) --broadcast
