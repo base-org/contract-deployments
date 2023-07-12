@@ -21,7 +21,7 @@ To use template during an incident:
 1. Fill in dependency commit values in the `.env` file.
 1. Delete the other scripts that are not being used so that you don't run into build issues.
 1. Check in code once addresses have been filled in.
-1. Have each signer pull the branch, run `make deps`, and then run relevant signing command from the Makefile.
+1. Have each signer pull the branch, and run relevant signing command from the Makefile.
 
 To add new incident response scripts:
 1. Any incident response related scripts should be included in this template (should be generic, not specific to network), with specific TODOs wherever addresses or other details need to be filled in.
