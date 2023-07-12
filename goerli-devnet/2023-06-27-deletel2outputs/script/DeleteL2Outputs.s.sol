@@ -10,9 +10,11 @@ contract DeleteL2Outputs is MultisigBuilder {
     address constant internal CHALLENGER = 0x6c4219fC0DA6813FbB3301F103813fe230FA6653;
     // SAFE is one of the approved signers on the Challenger contract
     address constant internal SAFE = 0x9d8dCd68F3f88FB29C92C8c4B5039906a8b96Ed6;
+    uint256 constant internal L2_OUTPUT_INDEX = 20140;
 
     function _postCheck() internal override view {
-        // perform post execution checks
+        L2OutputOracle l2OutputOracle = L2OutputOracle(L2_OUTPUT_ORACLE_PROXY);
+        require(l2OutputOracle.latestOutputIndex() < L2_OUTPUT_INDEX, "DeleteL2Outputs: L2OutputOracle did not get deleted");
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
@@ -20,7 +22,7 @@ contract DeleteL2Outputs is MultisigBuilder {
 
         L2OutputOracle l2OutputOracle = L2OutputOracle(L2_OUTPUT_ORACLE_PROXY);
         bytes memory deleteL2OutputData = abi.encodeCall(
-            L2OutputOracle.deleteL2Outputs, (l2OutputOracle.latestOutputIndex() - 10)
+            L2OutputOracle.deleteL2Outputs, (L2_OUTPUT_INDEX)
         );
 
         calls[0] = IMulticall3.Call3({
