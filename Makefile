@@ -1,7 +1,9 @@
 PROJECT_DIR = $(network)/$(shell date +'%Y-%m-%d')-$(task)
 DEPLOY_DIR = $(network)/$(shell date +'%Y-%m-%d')-deploy
+INCIDENT_DIR = $(network)/$(shell date +'%Y-%m-%d')-$(incident)
 TEMPLATE_GENERIC = setup-templates/template-generic
 TEMPLATE_DEPLOY = setup-templates/template-deploy
+TEMPLATE_INCIDENT = setup-templates/template-incident
 
 ##
 # Project Setup
@@ -15,6 +17,11 @@ setup-task:
 setup-deploy:
 	rm -rf $(TEMPLATE_DEPLOY)/cache $(TEMPLATE_DEPLOY)/lib $(TEMPLATE_DEPLOY)/out
 	mkdir -p $(network) && cp -r $(TEMPLATE_DEPLOY) $(DEPLOY_DIR)
+
+# Run `make setup-incident network=<network> incident=<incident-name>`
+setup-incident:
+	rm -rf $(TEMPLATE_INCIDENT)/cache $(TEMPLATE_INCIDENT)/lib $(TEMPLATE_INCIDENT)/out
+	mkdir -p $(network) && cp -r $(TEMPLATE_INCIDENT) $(INCIDENT_DIR)
 
 ##
 # Solidity Setup
