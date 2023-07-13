@@ -8,7 +8,7 @@ contract UpgradeL2OutputOracle is NestedMultisigBuilder {
     address constant internal PROXY_ADMIN_CONTRACT = 0xbc0Fc544736b7d610D9b05F31B182C8154BEf336;
     address constant internal PROXY_ADMIN_OWNER = 0x444b8C3E4eA49cE15A93D96AfA83D421F6049524; // Nested Safe addr
     address constant internal L2_OUTPUT_ORACLE_PROXY = 0x2A35891ff30313CcFa6CE88dcf3858bb075A2298;
-    // address constant internal NEW_IMPLEMENTATION = XXX;
+    address constant internal NEW_IMPLEMENTATION = 0x0849100Ad5d0F1535775550740BADDed5C5DbcE0;
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN_CONTRACT);

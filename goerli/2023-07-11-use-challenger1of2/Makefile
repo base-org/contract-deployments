@@ -1,7 +1,6 @@
 include ../../Makefile
 include ../.env
 include .env
-include .env.local
 
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
@@ -13,8 +12,7 @@ endif
 .PHONY: deploy-new-impl
 deploy-new-impl:
 	forge script --rpc-url $(L1_RPC_URL) DeployL2OOImplementation \
-	--sig "run(address,address,address)" $(DEPLOYER) $(CHALLENGER) $(L2_OUTPUT_ORACLE_PROXY) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+	--sig "run(address,address,address)" $(DEPLOYER) $(CHALLENGER) $(L2_OUTPUT_ORACLE_PROXY)
 
 ##
 # NestedMultisigBuilder commands

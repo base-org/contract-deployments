@@ -16,12 +16,6 @@ contract DeployL2OOImplementation is Script {
         address oldProposer = existingL2OO.PROPOSER();
         uint256 oldFinalizationPeriodSeconds = existingL2OO.FINALIZATION_PERIOD_SECONDS();
 
-        console.log(oldSubmissionInterval);
-        console.log(oldL2BlockTime);
-        console.log(oldProposer);
-        console.log(oldFinalizationPeriodSeconds);
-        console.log(existingL2OO.CHALLENGER());
-
         // Deploy L2OutputOracle new implementation with new challenger
         vm.broadcast(deployer);
         L2OutputOracle l2OutputOracleImpl = new L2OutputOracle({
