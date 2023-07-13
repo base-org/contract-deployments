@@ -3,7 +3,7 @@ include ../.env
 include .env
 
 ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 0
+override LEDGER_ACCOUNT = 1
 endif
 
 ##
@@ -13,6 +13,9 @@ endif
 deploy-new-impl:
 	forge script --rpc-url $(L1_RPC_URL) DeployL2OOImplementation \
 	--sig "run(address,address,address)" $(DEPLOYER) $(CHALLENGER) $(L2_OUTPUT_ORACLE_PROXY)
+
+verify-new-impl:
+	forge verify-contract ${L2_OUTPUT_ORACLE_IMPL} L2OutputOracle --constructor-args $(shell cast abi-encode "constructor(uint256,uint256,uint256,uint256,address,address,uint256)" 120 2 0 0 ${PROPOSER} ${CHALLENGER} 12) --verifier ${VERIFIER} --watch --chain-id 5  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=999999 --retries=1
 
 ##
 # NestedMultisigBuilder commands
