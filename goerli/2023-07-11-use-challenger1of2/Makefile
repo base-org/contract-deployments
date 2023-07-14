@@ -31,11 +31,11 @@ step-1:
 .PHONY: step-2
 step-2:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle \
-	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) --sender $(SENDER) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: step-3
 step-3:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle \
-	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) "" \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) ""  --sender $(SENDER) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
