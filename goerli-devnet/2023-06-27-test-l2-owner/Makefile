@@ -14,7 +14,7 @@ get-impl-addr:
 sign:
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNewOwner \
 	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
-	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --private-key $(PRIVATE_KEY))
 
 .PHONY: approve

@@ -5,6 +5,6 @@ source ../.env
 source .env
 source .env.local
 
-payload=$(forge script --via-ir --rpc-url ${L2_RPC_URL} TestNestedSafeL2 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L2} | grep -A1 vvvvvvvv | grep -v vvvvvvvv)
+payload=$(forge script --via-ir --rpc-url ${L2_RPC_URL} TestNestedSafeL2 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L2} | tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv)
 cd lib/base-contracts
 echo "${payload}" | go run ./cmd/sign --private-key ${PRIVATE_KEY}
