@@ -20,7 +20,7 @@ deploy-new-impl:
 step-1:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) UpgradeL2OutputOracle \
 	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
-	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --private-key $(PRIVATE_KEY))
 
 .PHONY: step-2
@@ -43,7 +43,7 @@ step-3:
 step-1-revert:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) --sender $(SENDER) RevertL2OutputOracle \
 	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
-	grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --private-key $(PRIVATE_KEY))
 
 .PHONY: step-2-revert

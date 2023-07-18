@@ -31,7 +31,7 @@ deploy-test-l2:
 # Step 1
 sign-approval-l1:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) \
-	TestNestedSafeL1 --sig "signApproval(address)" ${SIGNER_SAFE_1_L1} | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	TestNestedSafeL1 --sig "signApproval(address)" ${SIGNER_SAFE_1_L1} | tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
 
 # Step 2
@@ -43,7 +43,7 @@ approve-l1:
 # Step 3
 sign-l1:
 	forge script --via-ir --rpc-url ${L1_RPC_URL} \
-	TestNestedSafeL1 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L1} | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	TestNestedSafeL1 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L1} | tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/${LEDGER_ACCOUNT}'/0/0")
 
 # Step 4
@@ -58,7 +58,7 @@ execute-l1:
 # Step 1
 sign-approval-l2:
 	forge script --via-ir --rpc-url $(L2_RPC_URL) \
-	TestNestedSafeL2 --sig "signApproval(address)" ${SIGNER_SAFE_1_L2} | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	TestNestedSafeL2 --sig "signApproval(address)" ${SIGNER_SAFE_1_L2} | tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
 
 # Step 2
@@ -70,7 +70,7 @@ approve-l2:
 # Step 3
 sign-l2:
 	forge script --via-ir --rpc-url ${L2_RPC_URL} \
-	TestNestedSafeL2 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L2} | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
+	TestNestedSafeL2 --sig "signTransaction(address)" ${SIGNER_SAFE_2_L2} | tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
 	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/${LEDGER_ACCOUNT}'/0/0")
 
 # Step 4
