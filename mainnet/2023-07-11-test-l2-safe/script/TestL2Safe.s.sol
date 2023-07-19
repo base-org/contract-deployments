@@ -12,7 +12,7 @@ contract TestL2Safe is MultisigBuilder {
     address constant internal PROXY_CONTRACT = 0xCFf6EbA9DD666C6AE51Ec35a3999A9715e5aAa87;
     address constant internal OLD_IMPLEMENTATION = 0x0a9F0F5B38951955ff68263510AD45Af71468D55;
     address constant internal NEW_IMPLEMENTATION = 0x004BC95c786dc50b42cC573458cC39ba82d98C09;
-    address constant internal L2_SAFE = 0x25afe4249e4410DB5F20c6421d96E0F02C0f4E3B;
+    address constant internal L2_SAFE = 0xd94E416cf2c7167608B2515B7e4102B41efff94f;
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN_CONTRACT);
