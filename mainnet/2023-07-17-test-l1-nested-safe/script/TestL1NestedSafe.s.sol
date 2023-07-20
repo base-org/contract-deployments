@@ -9,10 +9,10 @@ import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
 
 contract TestL1NestedSafe is NestedMultisigBuilder {
-    address constant internal PROXY_ADMIN_CONTRACT = ;
-    address constant internal PROXY_CONTRACT = ;
-    address constant internal OLD_IMPLEMENTATION = ;
-    address constant internal NEW_IMPLEMENTATION = ;
+    address constant internal PROXY_ADMIN_CONTRACT = 0x004BC95c786dc50b42cC573458cC39ba82d98C09;
+    address constant internal PROXY_CONTRACT = 0x9fc9A8f624DfAc7AFF00676AEB96c6Ab7d5c0CeC;
+    address constant internal OLD_IMPLEMENTATION = 0x78F29A0a59818C17D9842bD1eeB11E0704709946;
+    address constant internal NEW_IMPLEMENTATION = 0x4a7E687066bb29C18DA16b152D234C652D774fED;
     address constant internal NESTED_L1_SAFE = 0x9B3245a57C339FC711921894c012A4FA53F5F343;
     address constant internal NEW_OWNER = address(1);
 
