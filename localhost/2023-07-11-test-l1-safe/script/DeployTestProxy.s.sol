@@ -3,19 +3,19 @@ pragma solidity 0.8.15;
 
 import "forge-std/Script.sol";
 import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
-import "@base-contracts/src/Test.sol";
+// import "@eth-optimism-bedrock/contracts/l2/GasPriceOracle.sol";
+import "@eth-optimism-bedrock/contracts/universal/OptimismMintableERC20Factory.sol";
+
 
 contract DeployTestProxy is Script {
-    function run(address deployer, address safeToTest, address proxyAdminAddr) public {
-        // // Deploy proxy admin contract
-        // vm.broadcast(deployer);
-        // ProxyAdmin proxyAdmin = new ProxyAdmin({
-        //     _owner: deployer
-        // });
-        // require(proxyAdmin.owner() == deployer, "DeployTestProxy: proxyAdmin owner is incorrect");
-        ProxyAdmin proxyAdmin = ProxyAdmin(proxyAdminAddr);
+    function run(address deployer, address safeToTest) public {
+        vm.broadcast(deployer);
+        ProxyAdmin proxyAdmin = new ProxyAdmin({
+            _owner: deployer
+        });
+        require(proxyAdmin.owner() == deployer, "DeployTestProxy: proxyAdmin owner is incorrect");
 
-        // Deploy an example proxy contract
+        // Deploy proxy contract and implementation which we will then upgrade
         vm.broadcast(deployer);
         Proxy proxy = new Proxy({
             _admin: address(proxyAdmin)
@@ -23,13 +23,16 @@ contract DeployTestProxy is Script {
         vm.prank(address(0));
         require(proxy.admin() == address(proxyAdmin), "DeployTestProxy: admin is incorrect");
 
-        // Deploy 2 implementations - 1 will be set initially, 1 will be used in test upgrade
-        vm.broadcast(deployer);
-        Test implementation = new Test();
-        vm.broadcast(deployer);
-        Test implementation2 = new Test();
+        // vm.broadcast(deployer);
+        // GasPriceOracle implementation = new GasPriceOracle();
+        // vm.broadcast(deployer);
+        // GasPriceOracle implementation2 = new GasPriceOracle();
 
-        // Set implementation of proxy contract to first implementation
+        vm.broadcast(deployer);
+        OptimismMintableERC20Factory implementation = new OptimismMintableERC20Factory(address(0));
+        vm.broadcast(deployer);
+        OptimismMintableERC20Factory implementation2 = new OptimismMintableERC20Factory(address(0));
+
         vm.broadcast(deployer);
         proxyAdmin.upgrade({
             _proxy: payable(proxy),
@@ -40,12 +43,11 @@ contract DeployTestProxy is Script {
             "DeployTestProxy: implementation did not get set"
         );
 
-        // Set safe we are testing to be the proxy admin owner
         vm.broadcast(deployer);
         proxyAdmin.transferOwnership(safeToTest);
         require(proxyAdmin.owner() == safeToTest, "DeployTestProxy: proxyAdmin owner did not transfer correctly");
 
-        console.log("DeployTestProxy: Deployed Addresses");
+        console.log("Deployed Addresses");
         console.log("ProxyAdmin: ", address(proxyAdmin));
         console.log("Proxy: ", address(proxy));
         console.log("Implementation: ", address(implementation));
