@@ -3,7 +3,7 @@ pragma solidity 0.8.15;
 
 import "forge-std/Script.sol";
 import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
-import "@eth-optimism-bedrock/contracts/l2/GasPriceOracle.sol";
+import "@base-contracts/src/Test.sol";
 
 contract DeployTestProxy is Script {
     function run(address deployer, address safeToTest) public {
@@ -24,9 +24,9 @@ contract DeployTestProxy is Script {
 
         // Deploy 2 implementations - 1 will be set initially, 1 will be used in test upgrade
         vm.broadcast(deployer);
-        GasPriceOracle implementation = new GasPriceOracle();
+        Test implementation = new Test();
         vm.broadcast(deployer);
-        GasPriceOracle implementation2 = new GasPriceOracle();
+        Test implementation2 = new Test();
 
         // Set implementation of proxy contract to first implementation
         vm.broadcast(deployer);

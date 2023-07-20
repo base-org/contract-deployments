@@ -2,43 +2,51 @@ include ../../Makefile
 include ../.env
 include .env
 
-
-.PHONY: deploy-test
-deploy-test:
-	forge script --rpc-url $(L2_RPC_URL) DeployTestProxy \
-	--sig "run(address, address)" $(DEPLOYER) $(NESTED_L2_SAFE_ADDR)
-
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif
 
+.PHONY: deploy-test
+deploy-test:
+	forge script --rpc-url $(L2_RPC_URL) DeployTestProxy \
+	--sig "run(address, address)" $(DEPLOYER) $(NESTED_L2_SAFE_ADDR) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
 ##
-# Commands to test the nested safe
+# Commands for signers to run to test the nested safe
 ##
 
 .PHONY: sign-op
 sign-op:
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
-	--sig "signApproval(address)" $(OP_SAFE_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
-
-.PHONY: run-op
-run-op:
-	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
-	--sig "runApproval(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
-
+	--sig "sign(address)" $(OP_SAFE_ADDR)
 
 .PHONY: sign-cb
 sign-cb:
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
-	--sig "signTransaction(address)" $(CB_SAFE_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+	--sig "sign(address)" $(CB_SAFE_ADDR)
 
-.PHONY: run-cb
-run-cb:
-	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
-	--sig "runTransaction(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+##
+# Commands for faciliators to run to test the nested safe
+##
+
+.PHONY: run
+run: approve-op approve-cb execute
+
+.PHONY: approve-op
+approve-op:
+	forge script --rpc-url $(L2_RPC_URL) TestL2NestedSafe \
+	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+.PHONY: approve-cb
+approve-cb:
+	forge script --rpc-url $(L2_RPC_URL) TestL2NestedSafe \
+	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+execute:
+	forge script --rpc-url $(L2_RPC_URL) TestL2NestedSafe \
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
