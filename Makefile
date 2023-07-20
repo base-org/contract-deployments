@@ -5,6 +5,11 @@ TEMPLATE_GENERIC = setup-templates/template-generic
 TEMPLATE_DEPLOY = setup-templates/template-deploy
 TEMPLATE_INCIDENT = setup-templates/template-incident
 
+.PHONY: install-foundry
+install-foundry:
+	curl -L https://foundry.paradigm.xyz | bash
+	~/.foundry/bin/foundryup --commit $(FOUNDRY_COMMIT)
+
 ##
 # Project Setup
 ##
