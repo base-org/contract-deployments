@@ -6,14 +6,13 @@ import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 import "@base-contracts/src/Test.sol";
 
 contract DeployTestProxy is Script {
-    function run(address deployer, address safeToTest, address proxyAdminAddr) public {
-        // // Deploy proxy admin contract
-        // vm.broadcast(deployer);
-        // ProxyAdmin proxyAdmin = new ProxyAdmin({
-        //     _owner: deployer
-        // });
-        // require(proxyAdmin.owner() == deployer, "DeployTestProxy: proxyAdmin owner is incorrect");
-        ProxyAdmin proxyAdmin = ProxyAdmin(proxyAdminAddr);
+    function run(address deployer, address safeToTest) public {
+        // Deploy proxy admin contract
+        vm.broadcast(deployer);
+        ProxyAdmin proxyAdmin = new ProxyAdmin({
+            _owner: deployer
+        });
+        require(proxyAdmin.owner() == deployer, "DeployTestProxy: proxyAdmin owner is incorrect");
 
         // Deploy an example proxy contract
         vm.broadcast(deployer);

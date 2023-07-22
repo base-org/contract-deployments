@@ -3,14 +3,14 @@ include ../.env
 include .env
 
 ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 1
+override LEDGER_ACCOUNT = 0
 endif
 
 .PHONY: deploy-test
 deploy-test:
 	forge script --rpc-url $(L1_RPC_URL) DeployTestProxy \
-	--sig "run(address, address, address)" $(DEPLOYER) $(NESTED_L1_SAFE_ADDR) $(PROXY_ADMIN) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --gas-limit 500000
+	--sig "run(address, address)" $(DEPLOYER) $(NESTED_L1_SAFE_ADDR) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast --verify
 
 ##
 # Commands to test the nested safe

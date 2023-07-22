@@ -9,14 +9,14 @@ import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
 
 contract TestL1NestedSafe is NestedMultisigBuilder {
-    // ProxyAdminContract owned by the Nested L2 Safe
-    address constant internal PROXY_ADMIN_CONTRACT = ;
+    // ProxyAdminContract owned by the Nested L1 Safe
+    address constant internal PROXY_ADMIN_CONTRACT = 0x8735F6e34c3C97B2e1a1a9C9BbBf0D9b290c4151;
     // An example proxy contract which originally points to the old implementation
-    address constant internal PROXY_CONTRACT = ;
+    address constant internal PROXY_CONTRACT = 0xB49D362028A668f5f29338361453D56BEB76d9F5;
     // Existing implementation contract for the proxy
-    address constant internal OLD_IMPLEMENTATION = ;
+    address constant internal OLD_IMPLEMENTATION = 0x4A466E4a2b5106bD7f2d3B39d35ded2ACDF491a2;
     // Implementation contract we want to upgrade to
-    address constant internal NEW_IMPLEMENTATION = ;
+    address constant internal NEW_IMPLEMENTATION = 0xEACccF3894Ef189A29a557F1B533932bf1ad8d11;
     // Safe we're testing, which is the owner of the Proxy contract
     address constant internal NESTED_L1_SAFE = 0x7bB41C3008B3f03FE483B28b8DB90e19Cf07595c;
 
