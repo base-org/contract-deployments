@@ -13,21 +13,41 @@ deploy-test:
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast --verify
 
 ##
-# Commands to test the nested safe
+# Commands for signers to run to test the nested safe
 ##
 
 .PHONY: sign-op
-sign-op:
-	forge script --via-ir --rpc-url $(L1_RPC_URL) $(script) \
-	--sig "sign(address)" $(OP_SAFE_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+sign-op: deps
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L1_RPC_URL) TestL1NestedSafe \
+	--sig "sign(address)" $(OP_SAFE_ADDR)
 
 
 .PHONY: sign-cb
-sign-cb:
-	forge script --via-ir --rpc-url $(L1_RPC_URL) $(script) \
-	--sig "sign(address)" $(CB_SAFE_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+sign-cb: deps
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) TestL1NestedSafe \
+	--sig "sign(address)" $(CB_SAFE_ADDR)
 
+##
+# Commands for faciliators to run to test the nested safe
+##
+
+.PHONY: run
+run: deps approve-op approve-cb execute
+
+.PHONY: approve-op
+approve-op:
+	forge script --rpc-url $(L1_RPC_URL) TestL1NestedSafe \
+	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+.PHONY: approve-cb
+approve-cb:
+	forge script --rpc-url $(L1_RPC_URL) TestL1NestedSafe \
+	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+execute:
+	forge script --rpc-url $(L1_RPC_URL) TestL1NestedSafe \
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
