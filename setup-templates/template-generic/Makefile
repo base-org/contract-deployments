@@ -26,13 +26,12 @@ example-ledger:
 
 .PHONY: example-sign
 example-sign:
-	forge script --via-ir --rpc-url $(RPC_URL) $(script) --sig "sign()" | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(RPC_URL) $(script) --sig "sign()"
 
 .PHONY: example-run
 example-run:
-	forge script --via-ir --rpc-url $(RPC_URL) \
+	forge script --rpc-url $(RPC_URL) \
 	$(script) --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
 	--broadcast
@@ -42,31 +41,25 @@ example-run:
 # The following commands can be used for tasks that utilize the NestedMultisigBuilder.
 # Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
 # in any command when using a local key.
+# See more documentation on the various steps in NestedMultisigBuilder.sol.
 ##
 
-.PHONY: example-step-1
-example-step-1:
-	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
-	--sig "signApproval(address)" $(SAFE_1_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+# This step is run by signers on the "children" safes
+.PHONY: example-nested-sign
+example-nested-sign:
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(RPC_URL) $(script) \
+	--sig "sign(address)" $(SIGNER_SAFE_ADDR)
 
-.PHONY: example-step-2
-example-step-2:
-	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
-	--sig "runApproval(address,bytes)" $(SAFE_1_ADDR) $(SIGNATURES) \
+# This step is run once per "child" safe, and can be run by anyone (doesn't have to be a signer)
+.PHONY: example-approve
+example-approve:
+	forge script --rpc-url $(RPC_URL) $(script) \
+	--sig "approve(address,bytes)" $(SIGNER_SAFE_ADDR) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
 
-
-.PHONY: example-step-3
-example-step-3:
-	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
-	--sig "signTransaction(address)" $(SAFE_2_ADDR) | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
-
-.PHONY: example-step-4
-example-step-4:
-	forge script --via-ir --rpc-url $(RPC_URL) $(script) \
-	--sig "runTransaction(address,bytes)" $(SAFE_2_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+# This step is run once after all children safes have approved and can be run by anyone (doesn't have to be a signer)
+.PHONY: example-execute
+example-execute:
+	forge script --rpc-url $(RPC_URL) $(script) \
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
