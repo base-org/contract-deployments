@@ -14,6 +14,21 @@ deploy-challenger:
 	forge script -vvvv --rpc-url $(L1_RPC_URL) DeployChallenger \
 	--sig "run(address,address,address,address)" $(DEPLOYER) $(OP_SAFE) $(CB_SAFE) $(L2_OUTPUT_ORACLE_PROXY)
 
+##
+# Upgrade L2OutputOracle to use the new Challenger 1 of 2 multisig
+##
+
+.PHONY: upgrade-l2oo
+upgrade-l2oo: deps
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L1_RPC_URL) UpgradeL2OutputOracle --sig "sign()"
+
+.PHONY: upgrade-l2oo-run
+upgrade-l2oo-run: deps
+	forge script --rpc-url $(L1_RPC_URL) \
+	UpgradeL2OutputOracle --sig "run(bytes)" $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+	--broadcast
 
 ##
 # Testing commands for OP
@@ -21,17 +36,15 @@ deploy-challenger:
 
 .PHONY: test-challenger
 test-challenger: deps
-	@forge script --via-ir --rpc-url $(L1_RPC_URL) TestChallenger --sig "sign()" | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) DeleteL2OutputsOP --sig "sign()"
 
 .PHONY: test-challenger-run
 test-challenger-run: deps
-	@forge script --via-ir --rpc-url $(L1_RPC_URL) \
-	TestChallenger --sig "run(bytes)" $(SIGNATURES) \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) \
+	DeleteL2OutputsOP --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
 	--broadcast
-
 
 ##
 # Testing commands for CB
@@ -39,13 +52,12 @@ test-challenger-run: deps
 
 .PHONY: test-challenger-cb
 test-challenger-cb: deps
-	@forge script --via-ir --rpc-url $(L1_RPC_URL) TestChallenger2 --sig "sign()" | \
-	tee /dev/stderr | grep -A1 vvvvvvvv | grep -v vvvvvvvv | \
-	(cd lib/base-contracts && go run ./cmd/sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0")
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) DeleteL2OutputsCB --sig "sign()"
 
 .PHONY: test-challenger-cb-run
 test-challenger-cb-run: deps
-	@forge script --via-ir --rpc-url $(L1_RPC_URL) \
-	TestChallenger2 --sig "run(bytes)" $(SIGNATURES) \
+	forge script --via-ir --rpc-url $(L1_RPC_URL) \
+	DeleteL2OutputsCB --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
 	--broadcast
