@@ -17,13 +17,13 @@ deploy-test:
 ##
 
 .PHONY: sign-op
-sign-op:
+sign-op: deps
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
 	--sig "sign(address)" $(OP_SAFE_ADDR)
 
 .PHONY: sign-cb
-sign-cb:
+sign-cb: deps
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
 	--sig "sign(address)" $(CB_SAFE_ADDR)
@@ -33,7 +33,7 @@ sign-cb:
 ##
 
 .PHONY: run
-run: approve-op approve-cb execute
+run: deps approve-op approve-cb execute
 
 .PHONY: approve-op
 approve-op:

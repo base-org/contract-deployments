@@ -5,6 +5,9 @@ For actual contract implementations, see [base-org/contracts](https://github.com
 
 ## Setup
 
+First install forge if you don't have it already:
+* Run `make install-foundry` to install [`Foundry`](https://github.com/foundry-rs/foundry/commit/3b1129b5bc43ba22a9bcf4e4323c5a9df0023140).
+
 To execute a new task run one of the following commands
 * For incident response commands: `make setup-incident network=<network> incident=<incident-name>`
 * For full new deployment (of L1 contracts related to Base): `make setup-deploy network=<network>`

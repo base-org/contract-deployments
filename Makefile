@@ -5,6 +5,16 @@ TEMPLATE_GENERIC = setup-templates/template-generic
 TEMPLATE_DEPLOY = setup-templates/template-deploy
 TEMPLATE_INCIDENT = setup-templates/template-incident
 
+ifndef $(GOPATH)
+    GOPATH=$(shell go env GOPATH)
+    export GOPATH
+endif
+
+.PHONY: install-foundry
+install-foundry:
+	curl -L https://foundry.paradigm.xyz | bash
+	~/.foundry/bin/foundryup --commit $(FOUNDRY_COMMIT)
+
 ##
 # Project Setup
 ##
@@ -27,7 +37,11 @@ setup-incident:
 # Solidity Setup
 ##
 .PHONY: deps
-deps: clean-lib forge-deps checkout-op-commit checkout-base-contracts-commit
+deps: install-eip712sign clean-lib forge-deps checkout-op-commit checkout-base-contracts-commit
+
+.PHONY: install-eip712sign
+install-eip712sign:
+	go install github.com/base-org/eip712sign@v0.0.1
 
 .PHONY: clean-lib
 clean-lib:
