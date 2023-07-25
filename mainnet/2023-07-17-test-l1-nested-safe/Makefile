@@ -10,7 +10,7 @@ endif
 deploy-test:
 	forge script --rpc-url $(L1_RPC_URL) DeployTestProxy \
 	--sig "run(address, address)" $(DEPLOYER) $(NESTED_L1_SAFE_ADDR) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast --verify
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --slow --broadcast
 
 ##
 # Commands for signers to run to test the nested safe
