@@ -27,7 +27,7 @@ upgrade-l2oo: deps
 upgrade-l2oo-run: deps
 	forge script --rpc-url $(L1_RPC_URL) \
 	UpgradeL2OutputOracle --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) \
 	--broadcast
 
 ##

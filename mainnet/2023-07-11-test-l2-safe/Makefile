@@ -27,5 +27,5 @@ sign:
 .PHONY: run
 run:
 	forge script --via-ir --rpc-url $(L2_RPC_URL) \
-	TestL2Safe --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	TestL2Safe --sig "run(bytes)" $(SIGNATURES) --sender $(SENDER) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
