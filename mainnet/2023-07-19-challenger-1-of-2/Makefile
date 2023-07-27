@@ -35,12 +35,12 @@ upgrade-l2oo-run: deps
 ##
 
 .PHONY: test-challenger
-test-challenger: deps
+test-challenger:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L1_RPC_URL) DeleteL2OutputsOP --sig "sign()"
 
 .PHONY: test-challenger-run
-test-challenger-run: deps
+test-challenger-run:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) \
 	DeleteL2OutputsOP --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
@@ -51,12 +51,12 @@ test-challenger-run: deps
 ##
 
 .PHONY: test-challenger-cb
-test-challenger-cb: deps
+test-challenger-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L1_RPC_URL) DeleteL2OutputsCB --sig "sign()"
 
 .PHONY: test-challenger-cb-run
-test-challenger-cb-run: deps
+test-challenger-cb-run:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) \
 	DeleteL2OutputsCB --sig "run(bytes)" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
