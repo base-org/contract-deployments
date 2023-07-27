@@ -5,12 +5,12 @@ import {
     OwnableUpgradeable
 } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@base-contracts/script/universal/MultisigBuilder.sol";
+import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
-// TODO: alternatively, can use NestedMultisigBuilder if existing owner is nested safe
-contract TransferOwner is MultisigBuilder {
-    // address constant internal PROXY_CONTRACT = <TODO: fill in address of Proxy contract which is changing ownership>; 
-    // address constant internal OLD_OWNER = <TODO: fill in existing owner address>;
-    // address constant internal NEW_OWNER = <TODO: fill in new owner address>;
+contract TransferOwnerL1 is MultisigBuilder {
+    address constant internal PROXY_CONTRACT = 0x0475cBCAebd9CE8AfA5025828d5b98DFb67E059E; 
+    address constant internal OLD_OWNER = 0x9855054731540A48b28990B63DcF4f33d8AE46A1;
+    address constant internal NEW_OWNER = 0x7bB41C3008B3f03FE483B28b8DB90e19Cf07595c;
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_CONTRACT);
