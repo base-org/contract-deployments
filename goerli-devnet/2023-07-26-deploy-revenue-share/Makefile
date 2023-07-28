@@ -1,6 +1,7 @@
 include ../../Makefile
 include ../.env
 include .env
+include .env.local
 
 ##
 # Foundry commands
@@ -8,6 +9,10 @@ include .env
 .PHONY: deploy-balancetracker
 deploy-balancetracker:
 	@forge script DeployBalanceTracker --rpc-url $(L1_RPC_URL) --sig "run()"
+
+.PHONY: deploy-feedisburser
+deploy-feedisburser:
+	@forge script DeployFeeDisburser --rpc-url $(L2_RPC_URL) --sig "run()" --private-key $(PRIVATE_KEY) --broadcast
 
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
