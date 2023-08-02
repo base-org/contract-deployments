@@ -8,12 +8,12 @@ For actual contract implementations, see [base-org/contracts](https://github.com
 First install forge if you don't have it already:
 * Run `make install-foundry` to install [`Foundry`](https://github.com/foundry-rs/foundry/commit/3b1129b5bc43ba22a9bcf4e4323c5a9df0023140).
 
-To execute a new task run one of the following commands
+To execute a new task run one of the following commands (depending on the type of change you're making):
 * For incident response commands: `make setup-incident network=<network> incident=<incident-name>`
 * For full new deployment (of L1 contracts related to Base): `make setup-deploy network=<network>`
 * For contract calls, upgrades, or one-off contract deployments: `make setup-task network=<network> task=<task-name>`
 
-Next, `cd` into the directory that was created for you and follow the steps in the `README` in that directory.
+Next, `cd` into the directory that was created for you and follow the steps listed below for the relevant template.
 
 ## Using the incident response template
 
@@ -34,7 +34,7 @@ To add new incident response scripts:
 ## Using the deploy template
 
 * Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts)  you intend to use in the `.env` file
-* `make deps`
+* Run `make deps`
 * Fill in the `inputs/deploy-config.json` and `inputs/misc-config.json` files with the input variables for the deployment.
 * See the example `make deploy` command. Modifications may need to be made if you're using a key for deployment that you do not have the private key for (e.g. a hardware wallet)
 * Run `make deploy` command
@@ -44,8 +44,13 @@ To add new incident response scripts:
 ## Using the generic template
 
 This template can be used to do contract calls, upgrades or one-off deployments.
-Specifically for contract ownership transfers, there is an example file `TransferOwner.s.sol`, which can be used to setup the ownership transfer task.
 
+* Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts)  you intend to use in the `.env` file
+* Run `make deps`
+* Put scripts in the `scripts` directory (see examples that are part of the template, for example there is a file `TransferOwner.s.sol`, which can be used to setup the ownership transfer task). See note below if running a task that requires a multisig to sign.
+* Call scripts from the Makefile (see examples in the template Makefile that's copied over).
+
+Note: If using a multisig as a signer you can leverage the `MultisigBuilder` for standard multisigs or the `NestedMultisigBuilder` scripts in the [base contracts repo](https://github.com/base-org/contracts/tree/main/script/universal) for multisigs that contain other multisigs as signers. For these scripts, you need to implement the virtual functions that are provided, which will allow you to configure the task you'd like to run, the address of the multisig you're running it from and any post execution checks. See the files themselves for more details. It is recommended to add any configured addresses as constants at the top of the file and provide links to etherscan, etc as needed for reviewers to more accurately review the PR.
 ### Directory structure
 
 * **[inputs/](/inputs)**  any input json files
