@@ -2,16 +2,13 @@
 pragma solidity 0.8.15;
 
 import "../lib/base-contracts/script/universal/NestedMultisigBuilder.sol";
-import "../lib/optimism/packages/contracts-bedrock/src/libraries/Predeploys.sol"; // TODO: clean up w/ `@eth-optimism-bedrock` prefix
+import "@eth-optimism-bedrock/src/libraries/Predeploys.sol";
 
-// import { console } from "forge-std/console.sol";
 import { IMulticall3 } from "forge-std/interfaces/IMulticall3.sol";
 
-import "../lib/base-contracts/src/fee-vault-fixes/FeeVault.sol";
-
-import { SequencerFeeVault as SequencerFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/SequencerFeeVault.sol";
-import { L1FeeVault as L1FeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/L1FeeVault.sol";
-import { BaseFeeVault as BaseFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/BaseFeeVault.sol";
+import { SequencerFeeVault as SequencerFeeVault_Final } from "@eth-optimism-bedrock/src/L2/SequencerFeeVault.sol";
+import { L1FeeVault as L1FeeVault_Final } from "@eth-optimism-bedrock/src/L2/L1FeeVault.sol";
+import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2/BaseFeeVault.sol";
 
 /**
  * @notice Upgrades the Fee Vaults through two implementation contracts:

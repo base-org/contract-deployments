@@ -7,11 +7,15 @@ import "../lib/base-contracts/src/fee-vault-fixes/SequencerFeeVault.sol";
 import "../lib/base-contracts/src/fee-vault-fixes/L1FeeVault.sol";
 import "../lib/base-contracts/src/fee-vault-fixes/BaseFeeVault.sol";
 
-import { SequencerFeeVault as SequencerFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/SequencerFeeVault.sol";
-import { L1FeeVault as L1FeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/L1FeeVault.sol";
-import { BaseFeeVault as BaseFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/BaseFeeVault.sol";
+import { SequencerFeeVault as SequencerFeeVault_Final } from "@eth-optimism-bedrock/src/L2/SequencerFeeVault.sol";
+import { L1FeeVault as L1FeeVault_Final } from "@eth-optimism-bedrock/src/L2/L1FeeVault.sol";
+import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2/BaseFeeVault.sol";
 
-
+/**
+ * @notice Deploys two (2) implementation contracts per fault for a total of six (6)
+ *  1. The first contract sets the totalProcessed amount to some "correct" amount
+ *  2. The second contract is final intended implementation
+ */
 contract DeployNewFeeVaultsL2 is Script {
     function run(address deployer) public {
         vm.startBroadcast(deployer);
