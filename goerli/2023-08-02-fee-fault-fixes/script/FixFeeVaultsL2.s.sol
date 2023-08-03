@@ -7,13 +7,16 @@ import "../lib/optimism/packages/contracts-bedrock/src/libraries/Predeploys.sol"
 // import { console } from "forge-std/console.sol";
 import { IMulticall3 } from "forge-std/interfaces/IMulticall3.sol";
 
-// import { IGnosisSafe, Enum } from "@eth-optimism-bedrock/scripts/interfaces/IGnosisSafe.sol";
-
 import "../lib/base-contracts/src/fee-vault-fixes/FeeVault.sol";
 
+import { SequencerFeeVault as SequencerFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/SequencerFeeVault.sol";
+import { L1FeeVault as L1FeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/L1FeeVault.sol";
+import { BaseFeeVault as BaseFeeVault_Final } from "../lib/optimism/packages/contracts-bedrock/src/L2/BaseFeeVault.sol";
+
 /**
- * @title FixFeeVaultsL2
- * @notice TODO
+ * @notice Upgrades the Fee Vaults through two implementation contracts:
+ *  1. The first sets the totalProcessed amount to some "correct" amount
+ *  2. The second sets the contract to the final intended implementation
  */
 contract FixFeeVaultsL2 is NestedMultisigBuilder {
     ProxyAdmin PROXY_ADMIN = PROXY_ADMIN(Predeploys.PROXY_ADMIN);
@@ -32,19 +35,24 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
 
     address constant internal L2_NESTED_SAFE = 0x2304cb33d95999dc29f4cef1e35065e670a70050;
 
+    uint256 constant internal TARGET_TOTAL_PROCESSED; // TODO: calculate int or look up on Etherscan
 
+    /**
+     * @notice Builds the following calls for each vault:
+     *   1. upgradeAndCall to intermediate implementation
+     *   2. upgrade to final implementation (w/ init as necessary)
+     */
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
 
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](6);
 
         bytes memory setTotalProcessed = abi.encodeCall(
-            FeeVault.setTotalProcessed, (/* TODO: calculate int or look up on Etherscan */)
+            FeeVault.setTotalProcessed, (TARGET_TOTAL_PROCESSED)
         );
 
-        // for each vault:
-        //  1. upgradeAndCall to intermediate implementation
-        //  2. upgrade to final implementation (w/ init as necessary)
-
+        ///
+        // SEQUENCER FEE VAULT CALLS
+        ///
         calls[0] = IMulticall3.Call3({
             target: PROXY_ADMIN,
             allowFailure: false,
@@ -70,6 +78,9 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             )
         });
 
+        ///
+        // L1 FEE VAULT CALLS
+        ///
         calls[2] = IMulticall3.Call3({
             target: PROXY_ADMIN,
             allowFailure: false,
@@ -95,6 +106,9 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             )
         });
 
+        ///
+        // BASE FEE VAULT CALLS
+        ///
         calls[4] = IMulticall3.Call3({
             target: PROXY_ADMIN,
             allowFailure: false,
@@ -127,10 +141,18 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         return L2_NESTED_SAFE;
     }
 
+    /**
+     * @notice Checks for the following conditions:
+     *   1. The new implementation codehash matches the intended
+     *   2. The "totalProcessed" amount matches the target
+     */
     function _postCheck() internal override view {
          require(
             proxyAdmin.getProxyImplementation(SequencerFeeVault).codehash == SequencerFeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: SequencerFeeVault not upgraded"
+        );
+        require(
+            SequencerFeeVault(SequencerFeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
         );
 
 
@@ -138,10 +160,16 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             proxyAdmin.getProxyImplementation(L1FeeVault).codehash == L1FeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: L1FeeVault not upgraded"
         );
+        require(
+            L1FeeVault(L1FeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
+        );
 
         require(
             proxyAdmin.getProxyImplementation(BaseFeeVault).codehash == BaseFeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: BaseFeeVault not upgraded"
+        );
+        require(
+            BaseFeeVault(BaseFeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
         );
     }
 }
