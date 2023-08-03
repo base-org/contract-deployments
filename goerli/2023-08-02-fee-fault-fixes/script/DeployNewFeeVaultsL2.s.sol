@@ -14,24 +14,24 @@ import { BaseFeeVault as BaseFeeVault_Final } from "../lib/optimism/packages/con
 
 contract DeployNewFeeVaultsL2 is Script {
     function run(address deployer) public {
-        vm.broadcast(deployer);
+        vm.startBroadcast(deployer);
 
         SequencerFeeVault sfv = new SequencerFeeVault();
         L1FeeVault l1fv = new L1FeeVault();
         BaseFeeVault bfv = new BaseFeeVault();
 
-        // TODO: other
+        SequencerFeeVault_Final sfv_final = new SequencerFeeVault_Final();
+        L1FeeVault_Final l1fv_final = new L1FeeVault_Final();
+        BaseFeeVault_Final bfv_final = new BaseFeeVault_Final();
 
-        SequencerFeeVault sfv_final = new SequencerFeeVault_Final();
-        L1FeeVault l1fv_final = new L1FeeVault_Final();
-        BaseFeeVault bfv_final = new BaseFeeVault_Final();
+        vm.stopBroadcast();
 
-        console.log(address(sfv));
-        console.log(address(l1fv));
-        console.log(address(bfv));
+        console.log("Sequencer Fee Vault (Intermediate): %s", address(sfv));
+        console.log("L1 Fee Vault (Intermediate): %s", address(l1fv));
+        console.log("Base Fee Vault (Intermediate): %s", address(bfv));
 
-        console.log(address(sfv_final));
-        console.log(address(l1fv_final));
-        console.log(address(bfv_final));
+        console.log("Sequencer Fee Vault (Final): %s", address(sfv_final));
+        console.log("L1 Fee Vault (Final): %s", address(l1fv_final));
+        console.log("Base Fee Vault (Final): %s", address(bfv_final));
     }
 }
