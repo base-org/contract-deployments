@@ -30,9 +30,11 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
     address constant internal L1FeeVaultImpl_Final; // TODO
     address constant internal BaseFeeVaultImpl_Final; // TODO
 
-    address constant internal L2_NESTED_SAFE = 0x2304cb33d95999dc29f4cef1e35065e670a70050;
+    address constant internal L2_NESTED_SAFE = 0x4c7C99555e8afac3571c7456448021239F5b73bA;
 
-    uint256 constant internal TARGET_TOTAL_PROCESSED; // TODO: calculate int or look up on Etherscan
+    uint256 constant internal SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED; // TODO: calculate int or look up on Etherscan
+    uint256 constant internal L1_VAULT_TARGET_TOTAL_PROCESSED; // TODO: calculate int or look up on Etherscan
+    uint256 constant internal BASE_VAULT_TARGET_TOTAL_PROCESSED; // TODO: calculate int or look up on Etherscan
 
     /**
      * @notice Builds the following calls for each vault:
@@ -43,8 +45,16 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
 
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](6);
 
-        bytes memory setTotalProcessed = abi.encodeCall(
-            FeeVault.setTotalProcessed, (TARGET_TOTAL_PROCESSED)
+        bytes memory setTotalProcessedSequencer = abi.encodeCall(
+            FeeVault.setTotalProcessed, (SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED)
+        );
+
+        bytes memory setTotalProcessedL1 = abi.encodeCall(
+            FeeVault.setTotalProcessed, (L1_VAULT_TARGET_TOTAL_PROCESSED)
+        );
+
+        bytes memory setTotalProcessedBase = abi.encodeCall(
+            FeeVault.setTotalProcessed, (BASE_VAULT_TARGET_TOTAL_PROCESSED)
         );
 
         ///
@@ -58,7 +68,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
                 (
                     SequencerFeeVault,
                     SequencerFeeVaultImpl_1,
-                    setTotalProcessed
+                    setTotalProcessedSequencer
                 )
             )
         });
@@ -86,7 +96,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
                 (
                     L1FeeVault,
                     L1FeeVaultImpl_1,
-                    setTotalProcessed
+                    setTotalProcessedL1
                 )
             )
         });
@@ -114,7 +124,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
                 (
                     BaseFeeVault,
                     BaseFeeVaultImpl_1,
-                    setTotalProcessed
+                    setTotalProcessedBase
                 )
             )
         });
@@ -149,7 +159,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             "FixFeeVaultsL2: SequencerFeeVault not upgraded"
         );
         require(
-            SequencerFeeVault(SequencerFeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
+            SequencerFeeVault(SequencerFeeVaultImpl_Final).totalProcessed() == SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED
         );
 
 
@@ -158,7 +168,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             "FixFeeVaultsL2: L1FeeVault not upgraded"
         );
         require(
-            L1FeeVault(L1FeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
+            L1FeeVault(L1FeeVaultImpl_Final).totalProcessed() == L1_VAULT_TARGET_TOTAL_PROCESSED
         );
 
         require(
@@ -166,7 +176,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             "FixFeeVaultsL2: BaseFeeVault not upgraded"
         );
         require(
-            BaseFeeVault(BaseFeeVaultImpl_Final).totalProcessed() == TARGET_TOTAL_PROCESSED
+            BaseFeeVault(BaseFeeVaultImpl_Final).totalProcessed() == BASE_VAULT_TARGET_TOTAL_PROCESSED
         );
     }
 }

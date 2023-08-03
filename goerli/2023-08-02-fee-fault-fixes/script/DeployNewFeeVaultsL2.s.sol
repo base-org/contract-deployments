@@ -18,17 +18,26 @@ import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2
  */
 contract DeployNewFeeVaultsL2 is Script {
     function run(address deployer) public {
-        vm.startBroadcast(deployer);
 
+        // Intermediate implementation contracts
+        vm.broadcast(deployer);
         SequencerFeeVault sfv = new SequencerFeeVault();
+
+        vm.broadcast(deployer);
         L1FeeVault l1fv = new L1FeeVault();
+
+        vm.broadcast(deployer);
         BaseFeeVault bfv = new BaseFeeVault();
 
+        // Final implementation contracts
+        vm.broadcast(deployer);
         SequencerFeeVault_Final sfv_final = new SequencerFeeVault_Final();
-        L1FeeVault_Final l1fv_final = new L1FeeVault_Final();
-        BaseFeeVault_Final bfv_final = new BaseFeeVault_Final();
 
-        vm.stopBroadcast();
+        vm.broadcast(deployer);
+        L1FeeVault_Final l1fv_final = new L1FeeVault_Final();
+
+        vm.broadcast(deployer);
+        BaseFeeVault_Final bfv_final = new BaseFeeVault_Final();
 
         console.log("Sequencer Fee Vault (Intermediate): %s", address(sfv));
         console.log("L1 Fee Vault (Intermediate): %s", address(l1fv));
