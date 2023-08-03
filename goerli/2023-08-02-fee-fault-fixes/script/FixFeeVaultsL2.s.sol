@@ -30,7 +30,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
     address constant internal L1FeeVaultImpl_Final; // TODO
     address constant internal BaseFeeVaultImpl_Final; // TODO
 
-    address constant internal L2_NESTED_SAFE = 0x2304cb33d95999dc29f4cef1e35065e670a70050; // TODO
+    address constant internal L2_NESTED_SAFE = 0x2304cb33d95999dc29f4cef1e35065e670a70050;
 
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
