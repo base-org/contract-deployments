@@ -24,3 +24,5 @@ yarn-error.log
 .env.local
 
 .gitmodules
+
+.DS_Store
