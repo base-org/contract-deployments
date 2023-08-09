@@ -7,8 +7,10 @@ import "../lib/base-contracts/src/fee-vault-fixes/SequencerFeeVault.sol";
 import "../lib/base-contracts/src/fee-vault-fixes/L1FeeVault.sol";
 import "../lib/base-contracts/src/fee-vault-fixes/BaseFeeVault.sol";
 
+
 import { SequencerFeeVault as SequencerFeeVault_Final } from "@eth-optimism-bedrock/src/L2/SequencerFeeVault.sol";
 import { L1FeeVault as L1FeeVault_Final } from "@eth-optimism-bedrock/src/L2/L1FeeVault.sol";
+import { FeeVault as OPFeeVault } from "@eth-optimism-bedrock/src/universal/FeeVault.sol";
 import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2/BaseFeeVault.sol";
 
 /**
@@ -17,7 +19,11 @@ import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2
  *  2. The second contract is final intended implementation
  */
 contract DeployNewFeeVaultsL2 is Script {
+    
     function run(address deployer) public {
+
+        uint256 minWithdrawalAmount = 2 ether;
+        address feeVaultRecipient ; // TODO: add FeeVault Recipient
 
         // Intermediate implementation contracts
         vm.broadcast(deployer);
@@ -31,13 +37,25 @@ contract DeployNewFeeVaultsL2 is Script {
 
         // Final implementation contracts
         vm.broadcast(deployer);
-        SequencerFeeVault_Final sfv_final = new SequencerFeeVault_Final();
+        SequencerFeeVault_Final sfv_final = new SequencerFeeVault_Final(
+            feeVaultRecipient, 
+            minWithdrawalAmount,  
+            OPFeeVault.WithdrawalNetwork.L2
+        );
 
         vm.broadcast(deployer);
-        L1FeeVault_Final l1fv_final = new L1FeeVault_Final();
+        L1FeeVault_Final l1fv_final = new L1FeeVault_Final(
+            feeVaultRecipient, 
+            minWithdrawalAmount,  
+            OPFeeVault.WithdrawalNetwork.L2
+        );
 
         vm.broadcast(deployer);
-        BaseFeeVault_Final bfv_final = new BaseFeeVault_Final();
+        BaseFeeVault_Final bfv_final = new BaseFeeVault_Final(
+            feeVaultRecipient, 
+            minWithdrawalAmount,  
+            OPFeeVault.WithdrawalNetwork.L2
+        );
 
         console.log("Sequencer Fee Vault (Intermediate): %s", address(sfv));
         console.log("L1 Fee Vault (Intermediate): %s", address(l1fv));
