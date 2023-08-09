@@ -10,13 +10,13 @@ endif
 # Commands for signers to run to test the nested safe
 ##
 .PHONY: sign-op
-sign-op: deps
+sign-op:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
 	--sig "sign(address)" $(OP_SAFE_ADDR)
 
 .PHONY: sign-cb
-sign-cb: deps
+sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) TestNestedL2Safe \
 	--sig "sign(address)" $(CB_SAFE_ADDR)

@@ -11,7 +11,7 @@ contract TestNestedL2Safe is NestedMultisigBuilder {
     // OP Token Address
     IERC20 constant internal OP_TOKEN = IERC20(OP_TOKEN_ADDR);
     // 2-of-2 (CB + OP) fee vault
-    address constant internal NESTED_L2_SAFE = 0x0a7361e734cf3f0394B0FC4a45C74E7a4Ec70940;
+    address constant internal NESTED_L2_SAFE = 0xFE66653ef28c75fa57B88Dc7990e99A3834C16d3;
     // Address to send OP test txn to
     address constant internal SEND_OP_TO = 0x05301B36f071CEfD01e564EC5eCCe6864d12b0B0;
 
