@@ -43,7 +43,7 @@ test-challenger:
 test-challenger-run:
 	forge script --via-ir --rpc-url $(L1_RPC_URL) \
 	DeleteL2OutputsOP --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) \
 	--broadcast
 
 ##
