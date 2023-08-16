@@ -1,0 +1,47 @@
+include ../../Makefile
+include ../.env
+include .env
+
+ifndef LEDGER_ACCOUNT
+override LEDGER_ACCOUNT = 0
+endif
+
+##
+# Commands for signers to run to test the nested safe
+##
+
+.PHONY: sign-op
+sign-op: deps
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "sign(address)" $(OP_SAFE_ADDR)
+
+
+.PHONY: sign-cb
+sign-cb: deps
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --via-ir --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "sign(address)" $(CB_SAFE_ADDR)
+
+##
+# Commands for faciliators to run to test the nested safe
+##
+
+.PHONY: run
+run: deps approve-op approve-cb execute
+
+.PHONY: approve-op
+approve-op:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+.PHONY: approve-cb
+approve-cb:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+execute:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
