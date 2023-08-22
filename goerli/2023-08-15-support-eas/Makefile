@@ -11,14 +11,13 @@ endif
 ##
 
 .PHONY: sign-op
-sign-op: deps
+sign-op:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
 	--sig "sign(address)" $(OP_SAFE_ADDR)
 
-
 .PHONY: sign-cb
-sign-cb: deps
+sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --via-ir --rpc-url $(L2_RPC_URL) UpgradeToEAS \
 	--sig "sign(address)" $(CB_SAFE_ADDR)
@@ -26,9 +25,6 @@ sign-cb: deps
 ##
 # Commands for faciliators to run to test the nested safe
 ##
-
-.PHONY: run
-run: deps approve-op approve-cb execute
 
 .PHONY: approve-op
 approve-op:
