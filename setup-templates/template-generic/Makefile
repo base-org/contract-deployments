@@ -5,9 +5,9 @@ include .env
 ##
 # Foundry commands
 ##
-.PHONY: example
-example:
-	forge script --rpc-url $(RPC_URL) $(script) --sig "run(address)" $(DEPLOYER) --broadcast
+.PHONY: deploy-new-implementations
+deploy-new-implementations:
+	forge script --rpc-url $(L2_RPC_URL) DeployNewFeeVaultsL2 --sig "run(address)" $(DEPLOYER)
 
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
