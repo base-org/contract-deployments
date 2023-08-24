@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "../lib/base-contracts/script/universal/NestedMultisigBuilder.sol";
 import "@eth-optimism-bedrock/src/libraries/Predeploys.sol";
 
 import { IMulticall3 } from "forge-std/interfaces/IMulticall3.sol";
@@ -11,31 +10,34 @@ import { SequencerFeeVault as SequencerFeeVault_Final } from "@eth-optimism-bedr
 import { L1FeeVault as L1FeeVault_Final } from "@eth-optimism-bedrock/src/L2/L1FeeVault.sol";
 import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2/BaseFeeVault.sol";
 
+import { FeeVault } from "@base-contracts/src/fee-vault-fixes/FeeVault.sol";
+import "../lib/base-contracts/script/universal/NestedMultisigBuilder.sol";
+
 /**
  * @notice Upgrades the Fee Vaults through two implementation contracts:
  *  1. The first sets the totalProcessed amount to some "correct" amount
  *  2. The second sets the contract to the final intended implementation
  */
 contract FixFeeVaultsL2 is NestedMultisigBuilder {
-    ProxyAdmin PROXY_ADMIN = PROXY_ADMIN(Predeploys.PROXY_ADMIN);
+    ProxyAdmin PROXY_ADMIN = ProxyAdmin(Predeploys.PROXY_ADMIN);
 
-    address constant internal SequencerFeeVault = Predeploys.SEQUENCER_FEE_WALLET;
-    address constant internal L1FeeVault = Predeploys.L1_FEE_VAULT;
-    address constant internal BaseFeeVault = Predeploys.BASE_FEE_VAULT;
+    address payable internal SequencerFeeVault = payable(Predeploys.SEQUENCER_FEE_WALLET);
+    address payable internal L1FeeVault = payable(Predeploys.L1_FEE_VAULT);
+    address payable internal BaseFeeVault = payable(Predeploys.BASE_FEE_VAULT);
 
-    address constant internal SequencerFeeVaultImpl_1; // TODO
-    address constant internal L1FeeVaultImpl_1; // TODO
-    address constant internal BaseFeeVaultImpl_1; // TODO
+    address internal SequencerFeeVaultImpl_1 = vm.envAddress("SEQUENCER_FEEVAULT_IMPL_INT");
+    address internal L1FeeVaultImpl_1 = vm.envAddress("L1_FEEVAULT_IMPL_INT");
+    address internal BaseFeeVaultImpl_1 = vm.envAddress("BASE_FEEVAULT_IMPL_INT");
 
-    address constant internal SequencerFeeVaultImpl_Final; // TODO
-    address constant internal L1FeeVaultImpl_Final; // TODO
-    address constant internal BaseFeeVaultImpl_Final; // TODO
+    address payable internal SequencerFeeVaultImpl_Final = payable(vm.envAddress("SEQUENCER_FEEVAULT_IMPL_FINAL"));
+    address payable internal L1FeeVaultImpl_Final = payable(vm.envAddress("L1_FEEVAULT_IMPL_FINAL"));
+    address payable internal BaseFeeVaultImpl_Final = payable(vm.envAddress("BASE_FEEVAULT_IMPL_FINAL"));
 
-    address constant internal L2_NESTED_SAFE = ;
+    address internal L2_NESTED_SAFE = vm.envAddress("L2_NESTED_SAFE");
 
-    uint256 constant internal SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED = 0;
-    uint256 constant internal L1_VAULT_TARGET_TOTAL_PROCESSED = 0;
-    uint256 constant internal BASE_VAULT_TARGET_TOTAL_PROCESSED = 0;
+    uint256 internal SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED = vm.envUint("SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED");
+    uint256 internal L1_VAULT_TARGET_TOTAL_PROCESSED = vm.envUint("L1_VAULT_TARGET_TOTAL_PROCESSED");
+    uint256 internal BASE_VAULT_TARGET_TOTAL_PROCESSED = vm.envUint("BASE_VAULT_TARGET_TOTAL_PROCESSED");
 
     /**
      * @notice Builds the following calls for each vault:
@@ -62,7 +64,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         // SEQUENCER FEE VAULT CALLS
         ///
         calls[0] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgradeAndCall,
@@ -75,7 +77,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         });
 
         calls[1] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgrade,
@@ -90,7 +92,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         // L1 FEE VAULT CALLS
         ///
         calls[2] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgradeAndCall,
@@ -103,7 +105,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         });
 
         calls[3] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgrade,
@@ -118,7 +120,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         // BASE FEE VAULT CALLS
         ///
         calls[4] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgradeAndCall,
@@ -131,7 +133,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
         });
 
         calls[5] = IMulticall3.Call3({
-            target: PROXY_ADMIN,
+            target: Predeploys.PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
                 PROXY_ADMIN.upgrade,
@@ -156,28 +158,31 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
      */
     function _postCheck() internal override view {
          require(
-            proxyAdmin.getProxyImplementation(SequencerFeeVault).codehash == SequencerFeeVaultImpl_Final.codehash,
+            PROXY_ADMIN.getProxyImplementation(SequencerFeeVault).codehash == SequencerFeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: SequencerFeeVault not upgraded"
         );
         require(
-            SequencerFeeVault(SequencerFeeVaultImpl_Final).totalProcessed() == SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED
+            SequencerFeeVault_Final(SequencerFeeVaultImpl_Final).totalProcessed() == SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED,
+            "FixFeeVaultsL2: SequencerFeeVault incorrect total processed"
         );
 
 
         require(
-            proxyAdmin.getProxyImplementation(L1FeeVault).codehash == L1FeeVaultImpl_Final.codehash,
+            PROXY_ADMIN.getProxyImplementation(L1FeeVault).codehash == L1FeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: L1FeeVault not upgraded"
         );
         require(
-            L1FeeVault(L1FeeVaultImpl_Final).totalProcessed() == L1_VAULT_TARGET_TOTAL_PROCESSED
+            L1FeeVault_Final(L1FeeVaultImpl_Final).totalProcessed() == L1_VAULT_TARGET_TOTAL_PROCESSED,
+            "FixFeeVaultsL2: L1FeeVault incorrect total processed"
         );
 
         require(
-            proxyAdmin.getProxyImplementation(BaseFeeVault).codehash == BaseFeeVaultImpl_Final.codehash,
+            PROXY_ADMIN.getProxyImplementation(BaseFeeVault).codehash == BaseFeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: BaseFeeVault not upgraded"
         );
         require(
-            BaseFeeVault(BaseFeeVaultImpl_Final).totalProcessed() == BASE_VAULT_TARGET_TOTAL_PROCESSED
+            BaseFeeVault_Final(BaseFeeVaultImpl_Final).totalProcessed() == BASE_VAULT_TARGET_TOTAL_PROCESSED,
+            "FixFeeVaultsL2: BaseFeeVault incorrect total processed"
         );
     }
 }

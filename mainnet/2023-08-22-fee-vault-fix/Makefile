@@ -7,7 +7,7 @@ include .env
 ##
 .PHONY: deploy-new-implementations
 deploy-new-implementations:
-	forge script --rpc-url $(L2_RPC_URL) DeployNewFeeVaultsL2 --sig "run(address)" $(DEPLOYER)
+	forge script DeployNewFeeVaultsL2 --rpc-url $(L2_RPC_URL)
 
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0

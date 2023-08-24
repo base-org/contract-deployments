@@ -3,9 +3,7 @@ pragma solidity 0.8.15;
 
 import "forge-std/Script.sol";
 
-import "../lib/base-contracts/src/fee-vault-fixes/SequencerFeeVault.sol";
-import "../lib/base-contracts/src/fee-vault-fixes/L1FeeVault.sol";
-import "../lib/base-contracts/src/fee-vault-fixes/BaseFeeVault.sol";
+import { FeeVault } from "@base-contracts/src/fee-vault-fixes/FeeVault.sol";
 
 import { SequencerFeeVault as SequencerFeeVault_Final } from "@eth-optimism-bedrock/src/L2/SequencerFeeVault.sol";
 import { L1FeeVault as L1FeeVault_Final } from "@eth-optimism-bedrock/src/L2/L1FeeVault.sol";
@@ -18,21 +16,21 @@ import { BaseFeeVault as BaseFeeVault_Final } from "@eth-optimism-bedrock/src/L2
  *  2. The second contract is final intended implementation
  */
 contract DeployNewFeeVaultsL2 is Script {
+    address internal deployer = vm.envAddress("DEPLOYER");
 
-    function run(address deployer) public {
-
-        uint256 minWithdrawalAmount = 2 ether;
-        address feeVaultRecipient ; // TODO: add FeeVault Recipient
+    function run() public {
+        uint256 minWithdrawalAmount = vm.envUint("MIN_WITHDRAWAL_AMOUNT");
+        address feeVaultRecipient = vm.envAddress("FEE_VAULT_RECIPIENT");
 
         // Intermediate implementation contracts
         vm.broadcast(deployer);
-        SequencerFeeVault sfv = new SequencerFeeVault();
+        FeeVault sfv = new FeeVault();
 
         vm.broadcast(deployer);
-        L1FeeVault l1fv = new L1FeeVault();
+        FeeVault l1fv = new FeeVault();
 
         vm.broadcast(deployer);
-        BaseFeeVault bfv = new BaseFeeVault();
+        FeeVault bfv = new FeeVault();
 
         // Final implementation contracts
         vm.broadcast(deployer);
