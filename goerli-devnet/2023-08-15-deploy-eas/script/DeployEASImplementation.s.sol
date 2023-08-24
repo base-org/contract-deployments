@@ -8,8 +8,9 @@ import "@eas-contracts/EAS.sol";
 
 contract DeployEASImplementation is Script {
     address constant internal SCHEMA_REGISTRY_PROXY = 0x4200000000000000000000000000000000000020;
+    address internal deployer = vm.envAddress("DEPLOYER");
 
-    function run(address deployer) public {
+    function run() public {
         vm.broadcast(deployer);
         SchemaRegistry schemaRegistry = new SchemaRegistry();
         ISchemaRegistry iSchemaRegistry = ISchemaRegistry(address(SCHEMA_REGISTRY_PROXY));

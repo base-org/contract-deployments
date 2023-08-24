@@ -25,4 +25,4 @@ checkout-eas-commit:
 
 .PHONY: deploy-eas
 deploy-eas:
-	forge script --rpc-url $(L2_RPC_URL) DeployEASImplementation --sig "run(address)" $(DEPLOYER)
+	forge script --rpc-url $(L2_RPC_URL) DeployEASImplementation

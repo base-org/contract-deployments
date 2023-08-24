@@ -23,7 +23,7 @@ contract UpgradeToEAS is NestedMultisigBuilder {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](2);
 
         calls[0] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: PROXY_ADMIN_CONTRACT,
             allowFailure: false,
             callData: abi.encodeCall(
                 ProxyAdmin.upgrade,
@@ -32,7 +32,7 @@ contract UpgradeToEAS is NestedMultisigBuilder {
         });
 
         calls[1] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: PROXY_ADMIN_CONTRACT,
             allowFailure: false,
             callData: abi.encodeCall(
                 ProxyAdmin.upgrade,
