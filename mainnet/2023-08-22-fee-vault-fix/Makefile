@@ -9,6 +9,18 @@ include .env
 deploy-new-implementations:
 	forge script DeployNewFeeVaultsL2 --rpc-url $(L2_RPC_URL)
 
+.PHONY: verify-intermediate-implementations
+verify-intermediate-implementations:
+	@forge verify-contract ${SEQUENCER_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch
+	@forge verify-contract ${L1_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch
+	@forge verify-contract ${BASE_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch
+
+.PHONY: verify-final-implementations
+verify-final-implementations: # submitted via UI since we ran into Cloudflare issues
+	@forge verify-contract ${SEQUENCER_FEEVAULT_IMPL_FINAL} SequencerFeeVault --optimizer-runs=999999 --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" ${FEE_VAULT_RECIPIENT} ${MIN_WITHDRAWAL_AMOUNT} 1) --show-standard-json-input > etherscanSequencer.json
+	@forge verify-contract ${L1_FEEVAULT_IMPL_FINAL} L1FeeVault --optimizer-runs=999999 --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" ${FEE_VAULT_RECIPIENT} ${MIN_WITHDRAWAL_AMOUNT} 1) --show-standard-json-input > etherscanL1.json
+	@forge verify-contract ${BASE_FEEVAULT_IMPL_FINAL} BaseFeeVault --optimizer-runs=999999 --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" ${FEE_VAULT_RECIPIENT} ${MIN_WITHDRAWAL_AMOUNT} 1) --show-standard-json-input  > etherscanBase.json
+
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif
