@@ -162,17 +162,16 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             "FixFeeVaultsL2: SequencerFeeVault not upgraded"
         );
         require(
-            SequencerFeeVault_Final(SequencerFeeVaultImpl_Final).totalProcessed() == SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED,
+            SequencerFeeVault_Final(SequencerFeeVault).totalProcessed() == SEQUENCER_VAULT_TARGET_TOTAL_PROCESSED,
             "FixFeeVaultsL2: SequencerFeeVault incorrect total processed"
         );
-
 
         require(
             PROXY_ADMIN.getProxyImplementation(L1FeeVault).codehash == L1FeeVaultImpl_Final.codehash,
             "FixFeeVaultsL2: L1FeeVault not upgraded"
         );
         require(
-            L1FeeVault_Final(L1FeeVaultImpl_Final).totalProcessed() == L1_VAULT_TARGET_TOTAL_PROCESSED,
+            L1FeeVault_Final(L1FeeVault).totalProcessed() == L1_VAULT_TARGET_TOTAL_PROCESSED,
             "FixFeeVaultsL2: L1FeeVault incorrect total processed"
         );
 
@@ -181,7 +180,7 @@ contract FixFeeVaultsL2 is NestedMultisigBuilder {
             "FixFeeVaultsL2: BaseFeeVault not upgraded"
         );
         require(
-            BaseFeeVault_Final(BaseFeeVaultImpl_Final).totalProcessed() == BASE_VAULT_TARGET_TOTAL_PROCESSED,
+            BaseFeeVault_Final(BaseFeeVault).totalProcessed() == BASE_VAULT_TARGET_TOTAL_PROCESSED,
             "FixFeeVaultsL2: BaseFeeVault incorrect total processed"
         );
     }

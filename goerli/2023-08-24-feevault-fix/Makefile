@@ -1,6 +1,7 @@
 include ../../Makefile
 include ../.env
 include .env
+include .env.local
 
 ##
 # Foundry commands
@@ -9,8 +10,22 @@ include .env
 deploy-new-implementations:
 	forge script DeployNewFeeVaultsL2 --rpc-url $(L2_RPC_URL)
 
+.PHONY: verify-new-implementations
+verify-new-implementations:
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${SEQUENCER_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${L1_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${BASE_FEEVAULT_IMPL_INT} ./lib/base-contracts/src/fee-vault-fixes/FeeVault.sol:FeeVault --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${SEQUENCER_FEEVAULT_IMPL_FINAL} SequencerFeeVault --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" 0x0b933fFD030d2679986560C414d26093b9d3130F 2000000000000000000 1) --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${L1_FEEVAULT_IMPL_FINAL} L1FeeVault --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" 0x0b933fFD030d2679986560C414d26093b9d3130F 2000000000000000000 1) --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+	ETHERSCAN_API_KEY=PLACEHOLDER_STRING forge verify-contract ${BASE_FEEVAULT_IMPL_FINAL} BaseFeeVault --constructor-args $(shell cast abi-encode "constructor(address,uint256,uint8)" 0x0b933fFD030d2679986560C414d26093b9d3130F 2000000000000000000 1) --verifier ${VERIFIER} --verifier-url ${VERIFIER_URL} --chain-id ${L2_CHAIN_ID} --retries=1 --watch 
+
+.PHONY: check-fee-vaults
+check-fee-vaults:
+	@forge script --rpc-url $(L2_RPC_URL)  CheckFeeVaults --sig "run(address,uint256,uint8,uint256)" 0x50dbbE35b5Ca1304ca6b5D043B7564172DB920e8 2000000000000000000 1 0 -vvv
+
+
 ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 0
+override LEDGER_ACCOUNT = 1
 endif
 
 ##
@@ -34,17 +49,16 @@ sign-cb:
 
 .PHONY: approve-op
 approve-op:
-	forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
+	@forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
 	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) --broadcast
+	--private-key ${PRIVATE_KEY} --sender $(SENDER) --broadcast
 
 .PHONY: approve-cb
 approve-cb:
-	forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
+	@forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
 	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) --broadcast
+	--private-key ${PRIVATE_KEY} --sender $(SENDER) --broadcast
 
 execute:
-	forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
-	--sender $(SENDER) --broadcast
+	@forge script --rpc-url $(L2_RPC_URL) FixFeeVaultsL2 \
+	--sig "run()" --private-key ${PRIVATE_KEY} --sender $(SENDER) --broadcast
