@@ -19,7 +19,7 @@ sign-op:
 .PHONY: sign-cb
 sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --via-ir --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
 	--sig "sign(address)" $(CB_SAFE_ADDR)
 
 ##

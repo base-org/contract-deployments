@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
+import "@eth-optimism-bedrock/src/universal/ProxyAdmin.sol";
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
+import "@eth-optimism-bedrock/src/libraries/Predeploys.sol";
 
 contract UpgradeToEAS is NestedMultisigBuilder {
-    address constant internal PROXY_ADMIN_CONTRACT = 0x4200000000000000000000000000000000000018;
-    address constant internal PROXY_ADMIN_OWNER = 0x4c7C99555e8afac3571c7456448021239F5b73bA;
-    address constant internal SCHEMA_REGISTRY_PROXY = 0x4200000000000000000000000000000000000020;
-    address constant internal EAS_PROXY = 0x4200000000000000000000000000000000000021;
-    address constant internal SCHEMA_REGISTRY_IMPLEMENTATION = 0x919Cd6e9098dA2B7E0F8c31C45d60187492aad2b;
-    address constant internal EAS_IMPLEMENTATION = 0x4dB6F244b68F152f06986601A6e467eC0Db90329;
+    address internal PROXY_ADMIN_CONTRACT = Predeploys.PROXY_ADMIN;
+    address internal PROXY_ADMIN_OWNER = vm.envAddress("L2_NESTED_SAFE");
+    address internal SCHEMA_REGISTRY_PROXY = Predeploys.SCHEMA_REGISTRY;
+    address internal EAS_PROXY = Predeploys.EAS;
+    address internal SCHEMA_REGISTRY_IMPLEMENTATION = vm.envAddress("REGISTRY_IMPL_ADDRESS");
+    address internal EAS_IMPLEMENTATION = vm.envAddress("EAS_IMPL_ADDRESS");
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN_CONTRACT);
@@ -18,12 +19,11 @@ contract UpgradeToEAS is NestedMultisigBuilder {
         require(proxyAdmin.getProxyImplementation(EAS_PROXY).codehash == EAS_IMPLEMENTATION.codehash);
     }
 
-
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](2);
 
         calls[0] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: PROXY_ADMIN_CONTRACT,
             allowFailure: false,
             callData: abi.encodeCall(
                 ProxyAdmin.upgrade,
@@ -32,7 +32,7 @@ contract UpgradeToEAS is NestedMultisigBuilder {
         });
 
         calls[1] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: PROXY_ADMIN_CONTRACT,
             allowFailure: false,
             callData: abi.encodeCall(
                 ProxyAdmin.upgrade,
