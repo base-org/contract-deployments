@@ -15,7 +15,7 @@ contract UpgradeToFeeDisburser is MultisigBuilder {
     address payable internal FEE_DISBURSER_PROXY = payable(vm.envAddress("FEE_DISBURSER_PROXY"));
     address payable internal FEE_DISBURSER_IMPL = payable(vm.envAddress("FEE_DISBURSER_IMPL"));
     address internal OPTIMISM_WALLET = vm.envAddress("OPTIMISM_WALLET");
-    address internal CB_SAFE_ADDR = vm.envAddress("CB_SAFE_ADDR");
+    address internal CB_SAFE_ADDR = vm.envAddress("L2_CB_SAFE_ADDR");
 
     /**
      * @notice Upgrades the FeeDisburser proxy to point to the FeeDisburser implementation contract
