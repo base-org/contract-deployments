@@ -2,21 +2,18 @@
 pragma solidity 0.8.19;
 
 import "forge-std/Script.sol";
-import "@eas-contracts/ISchemaRegistry.sol";
-import "@eas-contracts/SchemaRegistry.sol";
-import "@eas-contracts/EAS.sol";
+import "@eth-optimism-bedrock/src/EAS/EAS.sol";
+import "@eth-optimism-bedrock/src/EAS/SchemaRegistry.sol";
 
 contract DeployEASImplementation is Script {
-    address constant internal SCHEMA_REGISTRY_PROXY = 0x4200000000000000000000000000000000000020;
-    address internal deployer = vm.envAddress("DEPLOYER");
+    address internal _deployer = vm.envAddress("DEPLOYER");
 
     function run() public {
-        vm.broadcast(deployer);
+        vm.broadcast(_deployer);
         SchemaRegistry schemaRegistry = new SchemaRegistry();
-        ISchemaRegistry iSchemaRegistry = ISchemaRegistry(address(SCHEMA_REGISTRY_PROXY));
 
-        vm.broadcast(deployer);
-        EAS eas = new EAS(iSchemaRegistry);
+        vm.broadcast(_deployer);
+        EAS eas = new EAS();
 
         console.logAddress(address(schemaRegistry));
         console.logAddress(address(eas));
