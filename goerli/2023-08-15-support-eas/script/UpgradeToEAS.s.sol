@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
+import "@eth-optimism-bedrock/src/universal/ProxyAdmin.sol";
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
-import "@eth-optimism-bedrock/contracts/libraries/Predeploys.sol";
+import "@eth-optimism-bedrock/src/libraries/Predeploys.sol";
 
 contract UpgradeToEAS is NestedMultisigBuilder {
     address internal PROXY_ADMIN_CONTRACT = Predeploys.PROXY_ADMIN;
     address internal PROXY_ADMIN_OWNER = vm.envAddress("L2_NESTED_SAFE");
-    address internal SCHEMA_REGISTRY_PROXY = vm.envAddress("REGISTRY_PROXY_ADDRESS");
-    address internal EAS_PROXY = vm.envAddress("EAS_PROXY_ADDRESS");
+    address internal SCHEMA_REGISTRY_PROXY = Predeploys.SCHEMA_REGISTRY;
+    address internal EAS_PROXY = Predeploys.EAS;
     address internal SCHEMA_REGISTRY_IMPLEMENTATION = vm.envAddress("REGISTRY_IMPL_ADDRESS");
     address internal EAS_IMPLEMENTATION = vm.envAddress("EAS_IMPL_ADDRESS");
 

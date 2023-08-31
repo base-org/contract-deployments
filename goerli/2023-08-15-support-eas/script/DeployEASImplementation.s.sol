@@ -15,6 +15,7 @@ contract DeployEASImplementation is Script {
         vm.broadcast(_deployer);
         EAS eas = new EAS();
 
+        console.logAddress(_deployer);
         console.logAddress(address(schemaRegistry));
         console.logAddress(address(eas));
     }
