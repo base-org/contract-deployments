@@ -46,4 +46,4 @@ sign-cb:
 .PHONY: execute
 execute:
 	@forge script UpgradeToFeeDisburser --rpc-url $(L2_RPC_URL) \
-	--sig "run(bytes)" $(SIGNATURES) --private-key ${PRIVATE_KEY} --sender $(SENDER)
+	--sig "run(bytes)" $(SIGNATURES) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) --broadcast
