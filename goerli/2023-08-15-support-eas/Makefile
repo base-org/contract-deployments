@@ -38,14 +38,14 @@ sign-cb:
 approve-op:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
 	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) --broadcast
 
 .PHONY: approve-cb
 approve-cb:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
 	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --sender $(SENDER) --broadcast
 
 execute:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"  --sender $(SENDER) --broadcast
