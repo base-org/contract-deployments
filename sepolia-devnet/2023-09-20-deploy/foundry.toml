@@ -1,0 +1,17 @@
+[profile.default]
+src = 'src'
+out = 'out'
+libs = ['lib']
+script = 'script'
+broadcast = 'records'
+fs_permissions = [ {access = "read-write", path = "./"} ]
+optimizer = true
+optimizer_runs = 999999
+remappings = [
+#    '@optimism/=lib/optimism/packages/contracts-bedrock',
+    '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts',
+    '@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts',
+    '@rari-capital/solmate/=lib/solmate/',
+    '@cwia/=lib/clones-with-immutable-args/src',
+    'safe-contracts/=lib/safe-contracts/contracts/',
+]

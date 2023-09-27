@@ -1,0 +1,59 @@
+{
+  "finalSystemOwner": "0xAf6E0E871f38c7B653700F7CbAEDafaa2784D430",
+  "portalGuardian": "0x4F43c7422a9b2AC4BC6145Bd4eE206EA73cF8266",
+
+  "l1StartingBlockTag": "safe",
+
+  "l1ChainID": 11155111,
+  "l2ChainID": 11763072,
+  "l1BlockTime": 12,
+  "l2BlockTime": 2,
+
+  "maxSequencerDrift": 600,
+  "sequencerWindowSize": 3600,
+  "channelTimeout": 300,
+
+  "p2pSequencerAddress": "0xfd7bc3C58Fe4D4296F11F7843ebbA84D729A24B9",
+  "batchInboxAddress": "0xFf00000000000000000000000000000011763072",
+  "batchSenderAddress": "0x212dD524932bC43478688F91045F2682913ad8EE",
+
+  "l2OutputOracleSubmissionInterval": 120,
+  "l2OutputOracleStartingBlockNumber": 0,
+  "l2OutputOracleStartingTimestamp": -1,
+
+  "l2OutputOracleProposer": "0xBcB04FC753D36dcEeBe9Df7E18E23c46D1fcEA3c",
+  "l2OutputOracleChallenger": "0x5a533AaAC6cd81605b301a1077BC393A94658B6D",
+
+  "finalizationPeriodSeconds": 12,
+
+  "proxyAdminOwner": "0x90128dbCee6178169BBc3CA90c18a93602A53721",
+  "baseFeeVaultRecipient": "0x72dbd6eCAA183178716c676E028f715b7f906076",
+  "l1FeeVaultRecipient": "0x7019038c0c3eBC188b42521040A4b8Eb8F9B25c3",
+  "sequencerFeeVaultRecipient": "0x87663bB7DcFBebb9be155da59F36B4e5c5688e64",
+
+  "baseFeeVaultMinimumWithdrawalAmount": "0x1bc16d674ec80000",
+  "l1FeeVaultMinimumWithdrawalAmount": "0x1bc16d674ec80000",
+  "sequencerFeeVaultMinimumWithdrawalAmount": "0x1bc16d674ec80000",
+  "baseFeeVaultWithdrawalNetwork": 0,
+  "l1FeeVaultWithdrawalNetwork": 0,
+  "sequencerFeeVaultWithdrawalNetwork": 0,
+
+  "gasPriceOracleOverhead": 2100,
+  "gasPriceOracleScalar": 1000000,
+
+  "governanceTokenSymbol": "NA",
+  "governanceTokenName": "NotApplicable",
+  "governanceTokenOwner": "0x5cd5866C3822e18b02487BEc09A31e0229370a08",
+
+  "l2GenesisBlockGasLimit": "0x17D7840",
+  "l2GenesisBlockBaseFeePerGas": "0x3b9aca00",
+
+  "eip1559Denominator": 50,
+  "eip1559Elasticity": 10,
+
+  "l2GenesisRegolithTimeOffset": "0x0",
+
+  "systemConfigStartBlock": 0,
+  "requiredProtocolVersion": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "recommendedProtocolVersion": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}
