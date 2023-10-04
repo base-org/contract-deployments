@@ -5,7 +5,7 @@ import "@eth-optimism-bedrock/src/L1/SystemConfig.sol";
 import "@base-contracts/script/universal/MultisigBuilder.sol";
 
 contract SetBatcherAddr is MultisigBuilder {
-    address constant internal NewBatcher = 0xf298c4836d17994556d941B51F0800AA034E7F11;
+    address constant internal NewBatcher = 0x53394266FC80E5D4E6D25B3d0b7Ca243859B7B09;
     address constant internal SystemConfigAddr = 0x4f775d578e3Ab8ce81f5Ec065050938DbD5Fb8c2;
     address internal PROXY_ADMIN_OWNER = 0xA221e753e82626F96b83b3665F4fA92114a2a6f3;
 
