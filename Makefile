@@ -52,7 +52,8 @@ forge-deps:
 	forge install --no-git github.com/foundry-rs/forge-std \
 		github.com/OpenZeppelin/openzeppelin-contracts@v4.7.3 \
 		github.com/OpenZeppelin/openzeppelin-contracts-upgradeable@v4.7.3 \
-		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc
+		github.com/rari-capital/solmate@8f9b23f8838670afda0fd8983f2c41e8037ae6bc \
+		github.com/Saw-mon-and-Natalie/clones-with-immutable-args@105efee1b9127ed7f6fedf139e1fc796ce8791f2
 
 .PHONY: checkout-op-commit
 checkout-op-commit:

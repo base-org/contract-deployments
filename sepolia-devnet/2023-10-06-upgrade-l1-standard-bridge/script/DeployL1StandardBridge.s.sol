@@ -6,8 +6,8 @@ import "src/universal/CrossDomainMessenger.sol";
 import "forge-std/Script.sol";
 
 contract DeployL1StandardBridgeImplementation is Script {
-    address constant internal DEPLOYER = 0x24A1704636AB7083eaC56294aFF13e1651997638;
-    address constant internal L1_STANDARD_BRIDGE_PROXY = 0x5638e55db5Fcf7A58df525F1098E8569C8DbA80c;
+    address internal DEPLOYER = 0x24A1704636AB7083eaC56294aFF13e1651997638;
+    address internal L1_STANDARD_BRIDGE_PROXY = vm.envAddress("L1_STANDARD_BRIDGE_PROXY");
 
     function implSalt() public returns (bytes32) {
         return keccak256(bytes(vm.envOr("IMPL_SALT", string("base"))));

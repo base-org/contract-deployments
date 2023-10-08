@@ -8,10 +8,10 @@ import "forge-std/Script.sol";
 import "src/universal/ProxyAdmin.sol";
 
 contract UpgradeL1StandardBridge is Script {
-    address constant internal L1_STANDARD_BRIDGE_PROXY = 0x5638e55db5Fcf7A58df525F1098E8569C8DbA80c;
-    address constant internal NEW_IMPLEMENTATION = 0x09753d716687D68c45a6800128eE111A412E1B1C;
-    address constant internal PROXY_ADMIN = 0xC5aE9023bFA79124ffA50169E1423E733D0166f1;
-    address constant internal PROXY_ADMIN_OWNER = 0xAf6E0E871f38c7B653700F7CbAEDafaa2784D430;
+    address internal L1_STANDARD_BRIDGE_PROXY = vm.envAddress("L1_STANDARD_BRIDGE_PROXY");
+    address internal NEW_IMPLEMENTATION = 0x09753d716687D68c45a6800128eE111A412E1B1C;
+    address internal PROXY_ADMIN = vm.envAddress("PROXY_ADMIN");
+    address internal PROXY_ADMIN_OWNER = vm.envAddress("PROXY_ADMIN_OWNER");
 
     function run() public {
         L1StandardBridge proxy = L1StandardBridge(payable(L1_STANDARD_BRIDGE_PROXY));
