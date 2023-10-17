@@ -4,14 +4,10 @@
 
 In line with our strategy of being the safest way for users to access crypto:
 
-+ Coinbase will be extending our [best-in-industry][1] million-dollar [HackerOne bug bounty program][2]
++ Coinbase is extending our [best-in-industry][1] million-dollar [HackerOne bug bounty program][2]
 to cover the Base network, the Base bridge contracts, and Base infrastructure.
 
-+ Coinbase will be working in tandem with OP Labs to harden the security
-guarantees of Bedrock and accelerate the timeline for decentralized
-fault-proofs on the [OP Stack][3].
-
-+ Coinbase's bug bounty program will run alongside Optimism's existing [Immunefi Bedrock bounty program][4]
++ Coinbase's bug bounty program runs alongside Optimism's existing [Immunefi Bedrock bounty program][4]
 to support the open source [Bedrock][5] OP Stack framework.
 
 ## Reporting vulnerabilities
