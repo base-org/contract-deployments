@@ -5,61 +5,111 @@ include .env
 ##
 # Foundry commands
 ##
-.PHONY: deploy-new-implementations
-deploy-new-implementations:
-	forge script --rpc-url $(L2_RPC_URL) DeployNewFeeVaultsL2 --sig "run(address)" $(DEPLOYER)
+.PHONY: deploy-eas
+deploy-eas:
+	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedEAS
 
-ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 0
-endif
+.PHONY: deploy-token-factory
+deploy-token-factory:
+	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedTokenFactory
 
-.PHONY: example-ledger
-example-ledger:
-	forge script --rpc-url $(RPC_URL) $(script) --sender $(SENDER) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+.PHONY: deploy-l2oo
+deploy-l2oo:
+	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedL2OutputOracle
 
-##
-# MultisigBuilder commands
-# The following commands can be used for tasks that utilize the MultisigBuilder.
-# Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
-# in any command when using a local key.
-##
-
-.PHONY: example-sign
-example-sign:
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(RPC_URL) $(script) --sig "sign()"
-
-.PHONY: example-run
-example-run:
-	forge script --rpc-url $(RPC_URL) \
-	$(script) --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
-	--broadcast
+verify-eas-implementations:
+	forge verify-contract ${REGISTRY_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/EAS/SchemaRegistry.sol:SchemaRegistry --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
+	forge verify-contract ${EAS_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/EAS/EAS.sol:EAS --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
 
 ##
-# NestedMultisigBuilder commands
-# The following commands can be used for tasks that utilize the NestedMultisigBuilder.
-# Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
-# in any command when using a local key.
-# See more documentation on the various steps in NestedMultisigBuilder.sol.
+# Commands for signers to run to test the nested safe
 ##
 
-# This step is run by signers on the "children" safes
-.PHONY: example-nested-sign
-example-nested-sign:
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(RPC_URL) $(script) \
-	--sig "sign(address)" $(SIGNER_SAFE_ADDR)
+.PHONY: sign-op
+sign-op:
+	$(GOPATH)/bin/eip712sign --private-key ${PRIVATE_KEY} -- \
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "sign(address)" $(OP_SAFE_ADDR)
 
-# This step is run once per "child" safe, and can be run by anyone (doesn't have to be a signer)
-.PHONY: example-approve
-example-approve:
-	forge script --rpc-url $(RPC_URL) $(script) \
-	--sig "approve(address,bytes)" $(SIGNER_SAFE_ADDR) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+.PHONY: sign-cb
+sign-cb:
+	$(GOPATH)/bin/eip712sign --private-key ${PRIVATE_KEY} -- \
+	forge script --via-ir --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "sign(address)" $(CB_SAFE_ADDR)
 
-# This step is run once after all children safes have approved and can be run by anyone (doesn't have to be a signer)
-.PHONY: example-execute
-example-execute:
-	forge script --rpc-url $(RPC_URL) $(script) \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+##
+# Commands for faciliators to run to test the nested safe
+##
+
+.PHONY: approve-op
+approve-op:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "approve(address,bytes)" $(OP_SAFE_ADDR) $(SIGNATURES) \
+	--private-key ${PRIVATE_KEY} --broadcast
+
+.PHONY: approve-cb
+approve-cb:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "approve(address,bytes)" $(CB_SAFE_ADDR) $(SIGNATURES) \
+	--private-key ${PRIVATE_KEY} --broadcast
+
+execute:
+	forge script --rpc-url $(L2_RPC_URL) UpgradeToEAS \
+	--sig "run()" --private-key ${PRIVATE_KEY} --broadcast
+
+
+# TODO: verify-eas
+# ifndef LEDGER_ACCOUNT
+# override LEDGER_ACCOUNT = 0
+# endif
+
+# .PHONY: example-ledger
+# example-ledger:
+# 	forge script --rpc-url $(RPC_URL) $(script) --sender $(SENDER) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+# ##
+# # MultisigBuilder commands
+# # The following commands can be used for tasks that utilize the MultisigBuilder.
+# # Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
+# # in any command when using a local key.
+# ##
+
+# .PHONY: example-sign
+# example-sign:
+# 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+# 	forge script --rpc-url $(RPC_URL) $(script) --sig "sign()"
+
+# .PHONY: example-run
+# example-run:
+# 	forge script --rpc-url $(RPC_URL) \
+# 	$(script) --sig "run(bytes)" $(SIGNATURES) \
+# 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+# 	--broadcast
+
+# ##
+# # NestedMultisigBuilder commands
+# # The following commands can be used for tasks that utilize the NestedMultisigBuilder.
+# # Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
+# # in any command when using a local key.
+# # See more documentation on the various steps in NestedMultisigBuilder.sol.
+# ##
+
+# # This step is run by signers on the "children" safes
+# .PHONY: example-nested-sign
+# example-nested-sign:
+# 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+# 	forge script --rpc-url $(RPC_URL) $(script) \
+# 	--sig "sign(address)" $(SIGNER_SAFE_ADDR)
+
+# # This step is run once per "child" safe, and can be run by anyone (doesn't have to be a signer)
+# .PHONY: example-approve
+# example-approve:
+# 	forge script --rpc-url $(RPC_URL) $(script) \
+# 	--sig "approve(address,bytes)" $(SIGNER_SAFE_ADDR) $(SIGNATURES) \
+# 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+
+# # This step is run once after all children safes have approved and can be run by anyone (doesn't have to be a signer)
+# .PHONY: example-execute
+# example-execute:
+# 	forge script --rpc-url $(RPC_URL) $(script) \
+# 	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
