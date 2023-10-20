@@ -13,13 +13,13 @@ deploy-eas:
 deploy-token-factory:
 	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedTokenFactory
 
-.PHONY: deploy-l2oo
-deploy-l2oo:
-	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedL2OutputOracle
-
 verify-eas-implementations:
 	forge verify-contract ${REGISTRY_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/EAS/SchemaRegistry.sol:SchemaRegistry --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
 	forge verify-contract ${EAS_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/EAS/EAS.sol:EAS --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
+
+verify-token-factory:
+	forge verify-contract ${ERC20_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/universal/OptimismMintableERC20Factory.sol:OptimismMintableERC20Factory --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
+	forge verify-contract ${ERC721_IMPL_ADDRESS} ./lib/optimism/packages/contracts-bedrock/src/universal/OptimismMintableERC721Factory.sol:OptimismMintableERC721Factory --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
 
 ##
 # Commands for signers to run to test the nested safe
