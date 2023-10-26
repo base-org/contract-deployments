@@ -57,10 +57,9 @@ This template contains scripts that will help us respond to incidents efficientl
 
 To use template during an incident:
 
-1. Fill in TODOs in the relevant script.
-1. Fill in dependency commit values in the `.env` file.
+1. Fill in the `.env` file with dependency commit numbers and any variables that need to be defined for the script you're running.
 1. Delete the other scripts that are not being used so that you don't run into build issues.
-1. Check in code once addresses have been filled in.
+1. Make sure the code compiles and check in the code.
 1. Have each signer pull the branch, and run relevant signing command from the Makefile.
 
 To add new incident response scripts:

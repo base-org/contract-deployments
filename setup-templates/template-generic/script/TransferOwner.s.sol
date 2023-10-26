@@ -8,9 +8,9 @@ import "@base-contracts/script/universal/MultisigBuilder.sol";
 
 // TODO: alternatively, can use NestedMultisigBuilder if existing owner is nested safe
 contract TransferOwner is MultisigBuilder {
-    // address constant internal PROXY_CONTRACT = <TODO: fill in address of Proxy contract which is changing ownership>; 
-    // address constant internal OLD_OWNER = <TODO: fill in existing owner address>;
-    // address constant internal NEW_OWNER = <TODO: fill in new owner address>;
+    address constant internal PROXY_CONTRACT = vm.envAddress("PROXY_CONTRACT"); // TODO: define PROXY_CONTRACT=xxx in the .env file which is the Proxy contract changing ownership
+    address constant internal OLD_OWNER = vm.envAddress("OLD_OWNER"); // TODO: define existing owner as OLD_OWNER=xxx in the .env file
+    address constant internal NEW_OWNER = vm.envAddress("NEW_OWNER"); // TODO: define new owner as NEW_OWNER=xxx in the .env file
 
     function _postCheck() internal override view {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_CONTRACT);
