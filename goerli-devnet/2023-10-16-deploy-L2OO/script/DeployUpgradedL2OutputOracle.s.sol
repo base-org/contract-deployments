@@ -37,6 +37,7 @@ contract DeployUpgradedL2OutputOracle is Script {
             _finalizationPeriodSeconds: oldFinalizationPeriodSeconds            
         });
 
+        require(l2OutputOracleImpl.SUBMISSION_INTERVAL() == newSubmissionInterval, "Deploy: l2OutputOracle submissionInterval is incorrect");
         require(l2OutputOracleImpl.L2_BLOCK_TIME() == oldL2BlockTime, "Deploy: l2OutputOracle l2BlockTime is incorrect");
         require(l2OutputOracleImpl.FINALIZATION_PERIOD_SECONDS() == oldFinalizationPeriodSeconds, "Deploy: l2OutputOracle finalizationPeriodSeconds is incorrect");
 

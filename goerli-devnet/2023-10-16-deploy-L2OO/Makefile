@@ -7,8 +7,10 @@ include .env
 ##
 .PHONY: deploy-l2oo
 deploy-l2oo:
-	forge script --rpc-url $(L2_RPC_URL) DeployUpgradedL2OutputOracle
+	forge script --rpc-url $(L1_RPC_URL) DeployUpgradedL2OutputOracle
 
+verify-l2oo:
+	forge verify-contract ${L2_OUTPUT_ORACLE_IMPLEMENTATION} ./lib/optimism/packages/contracts-bedrock/contracts/L1/L2OutputOracle.sol:L2OutputOracle --verifier ${VERIFIER} --watch --chain-id $(L2_CHAIN_ID)  --verifier-url ${VERIFIER_URL} --compiler-version v0.8.15+commit.e14f2714 --num-of-optimizations=99999 --retries=1
 ##
 # Commands for signers to run to test the nested safe
 ##
