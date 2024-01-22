@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "src/L1/L1StandardBridge.sol";
-import "src/L1/L1CrossDomainMessenger.sol";
-import "src/universal/CrossDomainMessenger.sol";
+import "@eth-optimism-bedrock/contracts/L1/L1StandardBridge.sol";
+import "@eth-optimism-bedrock/contracts/L1/L1CrossDomainMessenger.sol";
+import "@eth-optimism-bedrock/contracts/universal/CrossDomainMessenger.sol";
 import "forge-std/Script.sol";
-import "src/universal/ProxyAdmin.sol";
+import "@eth-optimism-bedrock/contracts/universal/ProxyAdmin.sol";
 
 contract UpgradeL1StandardBridge is Script {
     address internal L1_STANDARD_BRIDGE_PROXY = vm.envAddress("L1_STANDARD_BRIDGE_PROXY");

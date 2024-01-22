@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "src/L1/L1StandardBridge.sol";
-import "src/universal/CrossDomainMessenger.sol";
+import "@eth-optimism-bedrock/contracts/L1/L1StandardBridge.sol";
+import "@eth-optimism-bedrock/contracts/universal/CrossDomainMessenger.sol";
 import "forge-std/Script.sol";
 
 contract DeployL1StandardBridgeImplementation is Script {
