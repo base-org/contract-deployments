@@ -2,14 +2,13 @@
 pragma solidity 0.8.15;
 
 import "@eth-optimism-bedrock/contracts/L1/L1StandardBridge.sol";
-import "@eth-optimism-bedrock/contracts/universal/CrossDomainMessenger.sol";
 import "forge-std/Script.sol";
 
 contract DeployL1StandardBridgeImplementation is Script {
     address internal DEPLOYER = 0x24A1704636AB7083eaC56294aFF13e1651997638;
     address internal L1_STANDARD_BRIDGE_PROXY = vm.envAddress("L1_STANDARD_BRIDGE_PROXY");
 
-    function implSalt() public returns (bytes32) {
+    function implSalt() public view returns (bytes32) {
         return keccak256(bytes(vm.envOr("IMPL_SALT", string("allyourbasearebelongtoyou"))));
     }
 
