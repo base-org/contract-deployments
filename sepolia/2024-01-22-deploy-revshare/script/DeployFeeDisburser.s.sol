@@ -33,6 +33,17 @@ contract DeployFeeDisburser is Script {
         require(feeDisburserImpl.L1_WALLET() == balanceTracker, "DeployFeeDisburser: incorrect l1 wallet");
         require(feeDisburserImpl.FEE_DISBURSEMENT_INTERVAL() == feeDisbursementInterval, "DeployFeeDisburser: incorrect fee disbursement interval");
 
+        vm.broadcast(deployer);
+        Proxy proxy = new Proxy{ salt: keccak256(abi.encode(salt))}(deployer);
+        vm.prank(address(0));
+        require(proxy.admin() == deployer, "DeployFeeDisburser: incorrect proxy admin");
+        
+        vm.broadcast(deployer);
+        proxy.changeAdmin(admin);
+        vm.prank(address(0));
+        require(proxy.admin() == admin, "DeployFeeDisburser: incorrect proxy admin");
+
         console.log("Fee Disburser Impl address: %s", address(feeDisburserImpl));
+        console.log("Fee Disburser Proxy address: %s", address(proxy));
    }
 }
