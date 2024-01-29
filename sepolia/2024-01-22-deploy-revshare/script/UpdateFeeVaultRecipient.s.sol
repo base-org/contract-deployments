@@ -28,7 +28,6 @@ contract UpdateFeeVaultRecipient is Script {
 
         ///
         // CREATE THE NEW FEE VAULTS
-        // totalProcessed() should be 0 for existing vaults since no withdraw has done yet
         ///
         vm.startBroadcast(proxyAdminOwner);
         SequencerFeeVault sfvNew = new SequencerFeeVault(
@@ -82,6 +81,7 @@ contract UpdateFeeVaultRecipient is Script {
         FeeVault _newFV,
         string memory typeOfVault
     ) internal view {
+        // totalProcessed() should be 0 for existing vaults since no withdraw has done yet
         if (_newFV.totalProcessed() != _oldFV.totalProcessed()) {
             revert FeeVaultFailedToUpdate({
                 feeVaultType: typeOfVault,
