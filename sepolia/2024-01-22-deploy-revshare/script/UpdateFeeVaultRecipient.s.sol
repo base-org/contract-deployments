@@ -33,19 +33,19 @@ contract UpdateFeeVaultRecipient is Script {
         SequencerFeeVault sfvNew = new SequencerFeeVault(
             recipient,
             sfvOld.MIN_WITHDRAWAL_AMOUNT(),
-            sfvOld.WITHDRAWAL_NETWORK()
+            FeeVault.WithdrawalNetwork.L2
         );
         _checks(sfvOld, sfvNew, "SequencerFeeVault");
         L1FeeVault lfvNew = new L1FeeVault(
             recipient,
             lfvOld.MIN_WITHDRAWAL_AMOUNT(),
-            lfvOld.WITHDRAWAL_NETWORK()
+            FeeVault.WithdrawalNetwork.L2
         );
         _checks(lfvOld, lfvNew, "L1FeeVault");
         BaseFeeVault bfvNew = new BaseFeeVault(
             recipient,
             bfvOld.MIN_WITHDRAWAL_AMOUNT(),
-            bfvOld.WITHDRAWAL_NETWORK()
+            FeeVault.WithdrawalNetwork.L2
         );
         _checks(bfvOld, bfvNew, "BaseFeeVault");
         console.log("Sequencer Fee Vault Impl address: %s", address(sfvNew));
@@ -94,7 +94,7 @@ contract UpdateFeeVaultRecipient is Script {
                 reason: "MIN_WITHDRAWAL_AMOUNT mismatch."
             });
         }
-        if (_newFV.WITHDRAWAL_NETWORK() != _oldFV.WITHDRAWAL_NETWORK()) {
+        if (_newFV.WITHDRAWAL_NETWORK() != FeeVault.WithdrawalNetwork.L2) {
             revert FeeVaultFailedToUpdate({
                 feeVaultType: typeOfVault,
                 reason: "WITHDRAWAL_NETWORK mismatch."
