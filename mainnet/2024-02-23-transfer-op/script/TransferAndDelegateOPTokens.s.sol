@@ -2,47 +2,59 @@
 pragma solidity 0.8.19;
 
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@agora/structs/RulesV3.sol";
 import "@agora/structs/AllowanceType.sol";
 import "@agora/alligator/AlligatorOP_V5.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
-    using SafeERC20 for IERC20;
-
     IERC20 internal OP_TOKEN = IERC20(vm.envAddress("OP_TOKEN"));
 
     address internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
     address internal SMART_ESCROW = vm.envAddress("SMART_ESCROW_CONTRACT");
     address internal ALLIGATOR_PROXY = vm.envAddress("ALLIGATOR_PROXY"); // Agora address which will allow for subdeletation
     address internal CB_GOVERNANCE_WALLET = vm.envAddress("CB_GOVERNANCE_WALLET");
-
-    uint256 internal COLLAB_GRANT_TOKENS = vm.envUint("COLLAB_GRANT_TOKENS");
     uint256 internal UPFRONT_GRANT_TOKENS = vm.envUint("UPFRONT_GRANT_TOKENS");
+    uint256 internal TOKENS_TO_TRANSFER = vm.envUint("TOKENS_TO_TRANSFER");
 
     function _postCheck() internal override view {
-        // TODO
+        require(
+            OP_TOKEN.balanceOf(SMART_ESCROW) == TOKENS_TO_TRANSFER,
+            "TransferAndDelegateOPTokens: tokens not transferred to smart escrow"
+        );
+        // TODO: any other checks?
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](3);
 
-        // Transfer collaboration grant tokens to smart escrow
+        // Double check that there aren't unaccounted for tokens in the nested safe
+        uint256 tokensToTransfer = OP_TOKEN.balanceOf(NESTED_SAFE) - UPFRONT_GRANT_TOKENS;
+        require(
+            tokensToTransfer == TOKENS_TO_TRANSFER,
+            "TransferAndDelegateOPTokens: tokens to transfer do not match expected amount"
+        );
+
+        // Transfer collaboration grant tokens which are in the nested safe to smart escrow
+        // Tokens are sent to the contract 1 year before they vest, so this will be some subset of the
+        // total collaboration grant tokens
         calls[0] = IMulticall3.Call3({
-            target: address(this),
+            target: address(OP_TOKEN),
             allowFailure: false,
             callData: abi.encodeCall(
-                this.transferOPTokens, ()
+                IERC20.transfer,
+                (SMART_ESCROW, TOKENS_TO_TRANSFER)
             )
         });
-        // Delegate governance tokens for initial grant to Agora's Alligator proxy, which will allow for subdelegations
+        // Delegate governance tokens for initial grant to Agora's Alligator proxy,
+        // which will allow for subdelegations
         calls[1] = IMulticall3.Call3({
             target: address(OP_TOKEN),
             allowFailure: false,
             callData: abi.encodeCall(
                 ERC20Votes.delegate,
-                (ALLIGATOR_PROXY)
+                (AlligatorOPV5(ALLIGATOR).proxyAddress(CB_GOVERNANCE_WALLET))
             )
         });
 
@@ -62,16 +74,11 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
             allowFailure: false,
             callData: abi.encodeCall(
                 AlligatorOPV5.subdelegate,
-                (CB_GOVERNANCE_WALLET,
-                subdelegationRules)
+                (CB_GOVERNANCE_WALLET, subdelegationRules)
             )
         });
 
         return calls;
-    }
-
-    function transferOPTokens() public {
-        OP_TOKEN.safeTransfer(SMART_ESCROW, COLLAB_GRANT_TOKENS);
     }
 
     function _ownerSafe() internal override view returns (address) {

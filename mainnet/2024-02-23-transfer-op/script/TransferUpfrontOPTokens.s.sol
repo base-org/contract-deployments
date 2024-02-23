@@ -2,38 +2,43 @@
 pragma solidity 0.8.19;
 
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 // TODO: this script will be called after the upfront grant tokens have vested
 contract TransferOPTokens is NestedMultisigBuilder {
-    using SafeERC20 for IERC20;
-
     address internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
     IERC20 public OP_TOKEN = IERC20(vm.envAddress("OP_TOKEN"));
     address public BENEFICIARY = vm.envAddress("BENEFICIARY");
     uint256 public UPFRONT_GRANT_TOKENS = vm.envUint("UPFRONT_GRANT_TOKENS");
 
     function _postCheck() internal override view {
-        // TODO
+        // TODO: double check there's no initial OP tokens at beneficiary address before running this
+        // task, otherwise this check will fail
+        require(
+            OP_TOKEN.balanceOf(BENEFICIARY) == UPFRONT_GRANT_TOKENS,
+            "TransferAndDelegateOPTokens: tokens not transferred to beneficiary"
+        );
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
 
+        require(
+            OP_TOKEN.balanceOf(NESTED_SAFE) == UPFRONT_GRANT_TOKENS,
+            "TransferOPTokens: unexpected token amount in nested safe"
+        );
+
         // Transfer upfront grant tokens when they vest
         calls[0] = IMulticall3.Call3({
-            target: address(this),
+            target: address(OP_TOKEN),
             allowFailure: false,
             callData: abi.encodeCall(
-                this.transferOPTokens, ()
+                IERC20.transfer,
+                (BENEFICIARY, UPFRONT_GRANT_TOKENS)
             )
         });
 
         return calls;
-    }
-
-    function transferOPTokens() public {
-        OP_TOKEN.safeTransfer(BENEFICIARY, UPFRONT_GRANT_TOKENS); // or maybe just the whole balance?
     }
 
     function _ownerSafe() internal override view returns (address) {
