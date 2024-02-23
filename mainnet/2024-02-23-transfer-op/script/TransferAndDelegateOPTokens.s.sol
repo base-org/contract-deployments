@@ -54,10 +54,17 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
             allowFailure: false,
             callData: abi.encodeCall(
                 ERC20Votes.delegate,
-                (AlligatorOPV5(ALLIGATOR).proxyAddress(CB_GOVERNANCE_WALLET))
+                (AlligatorOPV5(ALLIGATOR_PROXY).proxyAddress(CB_GOVERNANCE_WALLET))
             )
         });
 
+        // Setup subdelegation rules
+        // The intended functionality here is that the wallet we delegate to should be able to redelegate,
+        // but the wallet(s) it redelegates to should not be able to redelegate further.
+        // In addition, we want to delegate an absolute amount, since only the Upfront Grant tokens are eligible
+        // to be voted with before the 1 year vesting. There shouldn't be any additional OP tokens sent to this wallet,
+        // but if there are, we should not delegate them.
+        // The rest of the rules are set to the defaults and are not relevant for our use case.
         SubdelegationRules memory subdelegationRules = SubdelegationRules({
             maxRedelegations: 2,
             blocksBeforeVoteCloses: 0,
