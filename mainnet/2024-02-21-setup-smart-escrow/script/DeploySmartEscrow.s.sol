@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.15;
 
 import "forge-std/Script.sol";
 import "@base-contracts/src/smart-escrow/SmartEscrow.sol";
-
 
 contract DeploySmartEscrow is Script {
     address internal DEPLOYER = vm.envAddress("DEPLOYER");
@@ -34,12 +33,12 @@ contract DeploySmartEscrow is Script {
         );
         require(smartEscrow.start() == START, "DeploySmartEscrow: start time not set correctly");
         require(smartEscrow.end() == END, "DeploySmartEscrow: end time not set correctly");
-        require(smartEscrow.vestingPeriod() == VESTING_PERIOD_SECONDS, "DeploySmartEscrow: vesting period not set correctly");
-        require(smartEscrow.initialTokens() == INITIAL_TOKENS, "DeploySmartEscrow: number of initial tokens not set correctly");
-        require(smartEscrow.vestingEventTokens() == VESTING_EVENT_TOKENS, "DeploySmartEscrow: number of vesting event tokens not set correctly");
-        require(smartEscrow.benefactor() == BENEFACTOR, "DeploySmartEscrow: benefactor not set correctly"); 
-        require(smartEscrow.beneficiary() == BENEFICIARY, "DeploySmartEscrow: beneficiary not set correctly");
-        require(smartEscrow.released() == 0, "DeploySmartEscrow: initial released value non zero");
+        require(smartEscrow.vestingPeriod() == VESTING_PERIOD_SECONDS, "DeploySmartEscrow: vesting period incorrect");
+        require(smartEscrow.initialTokens() == INITIAL_TOKENS, "DeploySmartEscrow: number of initial tokens incorrect");
+        require(smartEscrow.vestingEventTokens() == VESTING_EVENT_TOKENS, "DeploySmartEscrow: number of vesting event tokens incorrect");
+        require(smartEscrow.benefactor() == BENEFACTOR, "DeploySmartEscrow: benefactor incorrect"); 
+        require(smartEscrow.beneficiary() == BENEFICIARY, "DeploySmartEscrow: beneficiary incorrect");
+        require(smartEscrow.released() == 0, "DeploySmartEscrow: initial released value must bex zero");
         require(smartEscrow.contractTerminated() == false, "DeploySmartEscrow: contract cannot initially be terminated");
     }
 }
