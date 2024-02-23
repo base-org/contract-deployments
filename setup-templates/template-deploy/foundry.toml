@@ -13,7 +13,8 @@ remappings = [
     '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts',
     '@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts',
     '@rari-capital/solmate/=lib/solmate/',
-    '@base-contracts/=lib/base-contracts'
+    '@base-contracts/=lib/base-contracts',
+    'solady/=lib/solady/src/'
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

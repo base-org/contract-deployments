@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.19;
 
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract TransferOPTokens is NestedMultisigBuilder {
     using SafeERC20 for IERC20;
 
-    address constant internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
-    IERC20 public constant OP_TOKEN = IERC20(vm.envAddress("OP_TOKEN"));
-    address public constant BENEFICIARY = vm.envAddress("BENEFICIARY");
-    uint256 public constant UPFRONT_GRANT_TOKENS = vm.envUint256("UPFRONT_GRANT_TOKENS");
+    address internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
+    IERC20 public OP_TOKEN = IERC20(vm.envAddress("OP_TOKEN"));
+    address public BENEFICIARY = vm.envAddress("BENEFICIARY");
+    uint256 public UPFRONT_GRANT_TOKENS = vm.envUint("UPFRONT_GRANT_TOKENS");
 
     function _postCheck() internal override view {
         // TODO
@@ -22,17 +22,18 @@ contract TransferOPTokens is NestedMultisigBuilder {
 
         // Transfer upfront grant tokens when they vest
         calls[0] = IMulticall3.Call3({
-            target: OP_TOKEN,
+            target: address(this),
             allowFailure: false,
             callData: abi.encodeCall(
-                token.safeTransferFrom(address, address, uint256);
-                NESTED_SAFE,
-                BENEFICIARY,
-                UPFRONT_GRANT_TOKENS // or maybe just the whole balance?
+                this.transferOPTokens, ()
             )
         });
 
         return calls;
+    }
+
+    function transferOPTokens() public {
+        OP_TOKEN.safeTransfer(BENEFICIARY, UPFRONT_GRANT_TOKENS); // or maybe just the whole balance?
     }
 
     function _ownerSafe() internal override view returns (address) {
