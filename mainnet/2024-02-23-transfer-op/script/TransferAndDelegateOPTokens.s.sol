@@ -54,7 +54,7 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
             allowFailure: false,
             callData: abi.encodeCall(
                 ERC20Votes.delegate,
-                (AlligatorOPV5(ALLIGATOR_PROXY).proxyAddress(CB_GOVERNANCE_WALLET))
+                (AlligatorOPV5(ALLIGATOR_PROXY).proxyAddress(NESTED_SAFE))
             )
         });
 
@@ -66,13 +66,13 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
         // but if there are, we should not delegate them.
         // The rest of the rules are set to the defaults and are not relevant for our use case.
         SubdelegationRules memory subdelegationRules = SubdelegationRules({
-            maxRedelegations: 2,
+            maxRedelegations: 1,
             blocksBeforeVoteCloses: 0,
             notValidBefore: 0,
             notValidAfter: 0,
             customRule: address(0),
             allowanceType: AllowanceType.Absolute,
-            allowance: 1e18
+            allowance: UPFRONT_GRANT_TOKENS
         });
 
         // Delegate the tokens to the Coinbase owned address
