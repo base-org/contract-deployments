@@ -14,7 +14,7 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
     address internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
     address internal SMART_ESCROW = vm.envAddress("SMART_ESCROW_CONTRACT");
     address internal ALLIGATOR_PROXY = vm.envAddress("ALLIGATOR_PROXY"); // Agora address which will allow for subdeletation
-    address internal CB_GOVERNANCE_WALLET = vm.envAddress("CB_GOVERNANCE_WALLET");
+    address internal BENEFICIARY = vm.envAddress("BENEFICIARY");
     uint256 internal UPFRONT_GRANT_TOKENS = vm.envUint("UPFRONT_GRANT_TOKENS");
     uint256 internal TOKENS_TO_TRANSFER = vm.envUint("TOKENS_TO_TRANSFER");
 
@@ -81,7 +81,7 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
             allowFailure: false,
             callData: abi.encodeCall(
                 AlligatorOPV5.subdelegate,
-                (CB_GOVERNANCE_WALLET, subdelegationRules)
+                (BENEFICIARY, subdelegationRules)
             )
         });
 
