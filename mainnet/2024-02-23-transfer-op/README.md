@@ -120,13 +120,7 @@ Now click on the "Events" tab. Verify that:
   }
 }
 ```
-4. Verify that the call emitted `ExecutionSuccess` with details:
-```json
-{
-  "txHash": "0xdc1cb634ac5c9ee9d570660c9292c01922eb70f7e3562fa6fbef3f9f32b1ea41",
-  "payment": "0"
-}
-```
+4. Verify that the call emitted `ExecutionSuccess`
 
 #### 3.4. Extract the domain hash and the message hash to approve.
 
