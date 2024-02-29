@@ -51,6 +51,7 @@ message hash to approve on your Ledger:
 1. Validate integrity of the simulation.
 2. Validate correctness of the state diff.
 3. Validate and extract domain hash and message hash to approve.
+4. Validate that the transaction completed successfully
 
 #### 3.1. Validate integrity of the simulation.
 
@@ -62,7 +63,8 @@ validate integrity of the simulation, we need to check the following:
    recent timestamp (i.e. close to when you run the script).
 3. "Sender": Check the address shown is your signer account. If not,
    you will need to determine which “number” it is in the list of
-   addresses on your ledger. 
+   addresses on your ledger.
+4. 
 
 
 #### 3.2. Validate correctness of the state diff.
