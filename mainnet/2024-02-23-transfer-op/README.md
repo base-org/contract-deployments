@@ -74,17 +74,59 @@ validate integrity of the simulation, we need to check the following:
 Now click on the "State" tab. Verify that:
 
 1. Verify that the state change for token balances is reflected. 
-2. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract
+2. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract with details: 
+```json
+{
+  "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
+  "to": "0x143f5773cfe5613ca94196d557c889134f47cb77",
+  "value": "26843545000000000000000000"
+}
+```
 
 
 #### 3.3. Validate correctness of the events emitted
 
 Now click on the "Events" tab. Verify that:
 
-1. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig
-2. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000`
-3. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000`
-4. Verify that the call emitted `ExecutionSuccess`
+1. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig with details: 
+```json
+{
+  "delegator": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
+  "fromDelegate": "0x0000000000000000000000000000000000000000",
+  "toDelegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629"
+}
+```
+2. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
+```json
+{
+  "delegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629",
+  "previousBalance": "0",
+  "newBalance": "10737418000000000000000000"
+}
+```
+3. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
+```json
+{
+  "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
+  "to": "0x635fb974f09b269bc750bf96338c29cf41430125",
+  "subdelegationRules": {
+    "maxRedelegations": 1,
+    "blocksBeforeVoteCloses": 0,
+    "notValidBefore": 0,
+    "notValidAfter": 0,
+    "customRule": "0x0000000000000000000000000000000000000000",
+    "allowanceType": 0,
+    "allowance": "10737418000000000000000000"
+  }
+}
+```
+4. Verify that the call emitted `ExecutionSuccess` with details:
+```json
+{
+  "txHash": "0xdc1cb634ac5c9ee9d570660c9292c01922eb70f7e3562fa6fbef3f9f32b1ea41",
+  "payment": "0"
+}
+```
 
 #### 3.4. Extract the domain hash and the message hash to approve.
 
