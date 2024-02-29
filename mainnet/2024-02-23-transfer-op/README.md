@@ -52,6 +52,11 @@ message hash to approve on your Ledger:
 2. Validate correctness of the state diff.
 3. Validate and extract domain hash and message hash to approve.
 4. Validate that the transaction completed successfully
+5. Verify that the state change for token balances is reflected. Additionally, check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract
+6. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig
+7. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000`
+8. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000`
+9. Verify that the call emitted `ExecutionSuccess`
 
 #### 3.1. Validate integrity of the simulation.
 
