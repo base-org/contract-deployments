@@ -23,7 +23,10 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
             OP_TOKEN.balanceOf(SMART_ESCROW) == TOKENS_TO_TRANSFER,
             "TransferAndDelegateOPTokens: tokens not transferred to smart escrow"
         );
-        // TODO: any other checks?
+        require(
+            OP_TOKEN.balanceOf(NESTED_SAFE) == UPFRONT_GRANT_TOKENS,
+            "TransferAndDelegateOPTokens: number of remaining tokens in nested safe is incorrect"
+        );
     }
 
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
