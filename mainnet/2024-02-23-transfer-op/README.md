@@ -45,8 +45,8 @@ project, any project will do. You can create one if necessary.
 
 Click "Simulate Transaction".
 
-We will be performing 5 validations and extract the domain hash and
-message hash to approve on your Ledger:
+We will be performing 3 validations and then we'll extract the domain hash and
+message hash to approve on your Ledger then verify completion:
 
 1. Validate integrity of the simulation.
 2. Validate correctness of the state diff.
