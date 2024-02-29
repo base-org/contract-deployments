@@ -50,13 +50,10 @@ message hash to approve on your Ledger:
 
 1. Validate integrity of the simulation.
 2. Validate correctness of the state diff.
-3. Validate and extract domain hash and message hash to approve.
+3. Validate correctness of the events emitted
+4. Validate and extract domain hash and message hash to approve.
 4. Validate that the transaction completed successfully
-5. Verify that the state change for token balances is reflected. Additionally, check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract
-6. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig
-7. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000`
-8. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000`
-9. Verify that the call emitted `ExecutionSuccess`
+
 
 #### 3.1. Validate integrity of the simulation.
 
@@ -69,17 +66,27 @@ validate integrity of the simulation, we need to check the following:
 3. "Sender": Check the address shown is your signer account. If not,
    you will need to determine which “number” it is in the list of
    addresses on your ledger.
-4. 
+4. "Success" with a green check mark 
 
 
 #### 3.2. Validate correctness of the state diff.
 
 Now click on the "State" tab. Verify that:
 
-1. TODO
+1. Verify that the state change for token balances is reflected. 
+2. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract
 
 
-#### 3.3. Extract the domain hash and the message hash to approve.
+#### 3.3. Validate correctness of the events emitted
+
+Now click on the "Events" tab. Verify that:
+
+1. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig
+2. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000`
+3. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000`
+4. Verify that the call emitted `ExecutionSuccess`
+
+#### 3.4. Extract the domain hash and the message hash to approve.
 
 Now that we have verified the transaction performs the right
 operation, we need to extract the domain hash and the message hash to
