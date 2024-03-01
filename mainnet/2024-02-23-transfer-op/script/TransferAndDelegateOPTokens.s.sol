@@ -20,11 +20,11 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
 
     function _postCheck() internal override view {
         require(
-            OP_TOKEN.balanceOf(SMART_ESCROW) == TOKENS_TO_TRANSFER,
+            OP_TOKEN.balanceOf(SMART_ESCROW) >= TOKENS_TO_TRANSFER,
             "TransferAndDelegateOPTokens: tokens not transferred to smart escrow"
         );
         require(
-            OP_TOKEN.balanceOf(NESTED_SAFE) == UPFRONT_GRANT_TOKENS,
+            OP_TOKEN.balanceOf(NESTED_SAFE) >= UPFRONT_GRANT_TOKENS,
             "TransferAndDelegateOPTokens: number of remaining tokens in nested safe is incorrect"
         );
     }
@@ -32,11 +32,11 @@ contract TransferAndDelegateOPTokens is NestedMultisigBuilder {
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](3);
 
-        // Double check that there aren't unaccounted for tokens in the nested safe
-        uint256 tokensToTransfer = OP_TOKEN.balanceOf(NESTED_SAFE) - UPFRONT_GRANT_TOKENS;
+        // Double check that there are enough tokens to transfer
+        uint256 remainingTokens = OP_TOKEN.balanceOf(NESTED_SAFE) - TOKENS_TO_TRANSFER;
         require(
-            tokensToTransfer == TOKENS_TO_TRANSFER,
-            "TransferAndDelegateOPTokens: tokens to transfer do not match expected amount"
+            remainingTokens >= UPFRONT_GRANT_TOKENS,
+            "TransferAndDelegateOPTokens: not enough tokens to transfer"
         );
 
         // Transfer collaboration grant tokens which are in the nested safe to smart escrow

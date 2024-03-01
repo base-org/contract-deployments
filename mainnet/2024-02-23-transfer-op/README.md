@@ -11,7 +11,7 @@ When Base launched, Optimism granted a share of OP tokens to Coinbase. The token
 
 Now that the Smart Escrow contract is live, this task moves any existing OP tokens from the 2-of-2 multisig to the Smart Escrow contract.
 
-The one caveat is that some amount of the tokens (the "upfront grant") is available to be used by Coinbase for governance purposes, and since the Smart Escrow contract does not support governance use cases, these tokens will remain in the 2-of-2 and be sent directly to Coinbase upon vesting in July 2024. In the menatime, we will do a 1 time delegation of these tokens to a Coinbase owned address, so they can be used for governance purposes prior to July. This delegation event is also handled in this signing task.
+The one caveat is that some amount of the tokens (the "upfront grant") is available to be used by Coinbase for governance purposes, and since the Smart Escrow contract does not support governance use cases, these tokens will remain in the 2-of-2 and be sent directly to Coinbase upon vesting in July 2024. In the meantime, we will do a 1 time delegation of these tokens to a Coinbase owned address, so they can be used for governance purposes prior to July. This delegation event is also handled in this signing task.
 
 ## Approving the transaction
 
@@ -74,6 +74,18 @@ validate integrity of the simulation, we need to check the following:
 Now click on the "State" tab. Verify that:
 
 1. Verify that the state change for token balances is reflected. 
+
+```
+0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      37580963000000000000000000 -> 10737418000000000000000000
+0x143f5773cfe5613ca94196d557c889134f47cb77      0 -> 26843545000000000000000000
+```
+
+
+#### 3.3. Validate correctness of the events emitted
+
+Now click on the "Events" tab. Verify that:
+
+
 2. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract with details: 
 ```json
 {
@@ -82,13 +94,7 @@ Now click on the "State" tab. Verify that:
   "value": "26843545000000000000000000"
 }
 ```
-
-
-#### 3.3. Validate correctness of the events emitted
-
-Now click on the "Events" tab. Verify that:
-
-1. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig with details: 
+2. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig with details: 
 ```json
 {
   "delegator": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
@@ -96,7 +102,7 @@ Now click on the "Events" tab. Verify that:
   "toDelegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629"
 }
 ```
-2. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
+3. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
 ```json
 {
   "delegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629",
@@ -104,7 +110,7 @@ Now click on the "Events" tab. Verify that:
   "newBalance": "10737418000000000000000000"
 }
 ```
-3. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
+4. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
 ```json
 {
   "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
@@ -120,7 +126,7 @@ Now click on the "Events" tab. Verify that:
   }
 }
 ```
-4. Verify that the call emitted `ExecutionSuccess`
+5. Verify that the call emitted `ExecutionSuccess`
 
 #### 3.4. Extract the domain hash and the message hash to approve.
 
@@ -129,7 +135,7 @@ operation, we need to extract the domain hash and the message hash to
 approve.
 
 Go back to the "Overview" tab, and find the
-`GnosisSafe.checkSignatures` call. This call's `data` parameter
+`GnosisSafeL2.checkSignatures` call. This call's `data` parameter
 contains both the domain hash and the message hash that will show up
 in your Ledger.
 

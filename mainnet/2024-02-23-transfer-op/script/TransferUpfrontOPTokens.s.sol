@@ -12,10 +12,8 @@ contract TransferOPTokens is NestedMultisigBuilder {
     uint256 public UPFRONT_GRANT_TOKENS = vm.envUint("UPFRONT_GRANT_TOKENS");
 
     function _postCheck() internal override view {
-        // TODO: double check there's no initial OP tokens at beneficiary address before running this
-        // task, otherwise this check will fail
         require(
-            OP_TOKEN.balanceOf(BENEFICIARY) == UPFRONT_GRANT_TOKENS,
+            OP_TOKEN.balanceOf(BENEFICIARY) >= UPFRONT_GRANT_TOKENS,
             "TransferAndDelegateOPTokens: tokens not transferred to beneficiary"
         );
     }
@@ -23,8 +21,11 @@ contract TransferOPTokens is NestedMultisigBuilder {
     function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
 
+        // There should be UPFRONT_GRANT_TOKENS left in the NESTED_SAFE. However,
+        // there could be more since anyone could send OP to the safe, so check if the
+        // amount is greater than or equal
         require(
-            OP_TOKEN.balanceOf(NESTED_SAFE) == UPFRONT_GRANT_TOKENS,
+            OP_TOKEN.balanceOf(NESTED_SAFE) >= UPFRONT_GRANT_TOKENS,
             "TransferOPTokens: unexpected token amount in nested safe"
         );
 
