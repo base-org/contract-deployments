@@ -1,6 +1,6 @@
 # Transfer and Delegate OP Tokens
 
-Status: DRAFT, NOT READY TO SIGN
+Status: READY TO SIGN
 
 > [!IMPORTANT] !!! DO NOT SIGN using this playbook yet, as it has not
 > been approved by all stakeholders
