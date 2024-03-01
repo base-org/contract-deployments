@@ -38,6 +38,13 @@ Make sure your ledger is still unlocked and run the following.
 make sign-op # or make sign-cb for Coinbase signers
 ```
 
+Note: there have been reports of some folks seeing this error `Error creating signer: error opening ledger: hidapi: failed to open device`. A fix is in progress, but not yet merged. If you come across this, open a new terminal and run.
+```
+git clone git@github.com:base-org/eip712sign.git
+cd eip712sign
+go install
+```
+
 You will see a "Simulation link" from the output.
 
 Paste this URL in your browser. A prompt may ask you to choose a
