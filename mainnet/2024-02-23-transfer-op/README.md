@@ -73,7 +73,7 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the state change for token balances is reflected. 
+1. Verify that the state change for token balances is reflected. Under the "Optimism ERC-20" `_balances` field, look for the following state changes:
 
 ```
 0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      37580963000000000000000000 -> 10737418000000000000000000
@@ -86,7 +86,7 @@ Now click on the "State" tab. Verify that:
 Now click on the "Events" tab. Verify that:
 
 
-2. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract with details: 
+1. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract with details: 
 ```json
 {
   "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
@@ -142,7 +142,7 @@ in your Ledger.
 Here is an example screenshot. Note that the hash value may be
 different:
 
-> TODO
+<img width="1195" alt="image" src="https://github.com/base-org/contract-deployments/assets/7411939/7d16806c-0408-4d5f-9212-bed4e6fc14f8">
 
 It will be a concatenation of `0x1901`, the domain hash, and the
 message hash: `0x1901[domain hash][message hash]`.
