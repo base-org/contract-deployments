@@ -9,10 +9,11 @@ contract PausePortal is Script {
     address internal GUARDIAN = vm.envAddress("GUARDIAN");
 
     function run() external {
-        vm.startBroadcast(vm.envUint("GUARDIAN_PRIVATE_KEY"));
+        OptimismPortal optimismPortal = OptimismPortal(payable(OPTIMISM_PORTAL_PROXY));
 
-        OptimismPortal(payable(OPTIMISM_PORTAL_PROXY)).pause();
-
-        vm.stopBroadcast();
+        vm.broadcast(vm.envUint("GUARDIAN_PRIVATE_KEY"));
+        optimismPortal.pause();
+        
+        require(optimismPortal.paused() == true, "PausePortal: failed to pause");
     }
 }
