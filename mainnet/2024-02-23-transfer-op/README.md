@@ -1,13 +1,13 @@
 # Transfer and Delegate OP Tokens
 
-Status: DRAFT, NOT READY TO SIGN
+Status: READY TO SIGN
 
 > [!IMPORTANT] !!! DO NOT SIGN using this playbook yet, as it has not
 > been approved by all stakeholders
 
 ## Objective
 
-When Base launched, Optimism granted a share of OP tokens to Coinbase. The token distribution occurs onchain, and vests over a period of 6 years, with the first vesting event in July 2024. A smart contract handles the logic to make the tokens available for distribution as they vest. This smart contract (the "Smart Escrow Contract") also receives OP tokens 1 year before they vest and stores them until vesting. However, since the Smart Escrow contract was not ready upon Base launch, the existing OP tokens are being stored in a 2-of-2 multisig with CB & OP signers (identical to the multisig used for Base's upgrade keys, except on the Optimism network). 
+When Base launched, Optimism granted a share of OP tokens to Coinbase. The token distribution occurs onchain, and vests over a period of 6 years, with the first vesting event in July 2024. A smart contract handles the logic to make the tokens available for distribution as they vest. This smart contract (the "Smart Escrow Contract") also receives OP tokens 1 year before they vest and stores them until vesting. However, since the Smart Escrow contract was not ready upon Base launch, the existing OP tokens are being stored in a 2-of-2 multisig with CB & OP signers (similar to the multisig used for Base's upgrade keys, except on the Optimism network). 
 
 Now that the Smart Escrow contract is live, this task moves any existing OP tokens from the 2-of-2 multisig to the Smart Escrow contract.
 
@@ -38,14 +38,14 @@ Make sure your ledger is still unlocked and run the following.
 make sign-op # or make sign-cb for Coinbase signers
 ```
 
-Note: there have been reports of some folks seeing this error `Error creating signer: error opening ledger: hidapi: failed to open device`. A fix is in progress, but not yet merged. If you come across this, open a new terminal and run.
+Note: there have been reports of some folks seeing this error `Error creating signer: error opening ledger: hidapi: failed to open device`. A fix is in progress, but not yet merged. If you come across this, open a new terminal and run the following to resolve the issue:
 ```
 git clone git@github.com:base-org/eip712sign.git
 cd eip712sign
 go install
 ```
 
-You will see a "Simulation link" from the output.
+Once you run the make sign command successfully, you will see a "Simulation link" from the output.
 
 Paste this URL in your browser. A prompt may ask you to choose a
 project, any project will do. You can create one if necessary.
@@ -57,9 +57,8 @@ message hash to approve on your Ledger then verify completion:
 
 1. Validate integrity of the simulation.
 2. Validate correctness of the state diff.
-3. Validate correctness of the events emitted
-4. Validate and extract domain hash and message hash to approve.
-5. Validate that the transaction completed successfully
+3. Validate and extract domain hash and message hash to approve.
+4. Validate that the transaction completed successfully
 
 
 #### 3.1. Validate integrity of the simulation.
@@ -80,36 +79,67 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the state change for token balances is reflected. Under the "Optimism ERC-20" `_balances` field, look for the following state changes:
+1. Verify that the nonce is incremented for the Nested Multisig under the "GnosisSafeProxy" at address `0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940`:
+
+```
+Key: 0x0000000000000000000000000000000000000000000000000000000000000005
+Before: 0x0000000000000000000000000000000000000000000000000000000000000001
+After: 0x0000000000000000000000000000000000000000000000000000000000000002
+```
+
+2. And for the same contract, verify that this specific execution is approved by the other signer multisig:
+
+```
+Key (if you are an OP signer): 0x11df082a13e3abe7c86905df73f40491ddca07ffdd5dd589ca60b5cd151a98f5
+Key (if you are a CB signer): 0xc5af7fb02845bd01e3c5d7620938079cb2f0eb79259fc52740bbe4820401d909
+Before: 0x0000000000000000000000000000000000000000000000000000000000000000
+After: 0x0000000000000000000000000000000000000000000000000000000000000001
+```
+
+3. Verify that the nonce is incremented for your multisig.
+
+If you are an OP signer - the OP Foundation Multisig should be under the "GnosisSafeProxy" at address `0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0`:
+
+```
+Key: 0x0000000000000000000000000000000000000000000000000000000000000005
+Before: 0x0000000000000000000000000000000000000000000000000000000000000077
+After: 0x0000000000000000000000000000000000000000000000000000000000000078
+```
+
+If you are a CB signer - the Coinbase Multisig should be under the address `0x6e1dfd5c1e22a4677663a81d24c6ba03561ef0f6`:
+
+```
+Key: 0x0000000000000000000000000000000000000000000000000000000000000005
+Before: 0x0000000000000000000000000000000000000000000000000000000000000001
+After: 0x0000000000000000000000000000000000000000000000000000000000000002
+```
+
+4. Verify that the state changes for the OP ERC20 token match the expected balance updates. Specifically, verify that the delegate  for the Nested Multisig is established as: `0x85e870a853a55c312bbfdb16c1f64d36916b6629`. Under the `_delegates` field, look for the following state change:
+
+```
+0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      0x0000000000000000000000000000000000000000 -> 0x85e870a853a55c312bbfdb16c1f64d36916b6629
+```
+
+5. Under the "Optimism ERC-20" `_balances` field, look for the following state changes:
 
 ```
 0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      37580963000000000000000000 -> 10737418000000000000000000
 0x143f5773cfe5613ca94196d557c889134f47cb77      0 -> 26843545000000000000000000
 ```
 
+6. Verify that the Agora "Alligator Proxy" subdelegate is established correctly. Under the "ERC1967 Proxy" at `0x7f08f3095530b67cdf8466b7a923607944136df0`, expand the state by clicking on the "+" for `0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940`. Verify that the following state change is expected:
 
-#### 3.3. Validate correctness of the events emitted
-
-Now click on the "Events" tab. Verify that:
-
-
-1. Check that the `Transfer` event was emitted for the expected balance `from` the Nested Multisig `to` the Smart Escrow contract with details: 
-```json
-{
-  "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
-  "to": "0x143f5773cfe5613ca94196d557c889134f47cb77",
-  "value": "26843545000000000000000000"
-}
 ```
-2. Verify that the call emitted the `DelegateChanged` event, establishing a new address as the delegate for the Nested Multisig with details: 
-```json
-{
-  "delegator": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
-  "fromDelegate": "0x0000000000000000000000000000000000000000",
-  "toDelegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629"
-}
+mapping (address => mapping (address => tuple)) subdelegations
+  0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940
+    0x635fb974f09b269bc750bf96338c29cf41430125
+      maxRedelegations 0 -> 1
+      allowanceType 0 -> 10737418000000000000000000
 ```
-3. Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
+
+Here, the associated events might help add some context. If necessary for clarity, cross check this state transition with the associated events in the "Events" tab:
+
+Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
 ```json
 {
   "delegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629",
@@ -117,7 +147,8 @@ Now click on the "Events" tab. Verify that:
   "newBalance": "10737418000000000000000000"
 }
 ```
-4. Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
+
+Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
 ```json
 {
   "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
@@ -133,9 +164,22 @@ Now click on the "Events" tab. Verify that:
   }
 }
 ```
-5. Verify that the call emitted `ExecutionSuccess`
 
-#### 3.4. Extract the domain hash and the message hash to approve.
+7. Verify that the `L1FeeVault` at `0x420000000000000000000000000000000000001a` receives the gas associated with the call:
+
+_Note: the balance values here will not be exactly the same_
+```
+Balance     3335732882538676762398 -> 3335734048351707566580
+```
+
+8. Verify that the nonce for the sending address is appropriately incremented:
+
+_Note: the nonce value might be different depending on the nonce of the sending EOA_
+```
+Nonce       0 -> 1
+```
+
+#### 3.3. Extract the domain hash and the message hash to approve.
 
 Now that we have verified the transaction performs the right
 operation, we need to extract the domain hash and the message hash to
