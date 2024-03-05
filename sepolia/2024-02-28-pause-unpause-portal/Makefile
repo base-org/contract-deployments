@@ -14,28 +14,16 @@ endif
 
 # Pause OptimismPortal Commands
 
-.PHONY: pause-portal-sign
-pause-portal-sign: deps
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(L1_RPC_URL) PausePortal --sig "sign()"
-
-.PHONY: pause-portal-run
-pause-portal-run: deps
+.PHONY: pause-portal
+pause-portal: deps
 	forge script --rpc-url $(L1_RPC_URL) \
-	PausePortal --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+	PausePortal --private-key $(GUARDIAN_PRIVATE_KEY) \
 	--broadcast
 
 # Unpause OptimismPortal Commands
 
-.PHONY: unpause-portal-sign
-unpause-portal-sign: deps
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(L1_RPC_URL) UnpausePortal --sig "sign()"
-
-.PHONY: unpause-portal-run
-unpause-portal-run: deps
+.PHONY: unpause-portal
+unpause-portal: deps
 	forge script --rpc-url $(L1_RPC_URL) \
-	UnpausePortal --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+	UnpausePortal --private-key $(GUARDIAN_PRIVATE_KEY) \
 	--broadcast
