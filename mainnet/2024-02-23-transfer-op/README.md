@@ -87,20 +87,31 @@ Before: 0x0000000000000000000000000000000000000000000000000000000000000001
 After: 0x0000000000000000000000000000000000000000000000000000000000000002
 ```
 
-2. And for the same contract, verify that this specific execution is approved by the Coinbase Multisig: 
+2. And for the same contract, verify that this specific execution is approved by the other signer multisig:
 
 ```
-Key: 0x11df082a13e3abe7c86905df73f40491ddca07ffdd5dd589ca60b5cd151a98f5
+Key (if you are an OP signer): 0x11df082a13e3abe7c86905df73f40491ddca07ffdd5dd589ca60b5cd151a98f5
+Key (if you are a CB signer): 0xc5af7fb02845bd01e3c5d7620938079cb2f0eb79259fc52740bbe4820401d909
 Before: 0x0000000000000000000000000000000000000000000000000000000000000000
 After: 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
 
-3. Verify that the nonce is incremented for the OP Foundation Multisig under the "GnosisSafeProxy" at address `0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0`:
+3. Verify that the nonce is incremented for your multisig.
+
+If you are an OP signer - the OP Foundation Multisig should be under the "GnosisSafeProxy" at address `0x2501c477D0A35545a387Aa4A3EEe4292A9a8B3F0`:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
 Before: 0x0000000000000000000000000000000000000000000000000000000000000077
 After: 0x0000000000000000000000000000000000000000000000000000000000000078
+```
+
+If you are a CB signer - the Coinbase Multisig should be under the address `0x6e1dfd5c1e22a4677663a81d24c6ba03561ef0f6`:
+
+```
+Key: 0x0000000000000000000000000000000000000000000000000000000000000005
+Before: 0x0000000000000000000000000000000000000000000000000000000000000001
+After: 0x0000000000000000000000000000000000000000000000000000000000000002
 ```
 
 4. Verify that the state changes for the OP ERC20 token match the expected balance updates. Specifically, verify that the delegate  for the Nested Multisig is established as: `0x85e870a853a55c312bbfdb16c1f64d36916b6629`. Under the `_delegates` field, look for the following state change:
@@ -156,7 +167,7 @@ Verify that the call emitted `SubDelegation`, specifying an allowance of `107374
 
 7. Verify that the `L1FeeVault` at `0x420000000000000000000000000000000000001a` receives the gas associated with the call:
 
-_Note: the balance change here might be different depending on network traffic_
+_Note: the balance values here will not be exactly the same_
 ```
 Balance     3335732882538676762398 -> 3335734048351707566580
 ```
