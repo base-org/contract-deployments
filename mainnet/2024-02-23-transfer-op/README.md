@@ -19,6 +19,7 @@ cd contract-deployments
 git pull
 cd mainnet/2024-02-23-transfer-op
 make deps
+make install-agora
 ```
 
 ### 2. Setup Ledger
