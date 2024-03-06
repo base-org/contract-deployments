@@ -12,20 +12,6 @@ endif
 # in any command when using a local key.
 ##
 
-# Delete L2 Outputs Commands
-
-.PHONY: delete-outputs-sign
-delete-outputs-sign: deps
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(L1_RPC_URL) DeleteL2Outputs --sig "sign()"
-
-.PHONY: delete-outputs-run
-delete-outputs-run: deps
-	forge script --rpc-url $(L1_RPC_URL) \
-	DeleteL2Outputs --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
-	--broadcast
-
 # Pause OptimismPortal Commands
 
 .PHONY: pause-portal-sign
