@@ -11,7 +11,7 @@ contract UnpausePortal is Script {
     function run() external {
         OptimismPortal optimismPortal = OptimismPortal(payable(OPTIMISM_PORTAL_PROXY));
 
-        vm.broadcast(vm.envUint("GUARDIAN_PRIVATE_KEY"));
+        vm.broadcast(GUARDIAN);
         optimismPortal.unpause();
 
         require(optimismPortal.paused() == false, "PausePortal: failed to unpause");
