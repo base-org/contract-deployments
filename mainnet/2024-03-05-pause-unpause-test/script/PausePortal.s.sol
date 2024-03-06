@@ -2,11 +2,11 @@
 pragma solidity 0.8.15;
 
 import "@base-contracts/script/universal/MultisigBuilder.sol";
-import "@eth-optimism-bedrock/contracts/L1/OptimismPortal.sol";
+import "@eth-optimism-bedrock/src/L1/OptimismPortal.sol";
 
 contract PausePortal is MultisigBuilder {
-    address constant internal OPTIMISM_PORTAL_PROXY = vm.envAddress("OPTIMISM_PORTAL_PROXY"); // TODO: define OPTIMISM_PORTAL_PROXY=xxx in the .env file
-    address constant internal GUARDIAN = vm.envAddress("GUARDIAN"); // TODO: define GUARDIAN=xxx in the .env file
+    address internal OPTIMISM_PORTAL_PROXY = vm.envAddress("OPTIMISM_PORTAL_PROXY");
+    address internal GUARDIAN = vm.envAddress("GUARDIAN");
 
     function _postCheck() internal override view {
         OptimismPortal optimismPortal = OptimismPortal(payable(OPTIMISM_PORTAL_PROXY));
