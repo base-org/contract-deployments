@@ -1,0 +1,3 @@
+[submodule "mainnet/2024-03-07-sysconfig-updates/lib/forge-std"]
+	path = mainnet/2024-03-07-sysconfig-updates/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
