@@ -2,7 +2,13 @@
 pragma solidity 0.8.15;
 
 import {SystemConfig} from "@eth-optimism-bedrock/src/L1/SystemConfig.sol";
-import {MultisigBuilder, IMulticall3} from "@base-contracts/script/universal/MultisigBuilder.sol";
+import {
+    MultisigBuilder, 
+    IMulticall3, 
+    IGnosisSafe,
+    console,
+    Enum
+} from "@base-contracts/script/universal/MultisigBuilder.sol";
 
 contract UpdateGasConfig is MultisigBuilder {
 
@@ -35,5 +41,48 @@ contract UpdateGasConfig is MultisigBuilder {
 
     function _ownerSafe() internal override view returns (address) {
         return SYSTEM_CONFIG_OWNER;
+    }
+
+    function _simulateForSigner(address _safe, IMulticall3.Call3[] memory _calls) internal override view {
+        IGnosisSafe safe = IGnosisSafe(payable(_safe));
+        bytes memory data = abi.encodeCall(IMulticall3.aggregate3, (_calls));
+
+        uint256 _nonce = safe.nonce();
+        console.log("Safe current nonce:", _nonce);
+
+        // workaround to check if the SAFE_NONCE env var is present
+        try vm.envUint("SAFE_NONCE") {
+            _nonce = vm.envUint("SAFE_NONCE");
+            console.log("Creating transaction with nonce:", _nonce);
+        }
+        catch {}
+
+        SimulationStateOverride[] memory overrides = new SimulationStateOverride[](1);
+        // The state change simulation sets the multisig threshold to 1 in the
+        // simulation to enable an approver to see what the final state change
+        // will look like upon transaction execution. The multisig threshold
+        // will not actually change in the transaction execution.
+        overrides[0] = overrideSafeThresholdAndOwner(_safe, DEFAULT_SENDER);
+
+        logSimulationLink({
+            _to: _safe,
+            _data: abi.encodeCall(
+                safe.execTransaction,
+                (
+                    address(multicall),
+                    0,
+                    data,
+                    Enum.Operation.DelegateCall,
+                    0,
+                    0,
+                    0,
+                    address(0),
+                    payable(address(0)),
+                    prevalidatedSignature(msg.sender)
+                )
+            ),
+            _from: msg.sender,
+            _overrides: overrides
+        });
     }
 }

@@ -26,19 +26,19 @@ execute:
 
 
 .PHONY: sign-rollback-gas-config
-sign-update-gas-config: 
+sign-rollback-gas-config: 
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) RollbackGasConfig \
 	--sig "sign()"
 
 .PHONY: approve-rollback-gas-config
-approve-update-gas-config:
+approve-rollback-gas-config:
 	forge script --rpc-url $(L1_RPC_URL) RollbackGasConfig \
 	--sig "approve(address,bytes)" $(SYSTEM_CONFIG_OWNER) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
 	--broadcast
 
 .PHONY: execute-rollback
-execute:
+execute-rollback:
 	forge script --rpc-url $(L1_RPC_URL) RollbackGasConfig \
 	--sig "run()" --ledger -hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
