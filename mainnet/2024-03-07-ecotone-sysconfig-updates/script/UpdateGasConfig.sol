@@ -30,7 +30,7 @@ contract UpdateGasConfig is MultisigBuilder {
             callData: abi.encodeCall(
                 SystemConfig.setGasConfig,
                 (
-                0, // overhead is not used post Ecotome
+                0, // overhead is not used post Ecotone
                 SCALAR
                 )
             )
@@ -58,10 +58,11 @@ contract UpdateGasConfig is MultisigBuilder {
         catch {}
 
         SimulationStateOverride[] memory overrides = new SimulationStateOverride[](1);
-        // The state change simulation sets the multisig threshold to 1 in the
-        // simulation to enable an approver to see what the final state change
-        // will look like upon transaction execution. The multisig threshold
-        // will not actually change in the transaction execution.
+        // The state change simulation sets the multisig threshold to 1 and the owner
+        // to the foundry default sender address so that the simulation can be run by 
+        // someone without one of the owning keys.
+        // The multisig threshold and owner will not actually change in the prod 
+        // transaction execution.
         overrides[0] = overrideSafeThresholdAndOwner(_safe, DEFAULT_SENDER);
 
         logSimulationLink({

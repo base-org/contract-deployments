@@ -11,6 +11,9 @@ import {
     Enum
 } from "@base-contracts/script/universal/MultisigBuilder.sol";
 
+// This script will be signed ahead of Ecotone but is not planned for execution. 
+// If something goes wrong with the hardfork, we can rollback the config by executing 
+// this pre-signed transaction.  
 contract RollbackGasConfig is MultisigBuilder {
 
     address internal SYSTEM_CONFIG_OWNER = vm.envAddress("SYSTEM_CONFIG_OWNER");
