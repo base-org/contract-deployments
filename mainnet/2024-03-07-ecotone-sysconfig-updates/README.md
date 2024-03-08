@@ -111,7 +111,8 @@ in your Ledger.
 Here is an example screenshot. Note that the value will be
 different for each signer:
 
-// ADD SCREENSHOT HERE 
+![Screenshot 2024-03-07 at 5 49 02 PM](https://github.com/base-org/contract-deployments/assets/84420280/1b7905f1-1350-4634-a804-7b4458d0ddc9)
+
 
 It will be a concatenation of `0x1901`, the domain hash, and the
 message hash: `0x1901[domain hash][message hash]`.
@@ -237,7 +238,7 @@ in your Ledger.
 Here is an example screenshot. Note that the value will be
 different for each signer:
 
-// ADD SCREENSHOT HERE 
+![Screenshot 2024-03-07 at 5 49 32 PM](https://github.com/base-org/contract-deployments/assets/84420280/b6b5817f-0d05-4862-b16a-4f7f5f18f036)
 
 It will be a concatenation of `0x1901`, the domain hash, and the
 message hash: `0x1901[domain hash][message hash]`.
