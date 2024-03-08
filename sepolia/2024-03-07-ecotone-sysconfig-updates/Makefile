@@ -10,4 +10,4 @@ endif
 
 .PHONY: update-gas-config
 update-gas-config:
-	forge script --rpc-url $(L1_RPC_URL) UpdateGasConfigSepolia --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+	forge script --rpc-url $(L1_RPC_URL) UpdateGasConfigSepolia --private-key $(PRIVATE_KEY)  --broadcast
