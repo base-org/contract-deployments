@@ -47,17 +47,16 @@ contract RollbackGasConfig is MultisigBuilder {
         return SYSTEM_CONFIG_OWNER;
     }
 
-    function _addOverrides(address _safe) internal override view returns (SimulationStateOverride memory) {
-        IGnosisSafe safe = IGnosisSafe(payable(_safe));
+    function _getNonce(IGnosisSafe safe) internal override view returns (uint256 nonce) {
         uint256 _nonce = safe.nonce();
         console.log("Safe current nonce:", _nonce);
+        console.log("Incrememnting by 1 to account for planned `Update` tx");
+        return _nonce+1;
+    }
 
-        // workaround to check if the SAFE_NONCE env var is present
-        try vm.envUint("SAFE_NONCE") {
-            _nonce = vm.envUint("SAFE_NONCE");
-            console.log("Creating transaction with nonce:", _nonce);
-        }
-        catch {}
-        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce+1);
+    function _addOverrides(address _safe) internal override view returns (SimulationStateOverride memory) {
+        IGnosisSafe safe = IGnosisSafe(payable(_safe));
+        _nonce = _getNonce(safe);
+        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
     }
 }
