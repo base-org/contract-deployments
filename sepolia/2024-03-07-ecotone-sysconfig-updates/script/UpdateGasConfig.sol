@@ -8,6 +8,7 @@ contract UpdateGasConfigSepolia is Script {
 
     address internal L1_SYSTEM_CONFIG = vm.envAddress("L1_SYSTEM_CONFIG_ADDRESS");
     uint256 internal SCALAR = vm.envUint("SCALAR");
+    address internal OWNER = vm.envAddress("OWNER_ADDRESS");
 
     function _postCheck() internal view {
         require(SystemConfig(L1_SYSTEM_CONFIG).scalar() == SCALAR);
@@ -15,7 +16,7 @@ contract UpdateGasConfigSepolia is Script {
     }
 
     function run() public {
-        vm.startBroadcast();
+        vm.startBroadcast(OWNER);
         SystemConfig(L1_SYSTEM_CONFIG).setGasConfig(0, SCALAR); 
         _postCheck();
         vm.stopBroadcast(); 
