@@ -56,7 +56,7 @@ contract RollbackGasConfig is MultisigBuilder {
 
     function _addOverrides(address _safe) internal override view returns (SimulationStateOverride memory) {
         IGnosisSafe safe = IGnosisSafe(payable(_safe));
-        _nonce = _getNonce(safe);
+        uint256 _nonce = _getNonce(safe);
         return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
     }
 }
