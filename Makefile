@@ -41,12 +41,7 @@ deps: install-eip712sign clean-lib forge-deps checkout-op-commit checkout-base-c
 
 .PHONY: install-eip712sign
 install-eip712sign:
-	mkdir eip712sign-tmp
-	cd eip712sign-tmp
-	git clone git@github.com:base-org/eip712sign.git .
-	go install
-	cd ..
-	rm -rf eip712sign-tmp
+	go install github.com/base-org/eip712sign@v0.0.6
 
 .PHONY: clean-lib
 clean-lib:
