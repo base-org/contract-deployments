@@ -30,4 +30,8 @@ contract PausePortal is MultisigBuilder {
     function _ownerSafe() internal override view returns (address) {
         return GUARDIAN;
     }
+
+    function _addOverrides(address _safe) internal override pure returns (SimulationStateOverride memory) {
+        return overrideSafeThresholdAndOwner(_safe, DEFAULT_SENDER);
+    }
 }
