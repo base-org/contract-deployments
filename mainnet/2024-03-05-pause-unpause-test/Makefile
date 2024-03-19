@@ -6,6 +6,18 @@ ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif
 
+ifndef EXECUTOR_PRIVATE_KEY
+$(error EXECUTOR_PRIVATE_KEY is undefined)
+endif
+
+ifndef PAUSE_SIGNATURES
+$(error PAUSE_SIGNATURES is undefined)
+endif
+
+ifndef UNPAUSE_SIGNATURES
+$(error PAUSE_SIGNATURES is undefined)
+endif
+
 ##
 # Incident response commands
 # Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
@@ -15,27 +27,27 @@ endif
 # Pause OptimismPortal Commands
 
 .PHONY: pause-portal-sign
-pause-portal-sign: deps
+pause-portal-sign:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) PausePortal --sig "sign()"
 
 .PHONY: pause-portal-run
-pause-portal-run: deps
-	forge script --rpc-url $(L1_RPC_URL) \
-	PausePortal --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+pause-portal-run:
+	@forge script --rpc-url $(L1_RPC_URL) \
+	PausePortal --sig "run(bytes)" $(PAUSE_SIGNATURES) \
+	--private-key $(EXECUTOR_PRIVATE_KEY) \
 	--broadcast
 
 # Unpause OptimismPortal Commands
 
 .PHONY: unpause-portal-sign
-unpause-portal-sign: deps
+unpause-portal-sign:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) UnpausePortal --sig "sign()"
 
 .PHONY: unpause-portal-run
-unpause-portal-run: deps
-	forge script --rpc-url $(L1_RPC_URL) \
-	UnpausePortal --sig "run(bytes)" $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
+unpause-portal-run:
+	@forge script --rpc-url $(L1_RPC_URL) \
+	UnpausePortal --sig "run(bytes)" $(UNPAUSE_SIGNATURES) \
+	--private-key $(EXECUTOR_PRIVATE_KEY) \
 	--broadcast
