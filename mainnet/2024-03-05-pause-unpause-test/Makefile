@@ -6,6 +6,18 @@ ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif
 
+ifndef EXECUTOR_PRIVATE_KEY
+$(error EXECUTOR_PRIVATE_KEY is undefined)
+endif
+
+ifndef PAUSE_SIGNATURES
+$(error PAUSE_SIGNATURES is undefined)
+endif
+
+ifndef UNPAUSE_SIGNATURES
+$(error PAUSE_SIGNATURES is undefined)
+endif
+
 ##
 # Incident response commands
 # Note that --ledger --hd-paths <PATH> can be replaced with --private-key $(PRIVATE_KEY)
