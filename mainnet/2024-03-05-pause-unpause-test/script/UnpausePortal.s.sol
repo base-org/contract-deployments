@@ -40,7 +40,7 @@ contract UnpausePortal is MultisigBuilder {
     function _getNonce(IGnosisSafe safe) internal override view returns (uint256 nonce) {
         uint256 _nonce = safe.nonce();
         console.log("Safe current nonce:", _nonce);
-        console.log("Incrememnting by 1 to account for planned `Pause` tx");
+        console.log("Incrementing by 1 to account for planned `Pause` tx");
         return _nonce+1;
     }
 }
