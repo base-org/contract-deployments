@@ -4,6 +4,6 @@ include .env
 
 # Unpause OptimismPortal Commands
 
-.PHONY: update-gas-config
-update-gas-config:
+.PHONY: update-gas-limit
+update-gas-limit:
 	@forge script --rpc-url $(L1_RPC_URL) UpdateGasLimitSepolia --private-key $(PRIVATE_KEY)  --broadcast
