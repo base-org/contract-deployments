@@ -6,4 +6,4 @@ include .env
 
 .PHONY: update-gas-config
 update-gas-config:
-	@forge script --rpc-url $(L1_RPC_URL) UpdateGasConfigSepolia --private-key $(PRIVATE_KEY)  --broadcast
+	@forge script --rpc-url $(L1_RPC_URL) UpdateGasLimit --private-key $(PRIVATE_KEY)  --broadcast
