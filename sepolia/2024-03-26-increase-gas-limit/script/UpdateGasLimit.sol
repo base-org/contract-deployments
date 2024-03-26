@@ -6,7 +6,7 @@ import "forge-std/Script.sol";
 
 contract UpdateGasLimitSepolia is Script {
     address internal L1_SYSTEM_CONFIG = vm.envAddress("L1_SYSTEM_CONFIG_ADDRESS");
-    uint256 internal GAS_LIMIT = vm.envUint("GAS_LIMIT");
+    uint64 internal GAS_LIMIT = uint64(vm.envUint("GAS_LIMIT"));
     address internal OWNER = vm.envAddress("OWNER_ADDRESS");
 
     function _postCheck() internal view {
