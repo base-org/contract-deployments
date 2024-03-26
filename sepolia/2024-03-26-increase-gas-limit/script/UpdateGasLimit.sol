@@ -5,7 +5,6 @@ import {SystemConfig} from "@eth-optimism-bedrock/src/L1/SystemConfig.sol";
 import "forge-std/Script.sol";
 
 contract UpdateGasLimitSepolia is Script {
-
     address internal L1_SYSTEM_CONFIG = vm.envAddress("L1_SYSTEM_CONFIG_ADDRESS");
     uint256 internal GAS_LIMIT = vm.envUint("GAS_LIMIT");
     address internal OWNER = vm.envAddress("OWNER_ADDRESS");
@@ -16,8 +15,8 @@ contract UpdateGasLimitSepolia is Script {
 
     function run() public {
         vm.startBroadcast(OWNER);
-        SystemConfig(L1_SYSTEM_CONFIG).setGasLimit(GAS_LIMIT); 
+        SystemConfig(L1_SYSTEM_CONFIG).setGasLimit(GAS_LIMIT);
         _postCheck();
-        vm.stopBroadcast(); 
+        vm.stopBroadcast();
     }
 }
