@@ -7,8 +7,8 @@ Status: IN TEST
 We are updating the gas limit to improve TPS and reduce gas fees. 
 
 This runbook implements scripts which allow our signers to sign two different calls for our Incident Multisig: 
-1. `UpdateGasLimit` -- This script will update the gas limit to our new limit of 45M gas 
-2. `RollbackGasLimit` -- This script establishes a rollback call in the case we need to revert to 30M gas
+1. `UpdateGasLimit` -- This script will update the gas limit to our new limit of 60M gas 
+2. `RollbackGasLimit` -- This script establishes a rollback call in the case we need to revert to 45M gas
 
 The values we are sending are statically defined in the `.env`.
 
@@ -74,20 +74,20 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from 13 to 14:
+1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from 15 to 16:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x000000000000000000000000000000000000000000000000000000000000000d
-After: 0x000000000000000000000000000000000000000000000000000000000000000e
+Before: 0x000000000000000000000000000000000000000000000000000000000000000f
+After: 0x00000000000000000000000000000000000000000000000000000000000000010
 ```
 
 2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from 30M to 45M:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000068
-Before: 0x0000000000000000000000000000000000000000000000000000000001c9c380
-After: 0x0000000000000000000000000000000000000000000000000000000002aea540
+Before: 0x0000000000000000000000000000000000000000000000000000000002aea540
+After: 0x0000000000000000000000000000000000000000000000000000000003938700
 ```
 
 #### 3.3. Extract the domain hash and the message hash to approve.
@@ -201,16 +201,16 @@ Now click on the "State" tab. Verify that:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x000000000000000000000000000000000000000000000000000000000000000e
-After: 0x000000000000000000000000000000000000000000000000000000000000000f
+Before: 0x00000000000000000000000000000000000000000000000000000000000000010
+After: 0x00000000000000000000000000000000000000000000000000000000000000011
 ```
 
 2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000068
-Before: 0x0000000000000000000000000000000000000000000000000000000002aea540
-After: 0x0000000000000000000000000000000000000000000000000000000001c9c380
+Before: 0x0000000000000000000000000000000000000000000000000000000003938700
+After: 0x0000000000000000000000000000000000000000000000000000000002aea540
 ```
 
 #### 3.3. Extract the domain hash and the message hash to approve.
