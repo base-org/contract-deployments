@@ -1,6 +1,6 @@
 # Update Gas Limit in L1 `SystemConfig` 
 
-Status: IN TEST
+Status: DONE
 
 ## Objective
 
@@ -23,7 +23,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd mainnet/2024-03-26-increase-gas-limit
+cd mainnet/2024-04-01-increase-gas-limit
 make deps
 ```
 
@@ -74,12 +74,12 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from 15 to 16:
+1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from 14 to 15:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x000000000000000000000000000000000000000000000000000000000000000f
-After: 0x00000000000000000000000000000000000000000000000000000000000000010
+Before: 0x000000000000000000000000000000000000000000000000000000000000000e
+After: 0x0000000000000000000000000000000000000000000000000000000000000000f
 ```
 
 2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from 30M to 45M:
@@ -201,8 +201,8 @@ Now click on the "State" tab. Verify that:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x00000000000000000000000000000000000000000000000000000000000000010
-After: 0x00000000000000000000000000000000000000000000000000000000000000011
+Before: 0x0000000000000000000000000000000000000000000000000000000000000000f
+After: 0x00000000000000000000000000000000000000000000000000000000000000010
 ```
 
 2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`:
