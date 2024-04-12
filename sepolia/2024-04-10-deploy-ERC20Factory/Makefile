@@ -12,7 +12,7 @@ deploy:
 	rm unsorted.json && rm inputs/foundry-config.json
 
 verify: 
-	forge verify-contract 0x11e73c1a710458c7Ee9b5973f1e43D87e89a4455 \
+	forge verify-contract 0x6539a3f5fbf41b3f601c418712a45660f00fdae9 \
 	lib/optimism/packages/contracts-bedrock/src/universal/OptimismMintableERC20Factory.sol:OptimismMintableERC20Factory \
 	--verifier-url  https://api-sepolia.basescan.org/api --watch
 

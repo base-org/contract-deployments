@@ -9,6 +9,6 @@ contract RunERC20FactoryDeploy is Script {
     function run() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
-        new OptimismMintableERC20Factory();
+        new OptimismMintableERC20Factory{salt: '0xba5ed'}();
     }
 }
