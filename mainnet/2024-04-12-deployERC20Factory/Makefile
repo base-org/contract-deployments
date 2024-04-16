@@ -12,6 +12,6 @@ deploy:
 .PHONY: verify
 verify:
 	forge verify-contract 0x6922ac4dbdfedea3a1e5535f12c3171f2b964c91 OptimismMintableERC20Factory \
-	--watch --chain-id 84532 \
+	--watch --chain-id 8453 \
 	--num-of-optimizations=99999 --retries=1 \
-	--verifier-url 	https://sepolia-api.basescan.org/api 
+	--verifier-url 	https://api.basescan.org/api 
