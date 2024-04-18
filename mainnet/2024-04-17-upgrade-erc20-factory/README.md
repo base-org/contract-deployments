@@ -157,7 +157,7 @@ in your Ledger.
 Here is an example screenshot. Note that the hash value may be
 different:
 
-<img width="1195" alt="image" src="https://github.com/base-org/contract-deployments/assets/7411939/7d16806c-0408-4d5f-9212-bed4e6fc14f8">
+![Screenshot 2024-04-18 at 18 53 26](https://github.com/base-org/contract-deployments/assets/33523487/85566275-feab-489d-87e9-6ebc4de7b823)
 
 It will be a concatenation of `0x1901`, the domain hash, and the
 message hash: `0x1901[domain hash][message hash]`.
@@ -183,6 +183,7 @@ make sign-op # or make sign-cb for Coinbase signers
 2. in the Tenderly simulation. You should use the same Tenderly
    simulation as the one you used to verify the state diffs, instead
    of opening the new one printed in the console.
+
 
 There is no need to verify anything printed in the console. There is
 no need to open the new Tenderly simulation link either.
