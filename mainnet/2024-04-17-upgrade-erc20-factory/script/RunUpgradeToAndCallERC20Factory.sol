@@ -21,8 +21,6 @@ contract RunUpgradeToAndCallERC20Factory is NestedMultisigBuilder {
     address public ERC20_FACTORY_IMPL = vm.envAddress("ERC20_FACTORY_IMPL");
 
     address internal NESTED_SAFE = vm.envAddress("NESTED_SAFE");
-    address internal BASE_SAFE = vm.envAddress("BASE_SAFE");
-    address internal OP_SAFE = vm.envAddress("OP_SAFE");
 
     function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override {
         address impl = address(uint160(uint256(vm.load(ERC20_FACTORY, IMPLEMENTATION_KEY))));

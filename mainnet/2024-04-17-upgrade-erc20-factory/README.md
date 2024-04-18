@@ -31,13 +31,6 @@ Make sure your ledger is still unlocked and run the following.
 make sign-op # or make sign-cb for Coinbase signers
 ```
 
-Note: there have been reports of some folks seeing this error `Error creating signer: error opening ledger: hidapi: failed to open device`. A fix is in progress, but not yet merged. If you come across this, open a new terminal and run the following to resolve the issue:
-```
-git clone git@github.com:base-org/eip712sign.git
-cd eip712sign
-go install
-```
-
 Once you run the make sign command successfully, you will see a "Simulation link" from the output.
 
 Paste this URL in your browser. A prompt may ask you to choose a
@@ -59,7 +52,7 @@ message hash to approve on your Ledger then verify completion:
 Make sure you are on the "Overview" tab of the tenderly simulation, to
 validate integrity of the simulation, we need to check the following:
 
-1. "Network": Check the network is Optimism Mainnet.
+1. "Network": Check the network is Base Mainnet.
 2. "Timestamp": Check the simulation is performed on a block with a
    recent timestamp (i.e. close to when you run the script).
 3. "Sender": Check the address shown is your signer account. If not,
