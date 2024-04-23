@@ -5,7 +5,6 @@ import "forge-std/Script.sol";
 import "@base-contracts/src/smart-escrow/SmartEscrow.sol";
 
 contract DeploySmartEscrow is Script {
-    address internal DEPLOYER = vm.envAddress("DEPLOYER");
     address internal BENEFACTOR = vm.envAddress("BENEFACTOR");
     address internal BENEFICIARY = vm.envAddress("BENEFICIARY");
     address internal BENEFACTOR_OWNER = vm.envAddress("BENEFACTOR_OWNER");
@@ -18,7 +17,7 @@ contract DeploySmartEscrow is Script {
     uint256 internal VESTING_EVENT_TOKENS = vm.envUint("VESTING_EVENT_TOKENS");
 
     function run() public {
-        vm.broadcast(DEPLOYER);
+        vm.broadcast();
         SmartEscrow smartEscrow = new SmartEscrow(
             BENEFACTOR,
             BENEFICIARY,
