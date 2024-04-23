@@ -14,7 +14,7 @@ interface IImpl {
 
 bytes32 constant IMPLEMENTATION_KEY = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 
-contract RunUpgradeToAndCallERC20Factory is NestedMultisigBuilder {
+contract UpgradeOptimismMintableERC20Factory is NestedMultisigBuilder {
     address public BRIDGE = vm.envAddress("BRIDGE");
     address public PROXY_ADMIN = vm.envAddress("PROXY_ADMIN");
     address public ERC20_FACTORY = vm.envAddress("ERC20_FACTORY");
