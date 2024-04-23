@@ -1,4 +1,4 @@
-# Transfer and Delegate OP Tokens
+# Upgrade OptimismMintableERC20Factory implementation
 
 Status: READY TO SIGN
 
