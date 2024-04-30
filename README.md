@@ -73,6 +73,7 @@ To add new incident response scripts:
 This template is used for deploying the L1 contracts in the OP stack to set up a new network.
 
 1. Ensure you have followed the instructions above in `setup`
+1. Rename the folder to something more descriptive
 1. Specify the commit of [Optimism code](https://github.com/ethereum-optimism/optimism) and [Base contracts code](https://github.com/base-org/contracts) you intend to use in the `.env` file
 1. Run `make deps`
 1. Fill in the `inputs/deploy-config.json` and `inputs/misc-config.json` files with the input variables for the deployment.
