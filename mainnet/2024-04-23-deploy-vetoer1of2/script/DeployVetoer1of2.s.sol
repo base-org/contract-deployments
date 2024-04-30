@@ -15,15 +15,6 @@ contract DeployVetoer1of2 is Script {
         _deployVetoer1of2({opSafe: opSafe, baseSafe: baseSafe, initiator: initiator, proxyAdmin: proxyAdmin});
     }
 
-    function deployL2() public {
-        address opSafe = vm.envAddress("L2_OP_SAFE");
-        address baseSafe = vm.envAddress("L2_BASE_SAFE");
-        address initiator = vm.envAddress("L2_SECURITY_COUNCIL_SAFE");
-        address proxyAdmin = vm.envAddress("L2_PROXY_ADMIN");
-
-        _deployVetoer1of2({opSafe: opSafe, baseSafe: baseSafe, initiator: initiator, proxyAdmin: proxyAdmin});
-    }
-
     function _deployVetoer1of2(address opSafe, address baseSafe, address initiator, address proxyAdmin) private {
         vm.startBroadcast();
 
