@@ -23,15 +23,15 @@ sign-op:
 approve-cb:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeOptimismMintableERC20Factory \
 	--sig "approve(address,bytes)" $(BASE_SAFE) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	-i 1 --broadcast
 
 .PHONY: approve-op
 approve-op:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeOptimismMintableERC20Factory \
 	--sig "approve(address,bytes)" $(OP_SAFE) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	-i 1 --broadcast
 
-.PHONY: execute
-execute:
+.PHONY: run
+run:
 	forge script --rpc-url $(L2_RPC_URL) UpgradeOptimismMintableERC20Factory \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "run()" -i 1 --broadcast
