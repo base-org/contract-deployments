@@ -1,6 +1,6 @@
 # Upgrade OptimismMintableERC20Factory implementation
 
-Status: READY_TO_SIGN
+Status: DONE
 
 ## Objective
 
