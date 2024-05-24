@@ -10,13 +10,18 @@ import {
     console,
     Enum
 } from "@base-contracts/script/universal/MultisigBuilder.sol";
+import { Vm } from "forge-std/Vm.sol";
 
 // This script will be signed ahead of our gas limit increase but isn't expected to be
 // executed. It will be available to us in the event we need to quickly rollback the gas limit.
-abstract contract RollbackGasLimit is MultisigBuilder {
+contract RollbackGasLimit is MultisigBuilder {
     address internal SYSTEM_CONFIG_OWNER = vm.envAddress("SYSTEM_CONFIG_OWNER");
     address internal L1_SYSTEM_CONFIG = vm.envAddress("L1_SYSTEM_CONFIG_ADDRESS");
     uint64 internal ROLLBACK_GAS_LIMIT = uint64(vm.envUint("ROLLBACK_GAS_LIMIT"));
+
+    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override view {
+        assert(SystemConfig(L1_SYSTEM_CONFIG).gasLimit() == ROLLBACK_GAS_LIMIT);
+    }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);

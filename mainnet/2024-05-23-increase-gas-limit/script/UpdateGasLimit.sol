@@ -9,11 +9,16 @@ import {
     console,
     Enum
 } from "@base-contracts/script/universal/MultisigBuilder.sol";
+import { Vm } from "forge-std/Vm.sol";
 
-abstract contract UpdateGaslimit is MultisigBuilder {
+contract UpdateGaslimit is MultisigBuilder {
     address internal SYSTEM_CONFIG_OWNER = vm.envAddress("SYSTEM_CONFIG_OWNER");
     address internal L1_SYSTEM_CONFIG = vm.envAddress("L1_SYSTEM_CONFIG_ADDRESS");
     uint64 internal GAS_LIMIT = uint64(vm.envUint("GAS_LIMIT"));
+
+    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override view {
+        assert(SystemConfig(L1_SYSTEM_CONFIG).gasLimit() == GAS_LIMIT);
+    }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
