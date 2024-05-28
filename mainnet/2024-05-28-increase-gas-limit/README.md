@@ -7,8 +7,8 @@ Status: DONE
 We are updating the gas limit to improve TPS and reduce gas fees. 
 
 This runbook implements scripts which allow our signers to sign two different calls for our Incident Multisig: 
-1. `UpdateGasLimit` -- This script will update the gas limit to our new limit of 90M gas
-2. `RollbackGasLimit` -- This script establishes a rollback call in the case we need to revert to 90M gas
+1. `UpdateGasLimit` -- This script will update the gas limit to our new limit of 75M gas
+2. `RollbackGasLimit` -- This script establishes a rollback call in the case we need to revert to 60M gas
 
 The values we are sending are statically defined in the `.env`.
 
@@ -23,7 +23,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd mainnet/2024-04-01-increase-gas-limit
+cd mainnet/2024-05-28-increase-gas-limit
 make deps
 ```
 
@@ -82,7 +82,7 @@ Before: 0x000000000000000000000000000000000000000000000000000000000000000f
 After: 0x00000000000000000000000000000000000000000000000000000000000000010
 ```
 
-2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from 60M to 90M:
+2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from 60M to 75M:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000068
