@@ -12,10 +12,10 @@ contract TransferL1ProxyAdminOwner is Script {
 
     function run() public {
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_CONTRACT);
-        require(proxyAdmin.owner() == OLD_OWNER, "ProxyAdmin owner is not the expected owner");
+        require(proxyAdmin.owner() == OLD_OWNER, "L1 ProxyAdmin owner is not the expected owner");
         vm.startBroadcast(OLD_OWNER);
         proxyAdmin.transferOwnership(NEW_OWNER);
-        require(proxyAdmin.owner() == NEW_OWNER, "ProxyAdmin owner did not get updated");
+        require(proxyAdmin.owner() == NEW_OWNER, "L1 ProxyAdmin owner did not get updated");
         vm.stopBroadcast();
     }
 }
