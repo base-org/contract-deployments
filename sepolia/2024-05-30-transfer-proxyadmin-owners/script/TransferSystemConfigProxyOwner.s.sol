@@ -6,8 +6,8 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 
 contract TransferSystemConfigProxyOwner is Script {
     address internal SYSTEM_CONFIG_PROXY = vm.envAddress("SYSTEM_CONFIG_PROXY");
-    address internal OLD_OWNER = vm.envAddress("OLD_SYSTEM_CONFIG_PROXY_OWNER");
-    address internal NEW_OWNER = vm.envAddress("NEW_SYSTEM_CONFIG_PROXY_OWNER");
+    address internal OLD_OWNER = vm.envAddress("OLD_SYSTEM_CONFIG_OWNER");
+    address internal NEW_OWNER = vm.envAddress("NEW_SYSTEM_CONFIG_OWNER");
 
     function run() public {
         require(
