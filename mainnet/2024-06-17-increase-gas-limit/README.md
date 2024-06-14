@@ -23,7 +23,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd mainnet/2024-06-14-increase-gas-limit
+cd mainnet/2024-06-17-increase-gas-limit
 make deps
 ```
 
