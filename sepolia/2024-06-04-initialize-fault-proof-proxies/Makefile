@@ -3,7 +3,8 @@ include ../.env
 include .env
 
 ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 0
+# Second ledger address by default for testnet
+override LEDGER_ACCOUNT = 1
 endif
 
 ##

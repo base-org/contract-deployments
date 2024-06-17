@@ -20,6 +20,9 @@ contract InitializeFaultProofProxies is MultisigBuilder {
 
     /**
      * @notice Follow up assertions to ensure that the script ran to completion.
+     * @dev Based on OP Stack deployment scripts.
+     *      See https://github.com/ethereum-optimism/optimism/blob/71b93116738ee98c9f8713b1a5dfe626ce06c1b2/packages/contracts-bedrock/scripts/fpac/FPACOPS.s.sol#L41-L43
+     *      and https://github.com/ethereum-optimism/optimism/blob/71b93116738ee98c9f8713b1a5dfe626ce06c1b2/packages/contracts-bedrock/scripts/Deploy.s.sol#L728
      */
     function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal view override {
         // 1. Check DisputeGameFactoryProxy
