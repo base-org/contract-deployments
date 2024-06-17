@@ -3,8 +3,8 @@ pragma solidity 0.8.15;
 
 import "forge-std/Script.sol";
 import "@base-contracts/script/universal/MultisigBuilder.sol";
-import {DelayedWETH,SuperchainConfig} from "@eth-optimism-bedrock/src/dispute/weth/DelayedWETH.sol";
-import {DisputeGameFactory} from "@eth-optimism-bedrock/src/dispute/DisputeGameFactory.sol";
+import {DelayedWETH, SuperchainConfig} from "@eth-optimism-bedrock/src/dispute/weth/DelayedWETH.sol";
+import {DisputeGameFactory, GameTypes} from "@eth-optimism-bedrock/src/dispute/DisputeGameFactory.sol";
 import {ProxyAdmin} from "@eth-optimism-bedrock/src/universal/ProxyAdmin.sol";
 
 contract InitializeFaultProofProxies is MultisigBuilder {
@@ -42,7 +42,7 @@ contract InitializeFaultProofProxies is MultisigBuilder {
      * @notice Creates the calldata
      */
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
-        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](2);
+        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](4);
 
         // 1. Initialize DisputeGameFactoryProxy
         calls[0] = IMulticall3.Call3({
@@ -58,8 +58,22 @@ contract InitializeFaultProofProxies is MultisigBuilder {
             )
         });
 
-        // 2. Initialize DelayedWETHProxy
+        // 2. Set the initialization bonds for the FaultDisputeGame and PermissionedDisputeGame.
+        // https://github.com/ethereum-optimism/optimism/blob/71b93116738ee98c9f8713b1a5dfe626ce06c1b2/packages/contracts-bedrock/scripts/fpac/FPACOPS.s.sol#L77-L79
+        // https://github.com/ethereum-optimism/optimism/blob/71b93116738ee98c9f8713b1a5dfe626ce06c1b2/packages/contracts-bedrock/src/dispute/DisputeGameFactory.sol#L100
         calls[1] = IMulticall3.Call3({
+            target: payable(DISPUTE_GAME_FACTORY_PROXY),
+            allowFailure: false,
+            callData: abi.encodeCall(DisputeGameFactory.setInitBond, (GameTypes.CANNON, 0.08 ether))
+        });
+        calls[2] = IMulticall3.Call3({
+            target: payable(DISPUTE_GAME_FACTORY_PROXY),
+            allowFailure: false,
+            callData: abi.encodeCall(DisputeGameFactory.setInitBond, (GameTypes.PERMISSIONED_CANNON, 0.08 ether))
+        });
+
+        // 3. Initialize DelayedWETHProxy
+        calls[3] = IMulticall3.Call3({
             target: PROXY_ADMIN,
             allowFailure: false,
             callData: abi.encodeCall(
@@ -78,7 +92,7 @@ contract InitializeFaultProofProxies is MultisigBuilder {
     /**
      * @notice Returns the safe address to execute the transaction from
      */
-    function _ownerSafe() internal override view returns (address) {
+    function _ownerSafe() internal view override returns (address) {
         return PROXY_ADMIN_OWNER;
     }
 }
