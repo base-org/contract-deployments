@@ -40,7 +40,7 @@ contract DeploySmartEscrow is Script {
         require(smartEscrow.vestingEventTokens() == VESTING_EVENT_TOKENS, "DeploySmartEscrow: number of vesting event tokens incorrect");
         require(smartEscrow.benefactor() == BENEFACTOR, "DeploySmartEscrow: benefactor incorrect"); 
         require(smartEscrow.beneficiary() == BENEFICIARY, "DeploySmartEscrow: beneficiary incorrect");
-        require(smartEscrow.released() == 0, "DeploySmartEscrow: initial released value must bex zero");
+        require(smartEscrow.released() == 0, "DeploySmartEscrow: initial released value must be zero");
         require(smartEscrow.contractTerminated() == false, "DeploySmartEscrow: contract cannot initially be terminated");
     }
 }
