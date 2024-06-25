@@ -4,7 +4,7 @@ include .env
 
 .PHONY: deploy-new-implementation
 deploy-new-implementation:
-	forge script --rpc-url $(OPTIMISM_RPC_URL) DeploySmartEscrow --ledger --hd-paths "m/44'/60'/0'/0/0" --broadcast
+	forge script --rpc-url $(OPTIMISM_RPC_URL) DeploySmartEscrow --ledger --hd-paths "m/44'/60'/0'/0/0" --broadcast --verify
 
 .PHONY: verify-implementation
 verify-implementation:
