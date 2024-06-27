@@ -4,10 +4,12 @@ Status: READY TO SIGN
 
 ## Objective
 
-Along with the Ecotone hardfork, we need to make changes to the Gas Config in the L1 `SystemConfig` contract. Specifically, we need to set the `_overhead` and `_scalar` values by calling `setGasConfig`. This is an access-controlled method that only the Incident Multisig can call.
+Because of the recently blob market fee dynamics, we had to pay extra priority fees in order for the blobs to be included in L1, which resulted in a net loss. Because of this, we wanted to tweak the gas scalar to see to do some L1 fee recovery.
+
+We need to make changes to the Gas Config in the L1 `SystemConfig` contract. Specifically, we need to set the `_overhead` and `_scalar` values by calling `setGasConfig`. This is an access-controlled method that only the Incident Multisig can call.
 
 This runbook implements scripts to allow our signers to sign two different calls for our Incident Multisig: 
-1. `UpdateGasConfig` -- This script will update the values according to our expected happy path wherein we are actively using Blobs
+1. `UpdateGasConfig` -- This script will update the values according to our expected new scalar values
 2. `RollbackGasConfig` -- This script establishes a rollback call in the case we need to revert to old values
 
 > [!IMPORTANT] We have two transactions to sign. Please follow 
