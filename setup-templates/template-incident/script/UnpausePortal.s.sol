@@ -2,7 +2,7 @@
 pragma solidity 0.8.15;
 
 import "@base-contracts/script/universal/MultisigBuilder.sol";
-import "@eth-optimism-bedrock/contracts/L1/OptimismPortal.sol";
+import "@eth-optimism-bedrock/src/L1/OptimismPortal.sol";
 
 contract UnpausePortal is MultisigBuilder {
     address constant internal OPTIMISM_PORTAL_PROXY = vm.envAddress("OPTIMISM_PORTAL_PROXY"); // TODO: define OPTIMISM_PORTAL_PROXY=xxx in the .env file
