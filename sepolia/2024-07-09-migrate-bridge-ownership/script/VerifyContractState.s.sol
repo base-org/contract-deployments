@@ -5,10 +5,10 @@ import "forge-std/Script.sol";
 import "forge-std/console.sol";
 
 import "@eth-optimism-bedrock/src/dispute/AnchorStateRegistry.sol";
+import "@eth-optimism-bedrock/src/dispute/weth/DelayedWETH.sol";
 import {Constants} from "@eth-optimism-bedrock/src/libraries/Constants.sol";
 
 contract VerifyContractState is Script {
-    function setUp() public {}
 
     function run() public {
         verifyAnchorStateRegistry();
@@ -38,10 +38,26 @@ contract VerifyContractState is Script {
         console.log("- DisputeGameFactory address: %s", disputeGameFactoryAddr);
         console.log("- Anchor for GameType.CANNON: %s, %s", vm.toString(Hash.unwrap(rootCannon)), l2BlockNumberCannon);
         console.log("- Anchor for GameType.PERMISSIONED_CANNON: %s, %s", vm.toString(Hash.unwrap(rootPermissionedCannon)), l2BlockNumberPermissionedCannon);
+        console.log("==================\n");
     }
 
     function verifyDelayedWETH() internal {
-        // TODO: Implement
+        address addr = vm.envAddress("DELAYED_WETH_PROXY");
+
+        address impl = bytes32ToAddress(vm.load(addr, Constants.PROXY_IMPLEMENTATION_ADDRESS));
+
+        DelayedWETH delayedWeth = DelayedWETH(payable(addr));
+
+        string memory version = delayedWeth.version();
+        address owner = delayedWeth.owner();
+        address config = address(delayedWeth.config());
+
+        console.log("DelayedWETH: %s", addr);
+        console.log("- Implementation address: %s", impl);
+        console.log("- Version: %s", version);
+        console.log("- Owner: %s", owner);
+        console.log("- SuperchainConfig address: %s", config);
+        console.log("==================\n");
     }
 
     function verifyDisputeGameFactory() internal {
