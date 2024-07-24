@@ -1,6 +1,7 @@
 # Transfer ownership of L1 `BalanceTracker` from the CB Upgrade multisig to the CB Incident multisig 
 
-Status: READY TO SIGN
+Status: EXECUTED
+https://etherscan.io/tx/0x096cdc7349e9eba3ee7f69c103adfdc6565dbe36bb523fa84169391dee6b6e58
 
 ## Objective
 
