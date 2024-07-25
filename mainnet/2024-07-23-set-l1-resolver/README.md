@@ -66,8 +66,26 @@ validate integrity of the simulation, we need to check the following:
 
 #### 3.2. Validate correctness of the state diff.
 
-@TODO -- need L1 Resolver deployed to simulate this
+Navigate to the `State` tab and check that the following state changes are reflected in the simulation; 
 
+The `resolver` address change in the ENS Registry. We expect that the resolver is being set
+_from_: [0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41](https://etherscan.io/address/0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41)
+_to_: [0x480F8F2FfE823Dc70F499Cc2542C42a3a6aD3f20](https://etherscan.io/address/0x480F8F2FfE823Dc70F499Cc2542C42a3a6aD3f20)
+
+**ENSRegistryWithFallback** _0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e_
+`mapping (bytes32 => tuple) records` 
+`bytes32 node`: 0xff1e3c0eb00ec714e34b6114125fbde1dea2f24a72fbf672e7b7fd5690328e10
+_where_  `0xff1e...8e10` == `nodehash(base.eth)` 
+
+**Key:** 0x0c2c38386d21b4257e636b2579f626b23f930fbee0cc73a52081e975ea266cff
+**Before:** 0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41
+**After:** 0x000000000000000000000000480f8f2ffe823dc70f499cc2542c42a3a6ad3f20
+
+**GnosisSafeProxy** _0x14536667Cd30e52C0b458BaACcB9faDA7046E056_
+Increments the nonce from 24 -> 25
+**Key**: 0x0000000000000000000000000000000000000000000000000000000000000005
+**Before**: 0x0000000000000000000000000000000000000000000000000000000000000018
+**After**: 0x0000000000000000000000000000000000000000000000000000000000000019 
 
 #### 3.3. Extract the domain hash and the message hash to approve.
 
