@@ -1,6 +1,6 @@
 # Update the `Resolver` of the `base.eth` name to the Basenames [L1Resolver](https://github.com/base-org/basenames/blob/v1.0.0/src/L1/L1Resolver.sol)
 
-Status: DRAFT
+Status: READY TO SIGN
 
 ## Objective
 
