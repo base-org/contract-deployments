@@ -50,4 +50,10 @@ contract SetL1Resolver is MultisigBuilder {
     function _ownerSafe() internal override view returns (address) {
         return INCIDENT_MULTISIG;
     }
+
+    function _addOverrides(address _safe) internal override view returns (SimulationStateOverride memory) {
+        IGnosisSafe safe = IGnosisSafe(payable(_safe));
+        uint256 _nonce = _getNonce(safe);
+        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
+    }
 }
