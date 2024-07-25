@@ -74,6 +74,22 @@ contract UpgradeBalanceTracker is MultisigBuilder {
             BalanceTracker(implementation).PROFIT_WALLET() == profitWallet,
             "UpgradeBalanceTracker: incorrect profit wallet"
         );
+        require(
+            BalanceTracker(proxy).systemAddresses(0) == outputProposer,
+            "UpgradeBalanceTracker: incorrect output proposer"
+        );
+        require(
+            BalanceTracker(proxy).systemAddresses(1) == batchSender,
+            "UpgradeBalanceTracker: incorrect batch sender"
+        );
+        require(
+            BalanceTracker(proxy).targetBalances(0) == outputProposerTargetBalance,
+            "UpgradeBalanceTracker: incorrect output proposer target balance"
+        );
+        require(
+            BalanceTracker(proxy).targetBalances(1) == batchSenderTargetBalance,
+            "UpgradeBalanceTracker: incorrect batch sender target balance"
+        );
     }
 
     function _addOverrides(address _safe) internal view override returns (SimulationStateOverride memory) {
