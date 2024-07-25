@@ -1,4 +1,4 @@
-# Transfer ownership of L1 `BalanceTracker` from the CB Upgrade multisig to the CB Incident multisig 
+# Reduce batcher / proposer target balances on `BalanceTracker`
 
 Status: READY TO SIGN
 
