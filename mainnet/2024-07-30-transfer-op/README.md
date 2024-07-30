@@ -1,14 +1,12 @@
-# Transfer and Delegate OP Tokens
+# Transfer OP Tokens
 
-Status: WILL NOT EXECUTE - see updated task in 2024-07-30-transfer-op
+Status: DRAFT
 
 ## Objective
 
 When Base launched, Optimism granted a share of OP tokens to Coinbase. The token distribution occurs onchain, and vests over a period of 6 years, with the first vesting event in July 2024. A smart contract handles the logic to make the tokens available for distribution as they vest. This smart contract (the "Smart Escrow Contract") also receives OP tokens 1 year before they vest and stores them until vesting. However, since the Smart Escrow contract was not ready upon Base launch, the existing OP tokens are being stored in a 2-of-2 multisig with CB & OP signers (similar to the multisig used for Base's upgrade keys, except on the Optimism network). 
 
 Now that the Smart Escrow contract is live, this task moves any existing OP tokens from the 2-of-2 multisig to the Smart Escrow contract.
-
-The one caveat is that some amount of the tokens (the "upfront grant") is available to be used by Coinbase for governance purposes, and since the Smart Escrow contract does not support governance use cases, these tokens will remain in the 2-of-2 and be sent directly to Coinbase upon vesting in July 2024. In the meantime, we will do a 1 time delegation of these tokens to a Coinbase owned address, so they can be used for governance purposes prior to July. This delegation event is also handled in this signing task.
 
 ## Approving the transaction
 
@@ -17,9 +15,8 @@ The one caveat is that some amount of the tokens (the "upfront grant") is availa
 ```
 cd contract-deployments
 git pull
-cd mainnet/2024-02-23-transfer-op
+cd mainnet/2024-07-30-transfer-op
 make deps
-make install-agora
 ```
 
 ### 2. Setup Ledger
@@ -34,13 +31,6 @@ Make sure your ledger is still unlocked and run the following.
 
 ``` shell
 make sign-op # or make sign-cb for Coinbase signers
-```
-
-Note: there have been reports of some folks seeing this error `Error creating signer: error opening ledger: hidapi: failed to open device`. A fix is in progress, but not yet merged. If you come across this, open a new terminal and run the following to resolve the issue:
-```
-git clone git@github.com:base-org/eip712sign.git
-cd eip712sign
-go install
 ```
 
 Once you run the make sign command successfully, you will see a "Simulation link" from the output.
@@ -88,8 +78,8 @@ After: 0x0000000000000000000000000000000000000000000000000000000000000002
 2. And for the same contract, verify that this specific execution is approved by the other signer multisig:
 
 ```
-Key (if you are an OP signer): 0x36052d50e52fd56e1e5ef2bf9000ecb5fdb428f034f8a3e05880448b8f161877
-Key (if you are a CB signer): 0xff52d03d7d7be46582113567dad0fd34f0eebc222f5fc655b711ba09f22bdb1f
+Key (if you are an OP signer): 0xca90537b72eefaa217070da5269b8eed78462a4399c1fa107670d1a4cab3301a
+Key (if you are a CB signer): 0x4e7d70e21746b3fcaf2ac086ca20325513b71ba63d976a9e3792a8921ab8d75e
 Before: 0x0000000000000000000000000000000000000000000000000000000000000000
 After: 0x0000000000000000000000000000000000000000000000000000000000000001
 ```
@@ -100,77 +90,46 @@ If you are an OP signer - the OP Foundation Multisig should be under the "Gnosis
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x000000000000000000000000000000000000000000000000000000000000007a
-After: 0x000000000000000000000000000000000000000000000000000000000000007b
+Before: 0x0000000000000000000000000000000000000000000000000000000000000082
+After: 0x0000000000000000000000000000000000000000000000000000000000000083
 ```
 
 If you are a CB signer - the Coinbase Multisig should be under the address `0x6e1dfd5c1e22a4677663a81d24c6ba03561ef0f6`:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: 0x0000000000000000000000000000000000000000000000000000000000000001
-After: 0x0000000000000000000000000000000000000000000000000000000000000002
+Before: 0x0000000000000000000000000000000000000000000000000000000000000002
+After: 0x0000000000000000000000000000000000000000000000000000000000000003
 ```
 
-4. Verify that the state changes for the OP ERC20 token match the expected balance updates. Specifically, verify that the delegate  for the Nested Multisig is established as: `0x85e870a853a55c312bbfdb16c1f64d36916b6629`. Under the `_delegates` field, look for the following state change:
+4. Verify that the state changes for the OP ERC20 token match the expected balance updates.  Under the "Optimism ERC-20" `_balances` field, look for the following state changes:
 
 ```
-0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      0x0000000000000000000000000000000000000000 -> 0x85e870a853a55c312bbfdb16c1f64d36916b6629
+0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      42054887000000000000000000 -> 0
+0xb3c2f9fc2727078ec3a2255410e83ba5b62c5b5f      0 -> 42054887000000000000000000
 ```
-
-5. Under the "Optimism ERC-20" `_balances` field, look for the following state changes:
-
-```
-0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940      37580963000000000000000000 -> 10737418000000000000000000
-0x1a984e693f8a9c38f3ae1f1af14b677ac245dead      0 -> 26843545000000000000000000
-```
-
-6. Verify that the Agora "Alligator Proxy" subdelegate is established correctly. Under the "ERC1967 Proxy" at `0x7f08f3095530b67cdf8466b7a923607944136df0`, expand the state by clicking on the "+" for `0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940`. Verify that the following state change is expected:
+The raw state changes will look like this (if you convert the hex values to decimal you'll get the above values):
 
 ```
-mapping (address => mapping (address => tuple)) subdelegations
-  0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940
-    0x635fb974f09b269bc750bf96338c29cf41430125
-      maxRedelegations 0 -> 1
-      allowanceType 0 -> 10737418000000000000000000
+Key: 0x6d16b6fe5688f7b25d007e8e32e8ef55e43df772df001dd04dca46e4b074515a
+Before: 0x00000000000000000000000000000000000000000022c977fe114f325b3c0000
+After: 0x0000000000000000000000000000000000000000000000000000000000000000
 ```
 
-Here, the associated events might help add some context. If necessary for clarity, cross check this state transition with the associated events in the "Events" tab:
-
-Verify that the call emitted `DelegateVotesChanged` with a new balance of `10737418000000000000000000` with details:
-```json
-{
-  "delegate": "0x85e870a853a55c312bbfdb16c1f64d36916b6629",
-  "previousBalance": "0",
-  "newBalance": "10737418000000000000000000"
-}
+```
+Key: 0x9c7ffc2d159d7a0a8143e9bb815194a3d0239701011646f61c42aefd6122e68c
+Before: 0x0000000000000000000000000000000000000000000000000000000000000000
+After: 0x00000000000000000000000000000000000000000022c977fe114f325b3c0000
 ```
 
-Verify that the call emitted `SubDelegation`, specifying an allowance of `10737418000000000000000000` with details:
-```json
-{
-  "from": "0x0a7361e734cf3f0394b0fc4a45c74e7a4ec70940",
-  "to": "0x635fb974f09b269bc750bf96338c29cf41430125",
-  "subdelegationRules": {
-    "maxRedelegations": 1,
-    "blocksBeforeVoteCloses": 0,
-    "notValidBefore": 0,
-    "notValidAfter": 0,
-    "customRule": "0x0000000000000000000000000000000000000000",
-    "allowanceType": 0,
-    "allowance": "10737418000000000000000000"
-  }
-}
-```
-
-7. Verify that the `L1FeeVault` at `0x420000000000000000000000000000000000001a` receives the gas associated with the call:
+5. Verify that the `L1FeeVault` at `0x420000000000000000000000000000000000001a` receives the gas associated with the call:
 
 _Note: the balance values here will not be exactly the same_
 ```
-Balance     3335732882538676762398 -> 3335734048351707566580
+Balance     2523179754840340647 -> 2523179853060159772
 ```
 
-8. Verify that the nonce for the sending address is appropriately incremented:
+6. Verify that the nonce for the sending address is appropriately incremented:
 
 _Note: the nonce value might be different depending on the nonce of the sending EOA_
 ```
