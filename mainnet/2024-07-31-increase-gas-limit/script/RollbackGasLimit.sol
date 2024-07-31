@@ -39,14 +39,10 @@ contract RollbackGasLimit is MultisigBuilder {
         return SYSTEM_CONFIG_OWNER;
     }
 
-    function _getNonce(IGnosisSafe) internal view override returns (uint256 nonce) {
-        nonce = vm.envUint("ROLLBACK_NONCE");
-    }
-
     function _addOverrides(address _safe) internal view override returns (SimulationStateOverride memory) {
         IGnosisSafe safe = IGnosisSafe(payable(_safe));
-        uint256 _nonce = _getNonce(safe);
-        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
+        uint256 _incrementedNonce = _getNonce(safe) + 1;
+        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _incrementedNonce);
     }
 
     // We need to expect that the gas limit will have been updated previously in our simulation
