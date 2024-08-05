@@ -1,6 +1,6 @@
-# Transfer OP Tokens
+# Transfer OP Tokens to SmartEscrow
 
-Status: DRAFT
+Status: READY TO SIGN
 
 ## Objective
 
