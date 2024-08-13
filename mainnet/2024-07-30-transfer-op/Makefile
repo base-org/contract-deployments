@@ -23,15 +23,15 @@ sign-op:
 approve-cb:
 	forge script --rpc-url $(OPTIMISM_RPC_URL) TransferOPTokens \
 	--sig "approve(address,bytes)" $(CB_MULTISIG) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: approve-op
 approve-op:
 	forge script --rpc-url $(OPTIMISM_RPC_URL) TransferOPTokens \
 	--sig "approve(address,bytes)" $(OP_MULTISIG) $(SIGNATURES) \
-	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: execute
 execute:
 	forge script --rpc-url $(OPTIMISM_RPC_URL) TransferOPTokens \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast

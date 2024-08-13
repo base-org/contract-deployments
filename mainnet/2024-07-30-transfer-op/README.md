@@ -1,6 +1,7 @@
 # Transfer OP Tokens to SmartEscrow
 
-Status: READY TO SIGN
+Status: EXECUTED
+Tx hash: https://optimistic.etherscan.io/tx/0xf1278d1e3fca35113e2b411a58c69b993e1171021097afbdd6f6b02407deb0ce
 
 ## Objective
 
