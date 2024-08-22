@@ -16,7 +16,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd mainnet/2024-08-21-update-batcher-hash
+cd sepolia-alpha/2024-08-21-update-batcher-hash
 make deps
 ```
 
