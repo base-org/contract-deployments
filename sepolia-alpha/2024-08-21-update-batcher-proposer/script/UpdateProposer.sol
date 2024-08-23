@@ -20,7 +20,9 @@ contract UpdateProposer is Script {
         uint256 startingTimestamp = l2OOProxy.startingTimestamp();
         address oldProposer = l2OOProxy.PROPOSER();
         address oldChallenger = l2OOProxy.CHALLENGER();
+        console.log("Current proposer: ");
         console.log(oldProposer);
+        console.log("New proposer to update: ");
         console.log(NEW_PROPOSER);
 
         L2OutputOracle l2OutputOracleImpl = new L2OutputOracle({
@@ -29,7 +31,7 @@ contract UpdateProposer is Script {
             _finalizationPeriodSeconds: oldFinalizationPeriodSeconds            
         });
         ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN);
-        // vm.prank(PROXY_ADMIN_OWNER);
+        vm.prank(PROXY_ADMIN_OWNER);
         proxyAdmin.upgradeAndCall(
             payable(L2_OUTPUT_ORACLE_PROXY),
             address(l2OutputOracleImpl),

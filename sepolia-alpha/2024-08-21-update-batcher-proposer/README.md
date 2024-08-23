@@ -1,32 +1,35 @@
-# Update Batcher Hash in L1 `SystemConfig` 
+# Update Batcher and Proposer addresses in L1 for sSepolia-alpha
 
 Status: ready to execute
 
 ## Objective
 
-We are migrating batcher key on sepolia to a key that is managed by the internal key management service.
+We are updating batcher and proposer addresses for sepolia-alpha to keys that are managed by internal key management service.
 
-This runbook implements scripts which allow `SystemConfig` owner to execute: 
-1. `UpdateBatcherHash` -- This script will update the batcher hash in `SystemConfig` to be the new key.
-2. `RollbackBatcherHash` -- This script establishes a rollback call in the case we need to revert.
+This runbook implements scripts which allow system owner to execute: 
+1. `UpdateBatcherHash` -- Updates the batcher hash in `SystemConfig` to be the new key.
+2. `RollbackBatcherHash` -- Rollback the batcher upgrade.
+3. `UpdateProposer` -- Upgrades `L2OutputOracle` contract to have the new proposer.
+4. `RollbackProposer` -- Rollback the proposer upgrade.
 
 The values we are sending are statically defined in the `.env`.
 
-## 1. Update repo and move to the appropriate folder:
+# 1. Update repo and move to the appropriate folder:
 ```
 cd contract-deployments
 git pull
-cd sepolia-alpha/2024-08-21-update-batcher-hash
+cd sepolia-alpha/2024-08-21-update-batcher-proposer
 make deps
 ```
 
-## 2. Simulate and validate the transaction
+# 2. Batcher update
+## 2.1. Simulate and validate the transaction
 
 ``` shell
-make execute
+make execute-update-batcher
 ```
 
-If the private-key is the owner, it should start the foundry simulation. The logs should be
+If the private-key is the owner (or via `vm.prank`), it should start the foundry simulation. The logs should be
 ```
 == Logs ==
   Current batcherHash: 
@@ -35,11 +38,36 @@ If the private-key is the owner, it should start the foundry simulation. The log
   0x0000000000000000000000007a43fd33e42054c965ee7175dd4590d2bdba79cb
 ```
 
-### 3. Execute the transaction
+## 2.2. Execute the transaction
 
-Once the tx is simulated and validated, modify the `Makefile` to add `--broadcast` to the `execute` command.
+Once the tx is simulated and validated, modify the `Makefile` to add the owner's private key and `--broadcast` to the `execute` command.
 
-### 4. Rollback (if needed)
+## 2.3. Rollback (if needed)
 
-If somehow we need to rollback, we can do the same simulation and execution step as above, but for `make execute-rollback`.
+If somehow we need to rollback, we can do the same simulation and execution step as above, but for `make execute-rollback-batcher`.
+
+# 3. Proposer update
+## 3.1. Simulate and validate the transaction
+
+``` shell
+make execute-update-proposer
+```
+
+If the private-key is the owner (or via `vm.prank`), it should start the foundry simulation. The logs should be
+```
+== Logs ==
+  Current proposer: 
+  0xBcB04FC753D36dcEeBe9Df7E18E23c46D1fcEA3c
+  New proposer to update: 
+  0x7A43fD33e42054C965eE7175dd4590D2BDba79cB
+```
+
+## 3.2. Execute the transaction
+
+Once the tx is simulated and validated, modify the `Makefile` to add the owner's private key and `--broadcast` to the `execute` command.
+
+## 3.3. Rollback (if needed)
+
+If somehow we need to rollback, we can do the same simulation and execution step as above, but for `make execute-rollback-proposer`.
+
 
