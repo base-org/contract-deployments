@@ -14,10 +14,10 @@ contract RollbackBatcherHash is Script {
     function run() public {
         console.log("Current batcherHash: ");
         console.logBytes32(SystemConfig(L1_SYSTEM_CONFIG).batcherHash());
-        // Update
+        // vm.prank(SYSTEM_CONFIG_OWNER);
         SystemConfig(L1_SYSTEM_CONFIG).setBatcherHash(ROLLBACK_BATCH_SENDER);
         console.log("New batcherHash: ");
         console.logBytes32(SystemConfig(L1_SYSTEM_CONFIG).batcherHash());
-        assert(SystemConfig(L1_SYSTEM_CONFIG).batcherHash() == ROLLBACK_BATCH_SENDER);
+        require(SystemConfig(L1_SYSTEM_CONFIG).batcherHash() == ROLLBACK_BATCH_SENDER, "Rollback Deploy: batcherHash is incorrect");
     }
 }
