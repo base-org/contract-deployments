@@ -2,7 +2,7 @@
 pragma solidity 0.8.15;
 
 import {SystemConfig} from "@eth-optimism-bedrock/src/L1/SystemConfig.sol";
-import { Vm } from "forge-std/Vm.sol";
+import {Vm} from "forge-std/Vm.sol";
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
 
@@ -22,6 +22,9 @@ contract UpdateBatcherHash is Script {
         SystemConfig(L1_SYSTEM_CONFIG).setBatcherHash(_convertAddressToBytes32(NEW_BATCH_SENDER));
         console.log("New batcherHash: ");
         console.logBytes32(SystemConfig(L1_SYSTEM_CONFIG).batcherHash());
-        require(SystemConfig(L1_SYSTEM_CONFIG).batcherHash() == _convertAddressToBytes32(NEW_BATCH_SENDER), "Deploy: batcherHash is incorrect");
+        require(
+            SystemConfig(L1_SYSTEM_CONFIG).batcherHash() == _convertAddressToBytes32(NEW_BATCH_SENDER),
+            "Deploy: batcherHash is incorrect"
+        );
     }
 }
