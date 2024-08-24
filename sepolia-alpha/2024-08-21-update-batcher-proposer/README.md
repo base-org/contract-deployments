@@ -9,7 +9,7 @@ We are updating batcher and proposer addresses for sepolia-alpha to keys that ar
 This runbook implements scripts which allow system owner to execute: 
 1. `UpdateBatcherHash` -- Updates the batcher hash in `SystemConfig` to be the new key.
 2. `RollbackBatcherHash` -- Rollback the batcher upgrade.
-3. `UpdateProposer` -- Upgrades `L2OutputOracle` contract to have the new proposer.
+3. `UpdateProposer` -- Upgrades `PermissionedDisputeGame` contract to have the new proposer.
 4. `RollbackProposer` -- Rollback the proposer upgrade.
 
 The values we are sending are statically defined in the `.env`.
@@ -58,7 +58,7 @@ If the private-key is the owner (or via `vm.prank`), it should start the foundry
 == Logs ==
   Current proposer: 
   0xBcB04FC753D36dcEeBe9Df7E18E23c46D1fcEA3c
-  New proposer to update: 
+  Updated proposer to: 
   0x7A43fD33e42054C965eE7175dd4590D2BDba79cB
 ```
 
