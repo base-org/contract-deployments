@@ -1,50 +1,46 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import {ProxyAdmin} from "@eth-optimism-bedrock/src/universal/ProxyAdmin.sol";
-import {L2OutputOracle} from "@eth-optimism-bedrock/src/L1/L2OutputOracle.sol";
+import {PermissionedDisputeGame} from "@eth-optimism-bedrock/src/dispute/PermissionedDisputeGame.sol";
+import {DisputeGameFactory, IDisputeGame} from "@eth-optimism-bedrock/src/dispute/DisputeGameFactory.sol";
+import {GameTypes} from "@eth-optimism-bedrock/src/dispute/lib/Types.sol";
 import "forge-std/Script.sol";
 
 contract UpdateProposer is Script {
     address internal NEW_PROPOSER = vm.envAddress("NEW_PROPOSER");
-    address internal L2_OUTPUT_ORACLE_PROXY = vm.envAddress("L2_OUTPUT_ORACLE_PROXY");
-    address internal PROXY_ADMIN = vm.envAddress("L1_PROXY_ADMIN");
-    address internal PROXY_ADMIN_OWNER = vm.envAddress("PROXY_ADMIN_OWNER");
+    address internal DISPUTE_GAME_FACTORY_PROXY = vm.envAddress("DISPUTE_GAME_FACTORY_PROXY");
+    address internal PERMISSIONED_DISPUTE_GAME = vm.envAddress("PERMISSIONED_DISPUTE_GAME");
+    address internal DISPUTE_GAME_FACTORY_PROXY_OWNER = vm.envAddress("DISPUTE_GAME_FACTORY_PROXY_OWNER");
 
     function run() public {
-        L2OutputOracle l2OOProxy = L2OutputOracle(L2_OUTPUT_ORACLE_PROXY);
-        uint256 oldSubmissionInterval = l2OOProxy.SUBMISSION_INTERVAL();
-        uint256 oldL2BlockTime = l2OOProxy.L2_BLOCK_TIME();
-        uint256 oldFinalizationPeriodSeconds = l2OOProxy.FINALIZATION_PERIOD_SECONDS();
-        uint256 startingBlockNumber = l2OOProxy.startingBlockNumber();
-        uint256 startingTimestamp = l2OOProxy.startingTimestamp();
-        address oldProposer = l2OOProxy.PROPOSER();
-        address oldChallenger = l2OOProxy.CHALLENGER();
+        DisputeGameFactory dGF = DisputeGameFactory(DISPUTE_GAME_FACTORY_PROXY);
+        PermissionedDisputeGame pdg = PermissionedDisputeGame(PERMISSIONED_DISPUTE_GAME);
+
         console.log("Current proposer: ");
-        console.log(oldProposer);
-        console.log("New proposer to update: ");
-        console.log(NEW_PROPOSER);
+        console.log(pdg.proposer());
 
-        L2OutputOracle l2OutputOracleImpl = new L2OutputOracle({
-            _submissionInterval: oldSubmissionInterval,
-            _l2BlockTime: oldL2BlockTime,
-            _finalizationPeriodSeconds: oldFinalizationPeriodSeconds            
+        PermissionedDisputeGame newPdgImpl = new PermissionedDisputeGame({
+            _gameType: pdg.gameType(),
+            _absolutePrestate: pdg.absolutePrestate(),
+            _maxGameDepth: pdg.maxGameDepth(),
+            _splitDepth: pdg.splitDepth(),
+            _clockExtension: pdg.clockExtension(),
+            _maxClockDuration: pdg.maxClockDuration(),
+            _vm: pdg.vm(),
+            _weth: pdg.weth(),
+            _anchorStateRegistry: pdg.anchorStateRegistry(),
+            _l2ChainId: pdg.l2ChainId(),
+            _proposer: NEW_PROPOSER,
+            _challenger: pdg.challenger()
         });
-        ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_ADMIN);
-        // vm.prank(PROXY_ADMIN_OWNER);
-        proxyAdmin.upgradeAndCall(
-            payable(L2_OUTPUT_ORACLE_PROXY),
-            address(l2OutputOracleImpl),
-            abi.encodeCall(
-                L2OutputOracle.initialize,
-                (
-                    startingBlockNumber, startingTimestamp, NEW_PROPOSER, oldChallenger
-                )
-            )
-        );
 
-        require(l2OOProxy.L2_BLOCK_TIME() == oldL2BlockTime, "Deploy: l2OutputOracle l2BlockTime is incorrect");
-        require(l2OOProxy.PROPOSER() == NEW_PROPOSER, "Deploy: l2OutputOracle proposer is incorrect");
-        require(proxyAdmin.getProxyImplementation(L2_OUTPUT_ORACLE_PROXY).codehash == address(l2OutputOracleImpl).codehash, "Deploy: l2OutputOracle codehash is incorrect");
+        // vm.prank(DISPUTE_GAME_FACTORY_PROXY_OWNER);
+        dGF.setImplementation(GameTypes.PERMISSIONED_CANNON, IDisputeGame(address(newPdgImpl)));
+
+        IDisputeGame gameImpl = dGF.gameImpls(GameTypes.PERMISSIONED_CANNON);
+        require(address(gameImpl) == address(newPdgImpl), "Deploy: DisputeGameFactory implementation is incorrect");
+        require(newPdgImpl.proposer() == NEW_PROPOSER, "Deploy: proposer is incorrect");
+        console.log("Updated proposer to: ");
+        console.log(NEW_PROPOSER);
     }
 }
