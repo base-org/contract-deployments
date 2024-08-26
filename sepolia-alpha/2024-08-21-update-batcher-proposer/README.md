@@ -59,7 +59,7 @@ If the private-key is the owner (or via `vm.prank`), it should start the foundry
   Current proposer: 
   0xBcB04FC753D36dcEeBe9Df7E18E23c46D1fcEA3c
   Updated proposer to: 
-  0x7A43fD33e42054C965eE7175dd4590D2BDba79cB
+  0xf99C2Da4822Af652fe1BF55F99713980efe5D261
 ```
 
 ## 3.2. Execute the transaction
