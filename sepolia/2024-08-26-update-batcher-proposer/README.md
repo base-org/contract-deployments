@@ -1,14 +1,16 @@
-# Update Batcher and Proposer addresses in L1 for sSepolia-alpha
+# Update Batcher and Proposer addresses in L1 for Sepolia
 
 Status: ready to execute
 
 ## Objective
 
-We are updating batcher address for sepolia to a key that is managed by the internal key management service.
+We are updating batcher and proposer addresses for sepolia to keys that are managed by the internal key management service.
 
 This runbook implements scripts which allow system owner to execute: 
 1. `UpdateBatcherHash` -- Updates the batcher hash in `SystemConfig` to be the new key.
 2. `RollbackBatcherHash` -- Rollback the batcher upgrade.
+1. `UpdateProposer` -- Upgrade `DisputeGameFactory` to have the new `PermissionedDisputeGame` with the new proposer key.
+2. `RollbackProposer` -- Rollback the `DisputeGame` upgrade.
 
 The values we are sending are statically defined in the `.env`.
 
@@ -18,7 +20,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd sepolia/2024-08-26-update-batcher-hash
+cd sepolia/2024-08-26-update-batcher-proposer
 make deps
 ```
 

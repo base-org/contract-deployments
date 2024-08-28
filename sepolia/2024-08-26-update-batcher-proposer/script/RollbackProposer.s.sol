@@ -43,7 +43,9 @@ contract RollbackProposer is MultisigBuilder {
         calls[0] = IMulticall3.Call3({
             target: DISPUTE_GAME_FACTORY_PROXY,
             allowFailure: false,
-            callData: abi.encodeCall(DisputeGameFactory.setImplementation, (GameTypes.PERMISSIONED_CANNON, IDisputeGame(address(pdg))))
+            callData: abi.encodeCall(
+                DisputeGameFactory.setImplementation, (GameTypes.PERMISSIONED_CANNON, IDisputeGame(address(pdg)))
+            )
         });
 
         return calls;
