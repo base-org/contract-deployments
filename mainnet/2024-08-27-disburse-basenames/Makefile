@@ -7,7 +7,7 @@ endif
 
 .PHONY: sign-disbursement
 sign-disbursement: 
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	./parser.sh disbursement1.csv; $(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "sign()"
 
@@ -26,7 +26,7 @@ endif
 # Solidity Setup
 ##
 .PHONY: deps
-deps: install-eip712sign clean-lib forge-deps checkout-base-contracts-commit
+deps: install-eip712sign clean-lib forge-deps checkout-base-contracts-commit parser-setup
 
 .PHONY: install-eip712sign
 install-eip712sign:
@@ -51,3 +51,7 @@ checkout-base-contracts-commit:
 	git remote add origin https://github.com/base-org/contracts.git; \
 	git fetch --depth=1 origin $(BASE_CONTRACTS_COMMIT); \
 	git reset --hard FETCH_HEAD
+
+.PHONY: parser-setup
+parser-setup:
+	chmod +x parser.sh

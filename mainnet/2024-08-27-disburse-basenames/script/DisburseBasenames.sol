@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
+import {Registry} from "basenames/L2/Registry.sol";
 import {BaseRegistrar} from "basenames/L2/BaseRegistrar.sol";
 import {L2Resolver, NameResolver, Multicallable} from "basenames/L2/L2Resolver.sol";
 import {BASE_ETH_NODE} from "basenames/util/Constants.sol";
@@ -13,6 +14,7 @@ import {
     Enum
 } from "@base-contracts/script/universal/MultisigBuilder.sol";
 import { Vm } from "forge-std/Vm.sol";
+
 
 interface IERC721 {
     function safeTransferFrom(address from, address to, uint256 id) external;
@@ -27,23 +29,51 @@ interface AddrResolver {
 contract DisburseBasenames is MultisigBuilder {
     address internal ECOSYSTEM_MULTISIG = vm.envAddress("ECOSYSTEM_MULTISIG");
     address internal BASE_REGISTRAR_ADDR = vm.envAddress("BASE_REGISTRAR_ADDR");
+    address internal REGISTRY_ADDR = vm.envAddress("REGISTRY_ADDR");
     address internal L2_RESOLVER_ADDR = vm.envAddress("L2_RESOLVER_ADDR");
     
-
-    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override view {
+    struct Disbursement {
+        Single[] singles;
     }
+
+    struct Single {
+        address addr;
+        string name;
+    }
+
+    function _parseFile() internal view returns (Disbursement memory) {
+        string memory json = vm.readFile("disbursement.json");
+        bytes memory data = vm.parseJson(json);
+        return abi.decode(data, (Disbursement));
+    } 
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
-        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](4);
+        Disbursement memory allData = _parseFile();
+        uint256 callcount = allData.singles.length * 5; // 5 calls per disbursement
+        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](callcount);
 
-        uint256 id = 101607177989908133428079416239706370710574677396813813478356790246028549915433;
-        string memory name = "aave";
-        address addr = 0xac140648435d03f784879cd789130F22Ef588Fcd;
-        return _buildCallsForOne(id, addr, name);
+        uint256 accumulator;
+        for(uint256 i; i < allData.singles.length; i++) {
+            IMulticall3.Call3[] memory singleCalls = new IMulticall3.Call3[](5);
+            singleCalls = _buildCallsForSingle(allData.singles[i]);
+            calls[accumulator++] = singleCalls[0];
+            calls[accumulator++] = singleCalls[1];
+            calls[accumulator++] = singleCalls[2];
+            calls[accumulator++] = singleCalls[3];
+            calls[accumulator++] = singleCalls[4];
+        }
+
+        return calls;
     }
 
-    function _buildCallsForOne(uint256 id, address addr, string memory name) internal view returns (IMulticall3.Call3[] memory) {
-        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](4);
+    function _buildCallsForSingle(Single memory single) internal view returns (IMulticall3.Call3[] memory) {
+        uint256 id = _getIdFromName(single.name);
+        address addr = single.addr;
+        string memory name = single.name;
+        console.log(id);
+        console.log(addr);
+        console.log(name);
+        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](5);
 
         // CALL 0 :: call reclaim to give the multisig permission to edit records for this name.
         calls[0] = IMulticall3.Call3({
@@ -52,22 +82,29 @@ contract DisburseBasenames is MultisigBuilder {
             callData: abi.encodeWithSelector(BaseRegistrar.reclaim.selector, id, ECOSYSTEM_MULTISIG)
         });
 
-        // CALL 1 :: set the resolver data for the name using `setAddr` and `setName` encoded for multicall.
+        // CALL 1 :: set the L2 resolver as the resolver for the node in the regsitry 
         calls[1] = IMulticall3.Call3({
+            target: REGISTRY_ADDR,
+            allowFailure: false,
+            callData: abi.encodeWithSelector(Registry.setResolver.selector, _getNodeFromId(id), L2_RESOLVER_ADDR)
+        });
+
+        // CALL 2 :: set the resolver data for the name using `setAddr` and `setName` encoded for multicall.
+        calls[2] = IMulticall3.Call3({
             target: L2_RESOLVER_ADDR,
             allowFailure: false,
             callData: _buildResolverData(_getNodeFromId(id), addr, name)
         });
 
-        // CALL 2 :: call reclaim on behalf of the new owner. 
-        calls[2] = IMulticall3.Call3({
+        // CALL 3 :: call reclaim on behalf of the new owner. 
+        calls[3] = IMulticall3.Call3({
             target: BASE_REGISTRAR_ADDR,
             allowFailure: false,
             callData: abi.encodeWithSelector(BaseRegistrar.reclaim.selector, id, addr)
         });
 
-        // CALL 3 :: call safeTransferFrom to transfer the name to the new owner. 
-        calls[3] = IMulticall3.Call3({
+        // CALL 4 :: call safeTransferFrom to transfer the name to the new owner. 
+        calls[4] = IMulticall3.Call3({
             target: BASE_REGISTRAR_ADDR,
             allowFailure: false,
             callData: abi.encodeWithSelector(IERC721.safeTransferFrom.selector, ECOSYSTEM_MULTISIG, addr, id)
@@ -76,11 +113,15 @@ contract DisburseBasenames is MultisigBuilder {
         return calls;
     }
 
-    function _getNodeFromId(uint256 id) internal view returns (bytes32 node) {
+    function _getNodeFromId(uint256 id) internal pure returns (bytes32 node) {
         node = keccak256(abi.encodePacked(BASE_ETH_NODE, bytes32(id)));
     }
 
-    function _buildResolverData(bytes32 node, address addr, string memory name) internal view returns (bytes memory data) {
+    function _getIdFromName(string memory name) internal pure returns (uint256 id) {
+        id = uint256(keccak256(bytes(name)));
+    }
+
+    function _buildResolverData(bytes32 node, address addr, string memory name) internal pure returns (bytes memory data) {
         bytes[] memory multicallData = new bytes[](2);
         multicallData[0] = abi.encodeWithSelector(AddrResolver.setAddr.selector, node, addr);
         multicallData[1] = abi.encodeWithSelector(NameResolver.setName.selector, node, string.concat(name,".base.eth"));
@@ -96,5 +137,10 @@ contract DisburseBasenames is MultisigBuilder {
         IGnosisSafe safe = IGnosisSafe(payable(_safe));
         uint256 _nonce = _getNonce(safe);
         return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
+    }
+
+    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override{
+        console.log(L2Resolver(L2_RESOLVER_ADDR).name(_getNodeFromId(_getIdFromName("aave"))));
+        console.log(L2Resolver(L2_RESOLVER_ADDR).addr(_getNodeFromId(_getIdFromName("aave"))));
     }
 }
