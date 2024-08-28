@@ -139,8 +139,16 @@ contract DisburseBasenames is MultisigBuilder {
         return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
     }
 
-    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override{
-        console.log(L2Resolver(L2_RESOLVER_ADDR).name(_getNodeFromId(_getIdFromName("aave"))));
-        console.log(L2Resolver(L2_RESOLVER_ADDR).addr(_getNodeFromId(_getIdFromName("aave"))));
+    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override {
+        Disbursement memory data = _parseFile();
+        for(uint256 i; i < data.singles.length; i++){
+            Single memory s = data.singles[i];
+            bytes32 node = _getNodeFromId(_getIdFromName(s.name));
+            assert(Registry(REGISTRY_ADDR).owner(_getNodeFromId(_getIdFromName(s.name))) == s.addr);
+            assert(Registry(REGISTRY_ADDR).resolver(_getNodeFromId(_getIdFromName(s.name))) == L2_RESOLVER_ADDR);
+            assert(BaseRegistrar(BASE_REGISTRAR_ADDR).ownerOf(_getIdFromName(s.name)) == s.addr);
+            assert(L2Resolver(L2_RESOLVER_ADDR).addr(node) == s.addr);
+            assert(keccak256(bytes(L2Resolver(L2_RESOLVER_ADDR).name(node))) == keccak256(bytes(string.concat(s.name,".base.eth"))));
+        }
     }
 }
