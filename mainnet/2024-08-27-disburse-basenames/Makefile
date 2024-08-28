@@ -5,8 +5,8 @@ ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif
 
-.PHONY: sign-disbursement
-sign-disbursement: 
+.PHONY: sign-disbursement1
+sign-disbursement1: 
 	./parser.sh disbursement1.csv; $(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "sign()"
