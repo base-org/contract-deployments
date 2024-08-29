@@ -5,4 +5,4 @@ To sign, multisig signers will need to:
 4. run make sign-disbursement1
 5. With your ledger connected, it will prompt you to sign the message hash
 6. With your ledger disconnected, this will generate a tenderly sim
-7. Copy the tenderly sim link into your browser and verify that the state transitions are valid. Specifically check the BaseRegistrar state and see that the address is updated from our multisig to the address in the CSV
+7. Copy the tenderly sim link into your browser. Grab the calldata blob and paste it into the `raw calldata` field. Verify that the state transitions are valid. Specifically check that the NFT tokens are being sent to the addresses specified in the csv. 

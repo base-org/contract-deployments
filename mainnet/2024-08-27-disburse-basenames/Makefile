@@ -11,6 +11,12 @@ sign-disbursement1:
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "sign()"
 
+.PHONY: sign-disbursement2
+sign-disbursement2: 
+	./parser.sh disbursement2.csv; $(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
+	--sig "sign()"
+
 .PHONY: execute
 execute:
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
