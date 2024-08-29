@@ -50,7 +50,16 @@ contract RollbackBatcherHash is MultisigBuilder {
 
     function _addOverrides(address _safe) internal view override returns (SimulationStateOverride memory) {
         IGnosisSafe safe = IGnosisSafe(payable(_safe));
-        uint256 _nonce = _getNonce(safe);
-        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
+        uint256 _incrementedNonce = _getNonce(safe) + 1;
+        return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _incrementedNonce);
+    }
+
+    function _addGenericOverrides() internal view override returns (SimulationStateOverride memory) {
+        SimulationStorageOverride[] memory _stateOverrides = new SimulationStorageOverride[](1);
+        _stateOverrides[0] = SimulationStorageOverride({
+            key: 0x0000000000000000000000000000000000000000000000000000000000000067, // slot of batcher hash
+            value: _convertAddressToBytes32(vm.envAddress("NEW_BATCH_SENDER"))
+        });
+        return SimulationStateOverride({contractAddress: L1_SYSTEM_CONFIG, overrides: _stateOverrides});
     }
 }

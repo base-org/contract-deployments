@@ -3,7 +3,7 @@ include ../.env
 include .env
 
 ifndef LEDGER_ACCOUNT
-override LEDGER_ACCOUNT = 1 # Sepolia using hd-path of 1
+override LEDGER_ACCOUNT = 1
 endif
 
 # Batcher
