@@ -17,10 +17,24 @@ sign-disbursement2:
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "sign()"
 
+ifeq (sign,$(firstword $(MAKECMDGOALS)))
+  RUN_ARG := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARG):;@:)
+endif
+
+
+.PHONY: sign
+sign:
+	./parser.sh "disbursement$(RUN_ARG).csv"; $(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
+	--sig "signWithNonce(uint256)" $(RUN_ARG)
+
+
 .PHONY: execute
 execute:
 	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "run(bytes)" $(SIGNATURES) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
 
 
 ifndef $(GOPATH)

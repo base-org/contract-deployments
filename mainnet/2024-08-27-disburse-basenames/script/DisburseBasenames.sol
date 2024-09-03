@@ -31,7 +31,13 @@ contract DisburseBasenames is MultisigBuilder {
     address internal BASE_REGISTRAR_ADDR = vm.envAddress("BASE_REGISTRAR_ADDR");
     address internal REGISTRY_ADDR = vm.envAddress("REGISTRY_ADDR");
     address internal L2_RESOLVER_ADDR = vm.envAddress("L2_RESOLVER_ADDR");
-    
+    uint256 NONCE;
+
+    function signWithNonce(uint256 nonce_) public {
+        NONCE = nonce_;
+        sign();
+    }
+
     struct Disbursement {
         Single[] singles;
     }
@@ -70,9 +76,6 @@ contract DisburseBasenames is MultisigBuilder {
         uint256 id = _getIdFromName(single.name);
         address addr = single.addr;
         string memory name = single.name;
-        console.log(id);
-        console.log(addr);
-        console.log(name);
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](5);
 
         // CALL 0 :: call reclaim to give the multisig permission to edit records for this name.
@@ -139,7 +142,11 @@ contract DisburseBasenames is MultisigBuilder {
         return overrideSafeThresholdOwnerAndNonce(_safe, DEFAULT_SENDER, _nonce);
     }
 
-    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal override {
+    function _getNonce(IGnosisSafe) internal view override returns (uint256) {
+        return NONCE;
+    }
+
+    function _postCheck(Vm.AccountAccess[] memory, SimulationPayload memory) internal view override {
         Disbursement memory data = _parseFile();
         for(uint256 i; i < data.singles.length; i++){
             Single memory s = data.singles[i];
