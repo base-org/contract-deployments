@@ -22,7 +22,6 @@ ifeq (sign,$(firstword $(MAKECMDGOALS)))
   $(eval $(RUN_ARG):;@:)
 endif
 
-
 .PHONY: sign
 sign:
 	./parser.sh "disbursement$(RUN_ARG).csv"; $(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
@@ -30,9 +29,14 @@ sign:
 	--sig "signWithNonce(uint256)" $(RUN_ARG)
 
 
+ifeq (execute,$(firstword $(MAKECMDGOALS)))
+  RUN_ARG := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARG):;@:)
+endif
+
 .PHONY: execute
 execute:
-	forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
+	./parser.sh "disbursement$(RUN_ARG).csv"; forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
 	--sig "run(bytes)" $(SIGNATURES) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 
