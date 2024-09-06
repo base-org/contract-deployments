@@ -38,6 +38,11 @@ contract DisburseBasenames is MultisigBuilder {
         sign();
     }
 
+    function executeWithNonce(uint256 nonce_, bytes calldata signatures) public {
+        NONCE = nonce_;
+        run(signatures);
+    }
+
     struct Disbursement {
         Single[] singles;
     }

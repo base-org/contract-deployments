@@ -37,7 +37,7 @@ endif
 .PHONY: execute
 execute:
 	./parser.sh "disbursement$(RUN_ARG).csv"; forge script --rpc-url $(L2_RPC_URL) DisburseBasenames \
-	--sig "run(bytes)" $(SIGNATURES) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+	--sig "executeWithNonce(uint256,bytes)" $(RUN_ARG) $(SIGNATURES) --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 
 
