@@ -11,7 +11,6 @@ contract DeployNewPDG is Script {
 
     function run() public {
         PermissionedDisputeGame pdg = PermissionedDisputeGame(PERMISSIONED_DISPUTE_GAME);
-        // vm.broadcast(DISPUTE_GAME_FACTORY_PROXY_OWNER);
         PermissionedDisputeGame newPdgImpl = new PermissionedDisputeGame({
             _gameType: pdg.gameType(),
             _absolutePrestate: pdg.absolutePrestate(),

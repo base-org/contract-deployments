@@ -31,7 +31,7 @@ contract UpdateProposer is MultisigBuilder {
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
         PermissionedDisputeGame newPdgImpl = PermissionedDisputeGame(NEW_PERMISSIONED_DISPUTE_GAME);
-        // require(newPdgImpl.proposer() == NEW_PROPOSER, "Deploy: proposer is incorrect");
+        require(newPdgImpl.proposer() == NEW_PROPOSER, "Deploy: proposer is incorrect");
 
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
         calls[0] = IMulticall3.Call3({
