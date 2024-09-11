@@ -10,6 +10,7 @@ contract DeployNewPDG is Script {
 
     function run() public {
         PermissionedDisputeGame pdg = PermissionedDisputeGame(PERMISSIONED_DISPUTE_GAME);
+        vm.startBroadcast();
         PermissionedDisputeGame newPdgImpl = new PermissionedDisputeGame({
             _gameType: pdg.gameType(),
             _absolutePrestate: pdg.absolutePrestate(),
@@ -27,5 +28,6 @@ contract DeployNewPDG is Script {
         require(newPdgImpl.proposer() == NEW_PROPOSER, "Deploy: proposer is incorrect");
         console.log("New permissioned dispute game address: ", address(newPdgImpl));
         console.log("New proposer: ", newPdgImpl.proposer());
+        vm.stopBroadcast();
     }
 }
