@@ -28,6 +28,9 @@ contract DeployNewPDG is Script {
         require(newPdgImpl.proposer() == NEW_PROPOSER, "Deploy: proposer is incorrect");
         console.log("New permissioned dispute game address: ", address(newPdgImpl));
         console.log("New proposer: ", newPdgImpl.proposer());
+<<<<<<< HEAD
         vm.stopBroadcast();
+=======
+>>>>>>> main
     }
 }
