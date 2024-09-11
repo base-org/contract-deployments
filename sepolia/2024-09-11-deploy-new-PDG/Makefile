@@ -9,4 +9,6 @@ endif
 # Proposer
 .PHONY: execute-deploy-dispute-game
 execute-deploy-dispute-game:
-	forge script --rpc-url $(L1_RPC_URL) --private-key $(PRIVATE_KEY) DeployNewPDG
+	forge script --rpc-url $(L1_RPC_URL) --private-key $(PRIVATE_KEY) DeployNewPDG --broadcast
+
+
