@@ -30,6 +30,9 @@ contract RollbackProposer is MultisigBuilder {
     }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
+        PermissionedDisputeGame newPdgImpl = PermissionedDisputeGame(PERMISSIONED_DISPUTE_GAME);
+        require(newPdgImpl.proposer() == OLD_PROPOSER, "Deploy: proposer is incorrect");
+
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
         calls[0] = IMulticall3.Call3({
             target: DISPUTE_GAME_FACTORY_PROXY,

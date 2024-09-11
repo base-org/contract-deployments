@@ -7,7 +7,6 @@ import "forge-std/Script.sol";
 contract DeployNewPDG is Script {
     address internal NEW_PROPOSER = vm.envAddress("NEW_PROPOSER");
     address internal PERMISSIONED_DISPUTE_GAME = vm.envAddress("PERMISSIONED_DISPUTE_GAME");
-    address internal DISPUTE_GAME_FACTORY_PROXY_OWNER = vm.envAddress("DISPUTE_GAME_FACTORY_PROXY_OWNER");
 
     function run() public {
         PermissionedDisputeGame pdg = PermissionedDisputeGame(PERMISSIONED_DISPUTE_GAME);

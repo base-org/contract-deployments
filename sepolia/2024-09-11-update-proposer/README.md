@@ -7,19 +7,10 @@ Status: ready to execute
 We are updating proposer address for sepolia to a key that is managed by the internal key management service.
 
 This runbook implements scripts which allow system owner to execute:
-1. `DeployNewPDG` -- Deploys a new `PermissionedDisputeGame` with the new proposer address.
-2. `UpdateProposer` -- Upgrade `DisputeGameFactory` to have the new `PermissionedDisputeGame`.
-3. `RollbackProposer` -- Rollback the `DisputeGame` upgrade.
+1. `UpdateProposer` -- Upgrade `DisputeGameFactory` to have the new `PermissionedDisputeGame`.
+2. `RollbackProposer` -- Rollback the `DisputeGame` upgrade.
 
 The values we are sending are statically defined in the `.env`.
-
-## Deploy the new PDG
-This step doesn't have to be done with multisig, we can use an EoA to deploy. We should see the following output from the console
-```
-== Logs ==
-  New permissioned dispute game address:  0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141
-  New proposer:  0x037637067c1DbE6d2430616d8f54Cb774Daa5999
-```
 
 ## Approving the Update transaction
 
@@ -91,7 +82,7 @@ After: 0x00000000000000000000000000000000000000000000000000000000000000008
 ```
 Key: 0x4d5a9bd2e41301728d41c8e705190becb4e74abe869f75bdb405b63716a35f9e
 Before: 0x000000000000000000000000ccefe451048eaa7df8d0d709be3aa30d565694d2
-After: 0x000000000000000000000000c7f2cf4845c6db0e1a1e91ed41bcd0fcc1b0e141
+After: 0x000000000000000000000000<NEW PERMISSIONED GAME ADDRESS>
 ```
 
 #### 3.3. Extract the domain hash and the message hash to approve.
@@ -211,7 +202,7 @@ After: 0x00000000000000000000000000000000000000000000000000000000000000009
 
 ```
 Key: 0x4d5a9bd2e41301728d41c8e705190becb4e74abe869f75bdb405b63716a35f9e
-Before: 0x000000000000000000000000c7f2cf4845c6db0e1a1e91ed41bcd0fcc1b0e141
+Before: 0x000000000000000000000000<NEW PERMISSIONED GAME ADDRESS>
 After: 0x000000000000000000000000ccefe451048eaa7df8d0d709be3aa30d565694d2
 ```
 
