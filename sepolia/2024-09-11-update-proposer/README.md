@@ -18,7 +18,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd sepolia/2024-09-09-update-proposer
+cd sepolia/2024-09-11-update-proposer
 make deps
 ```
 

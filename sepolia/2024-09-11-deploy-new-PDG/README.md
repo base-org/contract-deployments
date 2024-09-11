@@ -12,7 +12,7 @@ This runbook implements scripts which allow system owner to execute:
 The values we are sending are statically defined in the `.env`.
 
 ## Deploy the new PDG
-This step doesn't have to be done with multisig, we can use an EoA to deploy. We should see the following output from the console
+This step doesn't have to be done with multisig, we can use an EoA to deploy by running `make execute-deploy-dispute-game`. We should see the following output from the console
 ```
 == Logs ==
   New permissioned dispute game address:  <SOME ADDRESS>
