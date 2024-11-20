@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.15;
 
-import "src/L1/SystemConfig.sol";
+import "lib/optimism/packages/contracts-bedrock/src/L1/SystemConfig.sol";
 import "forge-std/Script.sol";
 
-contract DeployL1SystemConfig is Script {
+contract DeploySystemConfig is Script {
     function run() public {
         vm.startBroadcast();
         SystemConfig systemConfigImpl = new SystemConfig();
