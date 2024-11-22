@@ -12,7 +12,7 @@ interface IProxyAdmin {
     function upgradeTo(address _implementation) external;
 }
 
-contract TransferSystemConfigOwner is MultisigBuilder {
+contract UpgradeSystemConfig is MultisigBuilder {
     address internal SYSTEM_CONFIG_OWNER = vm.envAddress("SYSTEM_CONFIG_OWNER");
     address internal SYSTEM_CONFIG_ADDRESS = vm.envAddress("SYSTEM_CONFIG_ADDRESS");
     address internal NEW_IMPLEMENTATION = vm.envAddress("NEW_IMPLEMENTATION");
@@ -22,8 +22,9 @@ contract TransferSystemConfigOwner is MultisigBuilder {
     }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
-        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
+        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](3);
 
+        // FIXME: Doe snot work as the SystemConfig is gated by `proxyCallIfNotAdmin`.
         calls[0] = IMulticall3.Call3({
             target: SYSTEM_CONFIG_ADDRESS,
             allowFailure: false,

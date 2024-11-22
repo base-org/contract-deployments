@@ -32,4 +32,4 @@ sign-upgrade-cb:
 .PHONY: run-upgrade
 run-upgrade:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
-	--sig "run()" -i 1 --broadcast
+	--sig "run(bytes)" $(SIGNATURES) -i 1 --broadcast
