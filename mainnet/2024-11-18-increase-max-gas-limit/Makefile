@@ -26,10 +26,10 @@ deploy:
 .PHONY: sign-upgrade-cb
 sign-upgrade-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(L2_RPC_URL) UpgradeSystemConfig \
+	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
 	--sig "sign()"
 
 .PHONY: run-upgrade
 run-upgrade:
-	forge script --rpc-url $(L2_RPC_URL) UpgradeSystemConfig \
+	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
 	--sig "run()" -i 1 --broadcast
