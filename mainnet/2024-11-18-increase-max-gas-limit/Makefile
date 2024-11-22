@@ -14,8 +14,8 @@ checkout-op-commit:
 	cd lib/optimism; \
 	git init; \
 	git remote add origin $(OPTIMISM_REPO); \
-	git fetch --depth=1 origin $(OPTIMISM_BRANCH); \
-	git reset --hard FETCH_HEAD
+	git fetch --depth=1 origin $(OPTIMISM_PR_ID):pr_branch; \
+	git switch pr_branch
 
 
 .PHONY: deploy
