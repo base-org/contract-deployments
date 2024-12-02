@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import "@eth-optimism-bedrock/contracts/L1/L2OutputOracle.sol";
+import "@eth-optimism-bedrock/src/L1/L2OutputOracle.sol";
 import "@base-contracts/src/Challenger1of2.sol";
 import "@base-contracts/script/universal/MultisigBuilder.sol";
 
