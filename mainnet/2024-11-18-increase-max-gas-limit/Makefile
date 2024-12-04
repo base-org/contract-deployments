@@ -50,4 +50,4 @@ approve-op:
 .PHONY: run-upgrade
 run-upgrade:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
-	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
