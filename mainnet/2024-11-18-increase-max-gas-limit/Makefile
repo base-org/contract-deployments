@@ -21,7 +21,7 @@ checkout-op-commit:
 
 .PHONY: deploy
 deploy:
-	forge script --rpc-url $(L1_RPC_URL) DeploySystemConfig --ledger --verify --mnemonic-derivation-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
+	forge script --rpc-url $(L1_RPC_URL) DeploySystemConfig --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --verify --broadcast
 
 .PHONY: sign-cb
 sign-cb:
@@ -35,7 +35,19 @@ sign-op:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
 	--sig "sign(address)" $(OP_MULTISIG)
 
+.PHONY: approve-cb
+approve-cb:
+	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
+	--sig "approve(address,bytes)" $(CB_MULTISIG) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
+.PHONY: approve-op
+approve-op:
+	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
+	--sig "approve(address,bytes)" $(OP_MULTISIG) $(SIGNATURES) \
+	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
+
 .PHONY: run-upgrade
 run-upgrade:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
-	--sig "run(bytes)" $(SIGNATURES) -i 1 --broadcast
+	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
