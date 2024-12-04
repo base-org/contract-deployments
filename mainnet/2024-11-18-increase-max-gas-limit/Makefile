@@ -24,11 +24,17 @@ deploy:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) DeploySystemConfig --sig "sign(address)"
 
-.PHONY: sign
-sign:
+.PHONY: sign-cb
+sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
-	--sig "sign()"
+	--sig "sign(address)" $(CB_MULTISIG)
+
+.PHONY: sign-op
+sign-op:
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfig \
+	--sig "sign(address)" $(OP_MULTISIG)
 
 .PHONY: run-upgrade
 run-upgrade:

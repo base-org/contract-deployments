@@ -1,4 +1,4 @@
-## Upgrade to new system config with 400m max gas limit
+## [READY TO SIGN] Upgrade to new system config with 400m max gas limit
 
 Base is continuing to scale and we need higher block gas limit to support the increased demand.
 
