@@ -21,8 +21,7 @@ checkout-op-commit:
 
 .PHONY: deploy
 deploy:
-	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
-	forge script --rpc-url $(L1_RPC_URL) DeploySystemConfig --sig "sign(address)"
+	forge script --rpc-url $(L1_RPC_URL) DeploySystemConfig --ledger --verify --mnemonic-derivation-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0"
 
 .PHONY: sign-cb
 sign-cb:

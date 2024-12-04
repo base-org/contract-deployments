@@ -1,4 +1,4 @@
-## [READY TO SIGN] Upgrade to new system config with 400m max gas limit
+## [DRAFT] Upgrade to new system config with 400m max gas limit
 
 Base is continuing to scale and we need higher block gas limit to support the increased demand.
 
@@ -15,14 +15,21 @@ make deps
 make deploy
 ```
 
-4. sign (both base & op team):
+4. sign (op team):
 ```
 cd mainnet/2024-11-18-increase-max-gas-limit
 make deps # skip if already installed
-make sign
+make sign-op
 ```
 
-5. upgrade
+5. sign (cb team):
+```
+cd mainnet/2024-11-18-increase-max-gas-limit
+make deps # skip if already installed
+make sign-cb
+```
+
+6. upgrade
 ```
 cd mainnet/2024-11-18-increase-max-gas-limit
 make run-upgrade

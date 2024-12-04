@@ -5,7 +5,8 @@ import {Vm} from "forge-std/Vm.sol";
 import {IMulticall3} from "forge-std/interfaces/IMulticall3.sol";
 
 import {SystemConfig} from "@eth-optimism-bedrock/src/L1/SystemConfig.sol";
-import {MultisigBuilder, Simulation} from "@base-contracts/script/universal/MultisigBuilder.sol";
+import {Simulation} from "@base-contracts/script/universal/MultisigBuilder.sol";
+import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 
 interface IProxyAdmin {
     function upgrade(address _proxy, address _implementation) external;
@@ -15,7 +16,7 @@ interface IProxy {
     function implementation() external view returns (address);
 }
 
-contract UpgradeSystemConfig is MultisigBuilder {
+contract UpgradeSystemConfig is NestedMultisigBuilder {
     address internal SAFE_ADDRESS = vm.envAddress("SAFE_ADDRESS");
     address internal PROXY_ADMIN_ADDRESS = vm.envAddress("PROXY_ADMIN_ADDRESS");
     address internal SYSTEM_CONFIG_ADDRESS = vm.envAddress("SYSTEM_CONFIG_ADDRESS");
