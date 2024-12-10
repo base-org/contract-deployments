@@ -106,6 +106,7 @@ After: 0x0000000000000000000000003c768a33c473f664678b58c2253db096b41f7cfc
 ```
 
 Current implementation: [0xf56d96b2535b932656d3c04ebf51babff241d886](https://etherscan.io/address/0xf56d96b2535b932656d3c04ebf51babff241d886#code)
+
 New implementation: [0x3c768a33c473f664678b58c2253db096b41f7cfc](https://etherscan.io/address/0x3c768a33c473f664678b58c2253db096b41f7cfc#code)
 
 
@@ -170,4 +171,4 @@ Double check that:
    SIGNATURES="0x[SIGNATURE1][SIGNATURE2]..."`.
 3. Run `make approve-cb` with Coinbase signer signatures.
 4. Run `make approve-op` with Optimism signer signatures.
-5. Run `make run` to execute the transaction onchain.
+5. Run `make run-upgrade` to execute the transaction onchain.
