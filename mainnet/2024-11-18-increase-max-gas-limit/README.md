@@ -169,6 +169,6 @@ Double check that:
 2. Concatenate all signatures and export it as the `SIGNATURES`
    environment variable, i.e. `export
    SIGNATURES="0x[SIGNATURE1][SIGNATURE2]..."`.
-3. Run `make approve-cb` with Coinbase signer signatures.
-4. Run `make approve-op` with Optimism signer signatures.
+3. Run `SIGNATURES=xxx make approve-cb` with Coinbase signer signatures.
+4. Run `SIGNATURES=xxx make approve-op` with Optimism signer signatures.
 5. Run `make run-upgrade` to execute the transaction onchain.
