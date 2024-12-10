@@ -62,7 +62,7 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the nonce is incremented for the Nested Multisig under the "GnosisSafeProxy" at address `0x7bB41C3008B3f03FE483B28b8DB90e19Cf07595c`:
+1. Verify that the nonce is incremented for the Nested Multisig under the "GnosisSafeProxy" at address `0x7bB41C3008B3f03FE483B28b8DB90e19Cf07595c`: Double confirm with [Base Contracts](https://docs.base.org/docs/base-contracts/#base-mainnet-1) `Proxy Admin Owner (L1)`
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
@@ -81,7 +81,7 @@ After: 0x0000000000000000000000000000000000000000000000000000000000000001
 
 3. Verify that the nonce is incremented for your multisig.
 
-If you are an OP signer - the OP Foundation Multisig should be under the "GnosisSafeProxy" at address `0x9BA6e03D8B90dE867373Db8cF1A58d2F7F006b3A`:
+If you are an OP signer - the OP Foundation Multisig should be under the "GnosisSafeProxy" at address `0x9BA6e03D8B90dE867373Db8cF1A58d2F7F006b3A`: Double confirm with [Base Contracts](https://docs.base.org/docs/base-contracts/#base-mainnet-1) `L1 Nested Safe Signer (Optimism)`
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
@@ -89,7 +89,7 @@ Before: 0x0000000000000000000000000000000000000000000000000000000000000060
 After: 0x0000000000000000000000000000000000000000000000000000000000000061
 ```
 
-If you are a CB signer - the Coinbase Multisig should be under the address `0x9855054731540A48b28990B63DcF4f33d8AE46A1`:
+If you are a CB signer - the Coinbase Multisig should be under the address `0x9855054731540A48b28990B63DcF4f33d8AE46A1`: Double confirm with [Base Contracts](https://docs.base.org/docs/base-contracts/#base-mainnet-1) `L1 Nested Safe Signer (Coinbase)`
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
@@ -97,7 +97,7 @@ Before: 0x000000000000000000000000000000000000000000000000000000000000000f
 After: 0x0000000000000000000000000000000000000000000000000000000000000010
 ```
 
-4. Verify that the state changes for Base SystemConfigProxy `0x73a79Fab69143498Ed3712e519A88a918e1f4072` are correctly pointing to the new implementation:
+1. Verify that the state changes for Base SystemConfigProxy `0x73a79Fab69143498Ed3712e519A88a918e1f4072` are correctly pointing to the new implementation: Double confirm with [Base Contracts](https://docs.base.org/docs/base-contracts/#ethereum-mainnet) `System Config`
 
 ```
 Key: 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc
