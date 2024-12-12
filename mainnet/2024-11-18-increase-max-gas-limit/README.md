@@ -1,4 +1,5 @@
-# [READY TO SIGN] Upgrade to new system config with 400m max gas limit
+# [EXECUTED] Upgrade to new system config with 400m max gas limit
+execution hash: https://etherscan.io/tx/0x1fdbb2443b479fedc7a6e43400a5f09c883aa00d3e7b40bc7238a08e43625294
 
 ## Objective
 
