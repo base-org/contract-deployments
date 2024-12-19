@@ -32,7 +32,7 @@ contract DeployHoloceneContracts is Script {
 
     IAnchorStateRegistry anchorStateRegistry =
         IAnchorStateRegistry(payable(vm.envAddress("ANCHOR_STATE_REGISTRY_ADDRESS")));
-    IBigStepper bigStepper = IBigStepper(payable(vm.envAddress("BIG_STEPPER_ADDRESS")));
+    IBigStepper bigStepper = IBigStepper(payable(vm.envAddress("VM_ADDRESS")));
 
     function run() public {
         vm.startBroadcast();
