@@ -4,8 +4,8 @@
 
 To support the Holocene Network Upgrade, we need to deploy the latest version of the following contracts:
 
-- [FaultDisputeGame](https://github.com/ethereum-optimism/optimism/blob/8bf7ff60f34a7c5082cec5c56bed1f76cc1893ad/packages/contracts-bedrock/src/dispute/FaultDisputeGame.sol)
-- [PermissionedDisputeGame](https://github.com/ethereum-optimism/optimism/blob/8bf7ff60f34a7c5082cec5c56bed1f76cc1893ad/packages/contracts-bedrock/src/dispute/PermissionedDisputeGame.sol)
+- [FaultDisputeGame](https://github.com/ethereum-optimism/optimism/blob/dff5f16c510e7f44f1be0574372ccb08bfec045c/packages/contracts-bedrock/src/dispute/FaultDisputeGame.sol)
+- [PermissionedDisputeGame](https://github.com/ethereum-optimism/optimism/blob/dff5f16c510e7f44f1be0574372ccb08bfec045c/packages/contracts-bedrock/src/dispute/PermissionedDisputeGame.sol)
 
 ## Deploying the contracts
 
