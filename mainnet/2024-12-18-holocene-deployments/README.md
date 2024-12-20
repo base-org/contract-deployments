@@ -1,4 +1,4 @@
-# [DRAFT] Deploy Holocene contracts
+# Deploy Holocene contracts
 
 ## Objective
 
