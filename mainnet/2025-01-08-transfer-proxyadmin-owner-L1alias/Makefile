@@ -30,18 +30,18 @@ sign-op:
 # This step is run once per "child" safe, and can be run by anyone (doesn't have to be a signer)
 .PHONY: approve-cb
 approve-cb:
-	forge script --rpc-url $(RPC_URL) TransferOwner \
+	forge script --rpc-url $(L2_RPC_URL) TransferOwner \
 	--sig "approve(address,bytes)" $(CB_SIGNER_SAFE_ADDR) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: approve-op
 approve-op:
-	forge script --rpc-url $(RPC_URL) TransferOwner \
+	forge script --rpc-url $(L2_RPC_URL) TransferOwner \
 	--sig "approve(address,bytes)" $(OP_SIGNER_SAFE_ADDR) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 # This step is run once after all children safes have approved and can be run by anyone (doesn't have to be a signer)
 .PHONY: execute
 execute:
-	forge script --rpc-url $(RPC_URL) TransferOwner \
+	forge script --rpc-url $(L2_RPC_URL) TransferOwner \
 	--sig "run()" --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
