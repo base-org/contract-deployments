@@ -6,7 +6,7 @@ import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 
 contract TransferOwner is NestedMultisigBuilder {
     address internal _PROXY_ADMIN = vm.envAddress("PROXY_ADMIN");
-    address internal _L2_PROXY_ADMIN_OWNER = vm.envAddress("L2_PROXY_ADMIN_OWNER"); // TODO: define existing owner as L2_PROXY_ADMIN_OWNER=xxx in the .env file
+    address internal _L2_PROXY_ADMIN_OWNER = vm.envAddress("L2_PROXY_ADMIN_OWNER");
     address internal _L1_PROXY_ADMIN_OWNER = vm.envAddress("L1_PROXY_ADMIN_OWNER");
 
     // Using example from OP L1 Proxy Admin to confirm accuracy of `_convertToAliasAddress`
