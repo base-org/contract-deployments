@@ -17,6 +17,8 @@ contract AddSecurityCouncil is NestedMultisigBuilder {
     address internal _GOVERNANCE_MULTISIG = vm.envAddress("GOVERNANCE_MULTISIG");
     address internal _OP_MULTISIG = vm.envAddress("OP_MULTISIG");
 
+    address internal constant SENTINEL_OWNERS = address(0x1);
+
     /// @dev Confirm starting multisig heirarchy
     function setUp() public {
         require(IGnosisSafe(_GOVERNANCE_MULTISIG).getOwners().length == 2, "Governance multisig should have 2 owners");
@@ -45,7 +47,7 @@ contract AddSecurityCouncil is NestedMultisigBuilder {
         calls[0] = IMulticall3.Call3({
             target: _GOVERNANCE_MULTISIG,
             allowFailure: false,
-            callData: abi.encodeCall(IGnosisSafe.swapOwner, (_OP_MULTISIG, _COINBASE_SIGNER_CURRENT, _COINBASE_SIGNER_NEW))
+            callData: abi.encodeCall(IGnosisSafe.swapOwner, (SENTINEL_OWNERS, _COINBASE_SIGNER_CURRENT, _COINBASE_SIGNER_NEW))
         });
 
         return calls;
