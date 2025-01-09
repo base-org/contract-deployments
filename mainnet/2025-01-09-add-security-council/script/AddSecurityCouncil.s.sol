@@ -10,7 +10,7 @@ import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 // End:
 // Gov (CB_new, OP)
 // CB_new (Base_SC, CB_old)
-contract TransferOwner is NestedMultisigBuilder {
+contract AddSecurityCouncil is NestedMultisigBuilder {
     address internal _BASE_SECURITY_COUNCIL = vm.envAddress("BASE_SECURITY_COUNCIL");
     address internal _COINBASE_SIGNER_NEW = vm.envAddress("COINBASE_SIGNER_NEW");
     address internal _COINBASE_SIGNER_CURRENT = vm.envAddress("COINBASE_SIGNER_CURRENT");
