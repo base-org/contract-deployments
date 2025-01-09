@@ -2,6 +2,9 @@ include ../../Makefile
 include ../.env
 include .env
 
+# for testing
+L1_RPC_URL=https://sepolia.base.org
+
 ifndef LEDGER_ACCOUNT
 override LEDGER_ACCOUNT = 0
 endif

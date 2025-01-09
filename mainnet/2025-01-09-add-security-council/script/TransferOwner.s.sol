@@ -1,38 +1,57 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import {
-    OwnableUpgradeable
-} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@base-contracts/script/universal/MultisigBuilder.sol";
+import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 
-// TODO: alternatively, can use NestedMultisigBuilder if existing owner is nested safe
-contract TransferOwner is MultisigBuilder {
-    address constant internal PROXY_CONTRACT = vm.envAddress("PROXY_CONTRACT"); // TODO: define PROXY_CONTRACT=xxx in the .env file which is the Proxy contract changing ownership
-    address constant internal OLD_OWNER = vm.envAddress("OLD_OWNER"); // TODO: define existing owner as OLD_OWNER=xxx in the .env file
-    address constant internal NEW_OWNER = vm.envAddress("NEW_OWNER"); // TODO: define new owner as NEW_OWNER=xxx in the .env file
+// Start: 
+// Gov (CB_old, OP)
+// CB_new (Base_SC, CB_old)
 
-    function _postCheck() internal override view {
-        ProxyAdmin proxyAdmin = ProxyAdmin(PROXY_CONTRACT);
-        require(proxyAdmin.owner() == NEW_OWNER, "ProxyAdmin owner did not get updated");
+// End:
+// Gov (CB_new, OP)
+// CB_new (Base_SC, CB_old)
+contract TransferOwner is NestedMultisigBuilder {
+    address internal _BASE_SECURITY_COUNCIL = vm.envAddress("BASE_SECURITY_COUNCIL");
+    address internal _COINBASE_SIGNER_NEW = vm.envAddress("COINBASE_SIGNER_NEW");
+    address internal _COINBASE_SIGNER_CURRENT = vm.envAddress("COINBASE_SIGNER_CURRENT");
+    address internal _GOVERNANCE_MULTISIG = vm.envAddress("GOVERNANCE_MULTISIG");
+    address internal _OP_MULTISIG = vm.envAddress("OP_MULTISIG");
+
+    /// @dev Confirm starting multisig heirarchy
+    function setUp() public {
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).getOwners().length == 2, "Governance multisig should have 2 owners");
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).isOwner(_COINBASE_SIGNER_CURRENT), "Coinbase signer is not owner of governance multisig");
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).isOwner(_OP_MULTISIG), "OP multisig is not owner of governance multisig");
+
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).getOwners().length == 2, "New CB Signer multisig should have 2 owners");
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).isOwner(_BASE_SECURITY_COUNCIL), "Base Security Council is not owner of new CB Signer multisig");
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).isOwner(_COINBASE_SIGNER_CURRENT), "Current CB Signer is not owner of new CB Signer multisig");
     }
 
-    function _buildCalls() internal override view returns (IMulticall3.Call3[] memory) {
+    /// @dev Confirm ending multisig heirarchy
+    function _postCheck(Vm.AccountAccess[] memory, Simulation.Payload memory) internal view override {
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).getOwners().length == 2, "Governance multisig should have 2 owners");
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).isOwner(_OP_MULTISIG), "OP multisig is not owner of governance multisig");
+        require(IGnosisSafe(_GOVERNANCE_MULTISIG).isOwner(_COINBASE_SIGNER_NEW), "New CB Signer multisig is not owner of governance multisig");
+
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).getOwners().length == 2, "New CB Signer multisig should have 2 owners");
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).isOwner(_BASE_SECURITY_COUNCIL), "Base Security Council is not owner of new CB Signer multisig");
+        require(IGnosisSafe(_COINBASE_SIGNER_NEW).isOwner(_COINBASE_SIGNER_CURRENT), "Current CB Signer is not owner of new CB Signer multisig");
+    }
+
+    function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
         IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](1);
 
         calls[0] = IMulticall3.Call3({
-            target: PROXY_CONTRACT,
+            target: _GOVERNANCE_MULTISIG,
             allowFailure: false,
-            callData: abi.encodeCall(
-                OwnableUpgradeable.transferOwnership,
-                (NEW_OWNER)
-            )
+            callData: abi.encodeCall(IGnosisSafe.swapOwner, (_OP_MULTISIG, _COINBASE_SIGNER_CURRENT, _COINBASE_SIGNER_NEW))
         });
 
         return calls;
     }
 
-    function _ownerSafe() internal override view returns (address) {
-        return OLD_OWNER;
+    function _ownerSafe() internal view override returns (address) {
+        return _GOVERNANCE_MULTISIG;
     }
 }
