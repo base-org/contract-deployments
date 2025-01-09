@@ -13,7 +13,7 @@ This script swaps out the Coinbase signer 3-of-6 multisig for a new Coinbase sig
 
 a. Signers TBD
 
-### 2. Add new Security Council address to `.env` file as the `BASE_SECURITY_COUNCIL` variable
+### 2. Add new Security Council address to `.env` file as the `SECURITY_COUNCIL` variable
 
 ### 3. Deploy "Coinbase" signer 2-of-2 multisig with signers:
 
