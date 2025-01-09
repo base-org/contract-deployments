@@ -19,25 +19,25 @@ endif
 sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) TransferOwner \
-	--sig "sign(address)" $(CB_SIGNER_SAFE_ADDR)
+	--sig "sign(address)" $(COINBASE_SIGNER_CURRENT)
 
 .PHONY: sign-op
 sign-op:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) TransferOwner \
-	--sig "sign(address)" $(OP_SIGNER_SAFE_ADDR)
+	--sig "sign(address)" $(OP_MULTISIG)
 
 # This step is run once per "child" safe, and can be run by anyone (doesn't have to be a signer)
 .PHONY: approve-cb
 approve-cb:
 	forge script --rpc-url $(L1_RPC_URL) TransferOwner \
-	--sig "approve(address,bytes)" $(CB_SIGNER_SAFE_ADDR) $(SIGNATURES) \
+	--sig "approve(address,bytes)" $(COINBASE_SIGNER_CURRENT) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: approve-op
 approve-op:
 	forge script --rpc-url $(L1_RPC_URL) TransferOwner \
-	--sig "approve(address,bytes)" $(OP_SIGNER_SAFE_ADDR) $(SIGNATURES) \
+	--sig "approve(address,bytes)" $(OP_MULTISIG) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 # This step is run once after all children safes have approved and can be run by anyone (doesn't have to be a signer)
