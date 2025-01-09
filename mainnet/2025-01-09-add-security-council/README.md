@@ -13,12 +13,16 @@ This script swaps out the Coinbase signer 3-of-6 multisig for a new Coinbase sig
 
 a. Signers TBD
 
-### 2. Deploy "Coinbase" signer 2-of-2 multisig with signers:
+### 2. Add new Security Council address to `.env` file as the `BASE_SECURITY_COUNCIL` variable
+
+### 3. Deploy "Coinbase" signer 2-of-2 multisig with signers:
 
 a. Today's Coinbase signer 3-of-6 multisig
 b. Base-specific Security Council 7-of-10 multisig (from step 1)
 
-### 3. Add "Coinbase" signer 2-of-2 multisig as signer to Governance multisig while removing today's Coinbase signer 3-of-6 multisig as signer
+### 4. Add new CB signer address to `.env` file as the `COINBASE_SIGNER_NEW` variable
+
+### 5. Add "Coinbase" signer 2-of-2 multisig as signer to Governance multisig while removing today's Coinbase signer 3-of-6 multisig as signer
 
 > [!NOTE]
 > This will be a nested multisig task where the call is IGnosisSafe(govMultisig).swapOwner(opMultisig, coinbase3Of6Multisig, coinbase2Of2Multisig)
