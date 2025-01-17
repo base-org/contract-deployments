@@ -24,7 +24,13 @@ run-add-signer:
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" \
 	--broadcast
 
-# Step 2
+# Step 2a
+.PHONY: sign-remove-signer
+sign-remove-signer:
+	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
+	forge script --rpc-url $(L1_RPC_URL) RemoveSigner --sig "sign()"
+
+# Step 2b
 .PHONY: run-remove-signer
 run-remove-signer:
 	forge script --rpc-url $(L1_RPC_URL) \
