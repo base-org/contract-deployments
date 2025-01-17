@@ -3,14 +3,14 @@ pragma solidity 0.8.15;
 
 import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 
-// Adds new multisig signer to existing multisig and updates threshold to 2
+// Adds new multisig signer to existing multisig and updates threshold to 1
 // New signer should be a 7-of-10 multisig
 contract AddNestedSigner is NestedMultisigBuilder {
-    uint256 internal constant _THRESHOLD = 2;
+    uint256 internal constant _THRESHOLD = 1;
     uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 1;
 
-    uint256 internal constant _EXPECTED_CHILD_SIGNER_THRESHOLD = 5;
-    uint256 internal constant _EXPECTED_CHILD_SIGNER_OWNER_COUNT = 7;
+    uint256 internal constant _EXPECTED_CHILD_SIGNER_THRESHOLD = 7;
+    uint256 internal constant _EXPECTED_CHILD_SIGNER_OWNER_COUNT = 10;
 
     address internal _CHILD_SIGNER = vm.envAddress("CHILD_SIGNER");
     address internal _SIGNER_CURRENT = vm.envAddress("SIGNER_CURRENT");
