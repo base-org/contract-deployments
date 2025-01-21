@@ -7,27 +7,22 @@ import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 contract SetThreshold is NestedMultisigBuilder {
     uint256 internal constant _THRESHOLD = 2;
 
-    uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 2;
     uint256 internal constant _EXPECTED_STARTING_OWNER_THRESHOLD = 1;
+    uint256 internal constant _EXPECTED_OWNER_COUNT = 2;
 
     address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
     function setUp() public view {
-        address[] memory currentOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
-
-        require(currentOwners.length == _EXPECTED_STARTING_OWNER_COUNT, "Precheck length mismatch");
-
         require(
             IGnosisSafe(_OWNER_SAFE).getThreshold() == _EXPECTED_STARTING_OWNER_THRESHOLD,
             "Precheck owner threshold mismatch"
         );
+        require(IGnosisSafe(_OWNER_SAFE).getOwners().length == _EXPECTED_OWNER_COUNT, "Precheck length mismatch");
     }
 
     function _postCheck(Vm.AccountAccess[] memory, Simulation.Payload memory) internal view override {
-        address[] memory currentOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
-
-        require(currentOwners.length == _EXPECTED_STARTING_OWNER_COUNT, "Postcheck length mismatch");
         require(IGnosisSafe(_OWNER_SAFE).getThreshold() == _THRESHOLD, "Postcheck threshold mismatch");
+        require(IGnosisSafe(_OWNER_SAFE).getOwners().length == _EXPECTED_OWNER_COUNT, "Postcheck length mismatch");
     }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {

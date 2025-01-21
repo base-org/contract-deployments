@@ -8,48 +8,49 @@ import "@base-contracts/script/universal/NestedMultisigBuilder.sol";
 contract AddNestedSigner is NestedMultisigBuilder {
     uint256 internal constant _THRESHOLD = 1;
 
-    uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 1;
-    uint256 internal constant _EXPECTED_STARTING_OWNER_THRESHOLD = 1;
-
     uint256 internal constant _EXPECTED_NEW_SIGNER_THRESHOLD = 7;
     uint256 internal constant _EXPECTED_NEW_SIGNER_OWNER_COUNT = 10;
+
+    uint256 internal constant _EXPECTED_STARTING_OWNER_THRESHOLD = 1;
+    uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 1;
 
     address internal _SIGNER_TO_ADD = vm.envAddress("ADD_NESTED_SIGNER_SIGNER_TO_ADD");
     address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
-    /// @dev Confirm starting multisig heirarchy
     function setUp() public view {
-        address[] memory currentOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
-        address[] memory childOwners = IGnosisSafe(_SIGNER_TO_ADD).getOwners();
-
-        require(currentOwners.length == _EXPECTED_STARTING_OWNER_COUNT, "Precheck length mismatch");
-        require(childOwners.length == _EXPECTED_NEW_SIGNER_OWNER_COUNT, "Precheck child signer owner count mismatch");
-
         require(
             IGnosisSafe(_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
             "Precheck child signer threshold mismatch"
         );
         require(
+            IGnosisSafe(_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
+            "Precheck child signer owner count mismatch"
+        );
+
+        require(
             IGnosisSafe(_OWNER_SAFE).getThreshold() == _EXPECTED_STARTING_OWNER_THRESHOLD,
             "Precheck owner threshold mismatch"
         );
+        require(
+            IGnosisSafe(_OWNER_SAFE).getOwners().length == _EXPECTED_STARTING_OWNER_COUNT, "Precheck length mismatch"
+        );
     }
 
-    /// @dev Confirm ending multisig heirarchy
     function _postCheck(Vm.AccountAccess[] memory, Simulation.Payload memory) internal view override {
-        address[] memory currentOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
-        address[] memory childOwners = IGnosisSafe(_SIGNER_TO_ADD).getOwners();
-
-        require(currentOwners[0] == _SIGNER_TO_ADD, "Postcheck new signer mismatch");
-
-        require(currentOwners.length == _EXPECTED_STARTING_OWNER_COUNT + 1, "Postcheck length mismatch");
-        require(childOwners.length == _EXPECTED_NEW_SIGNER_OWNER_COUNT, "Postcheck child signer owner count mismatch");
-
-        require(IGnosisSafe(_OWNER_SAFE).getThreshold() == _THRESHOLD, "Postcheck threshold mismatch");
         require(
             IGnosisSafe(_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
             "Postcheck child signer threshold mismatch"
         );
+        require(
+            IGnosisSafe(_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
+            "Postcheck child signer owner count mismatch"
+        );
+
+        address[] memory ownerSafeOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
+        require(ownerSafeOwners[0] == _SIGNER_TO_ADD, "Postcheck new signer mismatch");
+
+        require(IGnosisSafe(_OWNER_SAFE).getThreshold() == _THRESHOLD, "Postcheck threshold mismatch");
+        require(ownerSafeOwners.length == _EXPECTED_STARTING_OWNER_COUNT + 1, "Postcheck length mismatch");
     }
 
     function _buildCalls() internal view override returns (IMulticall3.Call3[] memory) {
