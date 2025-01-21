@@ -14,16 +14,16 @@ contract AddNestedSigner is NestedMultisigBuilder {
     uint256 internal constant _EXPECTED_STARTING_OWNER_THRESHOLD = 1;
     uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 1;
 
-    address internal _SIGNER_TO_ADD = vm.envAddress("ADD_NESTED_SIGNER_SIGNER_TO_ADD");
+    address internal _NESTED_SIGNER_TO_ADD = vm.envAddress("NESTED_SIGNER_TO_ADD");
     address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
     function setUp() public view {
         require(
-            IGnosisSafe(_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
+            IGnosisSafe(_NESTED_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
             "Precheck child signer threshold mismatch"
         );
         require(
-            IGnosisSafe(_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
+            IGnosisSafe(_NESTED_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
             "Precheck child signer owner count mismatch"
         );
 
@@ -38,16 +38,16 @@ contract AddNestedSigner is NestedMultisigBuilder {
 
     function _postCheck(Vm.AccountAccess[] memory, Simulation.Payload memory) internal view override {
         require(
-            IGnosisSafe(_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
+            IGnosisSafe(_NESTED_SIGNER_TO_ADD).getThreshold() == _EXPECTED_NEW_SIGNER_THRESHOLD,
             "Postcheck child signer threshold mismatch"
         );
         require(
-            IGnosisSafe(_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
+            IGnosisSafe(_NESTED_SIGNER_TO_ADD).getOwners().length == _EXPECTED_NEW_SIGNER_OWNER_COUNT,
             "Postcheck child signer owner count mismatch"
         );
 
         address[] memory ownerSafeOwners = IGnosisSafe(_OWNER_SAFE).getOwners();
-        require(ownerSafeOwners[0] == _SIGNER_TO_ADD, "Postcheck new signer mismatch");
+        require(ownerSafeOwners[0] == _NESTED_SIGNER_TO_ADD, "Postcheck new signer mismatch");
 
         require(IGnosisSafe(_OWNER_SAFE).getThreshold() == _THRESHOLD, "Postcheck threshold mismatch");
         require(ownerSafeOwners.length == _EXPECTED_STARTING_OWNER_COUNT + 1, "Postcheck length mismatch");
@@ -59,7 +59,7 @@ contract AddNestedSigner is NestedMultisigBuilder {
         calls[0] = IMulticall3.Call3({
             target: _OWNER_SAFE,
             allowFailure: false,
-            callData: abi.encodeCall(IGnosisSafe.addOwnerWithThreshold, (_SIGNER_TO_ADD, _THRESHOLD))
+            callData: abi.encodeCall(IGnosisSafe.addOwnerWithThreshold, (_NESTED_SIGNER_TO_ADD, _THRESHOLD))
         });
 
         return calls;
