@@ -10,7 +10,7 @@ contract SetThreshold is NestedMultisigBuilder {
     uint256 internal constant _EXPECTED_STARTING_OWNER_COUNT = 2;
     uint256 internal constant _EXPECTED_STARTING_OWNER_THRESHOLD = 1;
 
-    address internal _OWNER_SAFE = vm.envAddress("SIGNER_CURRENT");
+    address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
     function setUp() public view {
         address[] memory currentOwners = IGnosisSafe(_OWNER_SAFE).getOwners();

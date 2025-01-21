@@ -13,8 +13,8 @@ contract AddSigner is MultisigBuilder {
     uint256 internal constant _EXPECTED_NEW_SIGNER_OWNER_COUNT = 6;
     uint256 internal constant _EXPECTED_NEW_SIGNER_THRESHOLD = 3;
 
-    address internal _SIGNER_TO_ADD = vm.envAddress("SIGNER_NEW");
-    address internal _OWNER_SAFE = vm.envAddress("SIGNER_CURRENT");
+    address internal _SIGNER_TO_ADD = vm.envAddress("ADD_SIGNER_SIGNER_TO_ADD");
+    address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
     /// @dev Confirm starting multisig heirarchy
     function setUp() public view {

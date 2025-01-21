@@ -42,12 +42,12 @@ run-remove-signer:
 sign-add-nested-signer:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) AddNestedSigner \
-	--sig "sign(address)" $(SIGNER_NEW)
+	--sig "sign(address)" $(ADD_SIGNER_SIGNER_TO_ADD)
 
 .PHONY: approve-add-nested-signer
 approve-add-nested-signer:
 	forge script --rpc-url $(L1_RPC_URL) AddNestedSigner \
-	--sig "approve(address,bytes)" $(SIGNER_NEW) $(SIGNATURES) \
+	--sig "approve(address,bytes)" $(ADD_SIGNER_SIGNER_TO_ADD) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: execute-add-nested-signer
@@ -59,12 +59,12 @@ execute-add-nested-signer:
 sign-set-threshold:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) SetThreshold \
-	--sig "sign(address)" $(CHILD_SIGNER)
+	--sig "sign(address)" $(ADD_NESTED_SIGNER_SIGNER_TO_ADD)
 
 .PHONY: approve-set-threshold
 approve-set-threshold:
 	forge script --rpc-url $(L1_RPC_URL) SetThreshold \
-	--sig "approve(address,bytes)" $(CHILD_SIGNER) $(SIGNATURES) \
+	--sig "approve(address,bytes)" $(ADD_NESTED_SIGNER_SIGNER_TO_ADD) $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast
 
 .PHONY: execute-set-threshold

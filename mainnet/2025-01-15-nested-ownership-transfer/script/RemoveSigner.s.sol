@@ -11,8 +11,8 @@ contract RemoveSigner is MultisigBuilder {
     uint256 internal constant _EXPECTED_KEEPER_OWNER_COUNT = 6;
     uint256 internal constant _EXPECTED_KEEPER_THRESHOLD = 3;
 
-    address internal _SIGNER_TO_KEEP = vm.envAddress("SIGNER_NEW");
-    address internal _OWNER_SAFE = vm.envAddress("SIGNER_CURRENT");
+    address internal _SIGNER_TO_KEEP = vm.envAddress("REMOVE_SIGNER_SIGNER_TO_KEEP");
+    address internal _OWNER_SAFE = vm.envAddress("OWNER_SAFE");
 
     address prevOwner;
     address ownerToRemove;
