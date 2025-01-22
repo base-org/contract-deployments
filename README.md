@@ -88,7 +88,7 @@ This template is increasing the throughput on Base Chain.
 
 1. Ensure you have followed the instructions above in `setup`
 1. Go to the folder that was created using the `make setup-gas-increase network=<network>` step
-1. Fill in all TODOs (search for "TODO" in the folder) in the `.env` and `README` files.
+1. Fill in all TODOs (search for "TODO" in the folder) in the `.env` and `README` files. Tip: you can run `make deps` followed by `make sign-upgrade` to produce a Tenderly simulation which will help fill in several of the TODOs in the README (and also `make sign-rollback`).
 1. Check in the task when it's ready to sign and collect signatures from signers
 1. Once executed, check in the records files and mark the task `DONE` in the README.
 
