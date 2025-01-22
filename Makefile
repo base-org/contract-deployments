@@ -1,9 +1,11 @@
 PROJECT_DIR = $(network)/$(shell date +'%Y-%m-%d')-$(task)
 DEPLOY_DIR = $(network)/$(shell date +'%Y-%m-%d')-deploy
 INCIDENT_DIR = $(network)/$(shell date +'%Y-%m-%d')-$(incident)
+GAS_INCREASE_DIR = $(network)/$(shell date +'%Y-%m-%d')-increase-gas-limit
 TEMPLATE_GENERIC = setup-templates/template-generic
 TEMPLATE_DEPLOY = setup-templates/template-deploy
 TEMPLATE_INCIDENT = setup-templates/template-incident
+TEMPLATE_GAS_INCREASE = setup-templates/template-gas-increase
 
 ifndef $(GOPATH)
     GOPATH=$(shell go env GOPATH)
@@ -32,6 +34,11 @@ setup-deploy:
 setup-incident:
 	rm -rf $(TEMPLATE_INCIDENT)/cache $(TEMPLATE_INCIDENT)/lib $(TEMPLATE_INCIDENT)/out
 	mkdir -p $(network) && cp -r $(TEMPLATE_INCIDENT) $(INCIDENT_DIR)
+
+# Run `make setup-gas-increase network=<network>`
+setup-gas-increase:
+	rm -rf $(TEMPLATE_GAS_INCREASE)/cache $(TEMPLATE_GAS_INCREASE)/lib $(TEMPLATE_GAS_INCREASE)/out
+	cp -r $(TEMPLATE_GAS_INCREASE) $(GAS_INCREASE_DIR)
 
 ##
 # Solidity Setup

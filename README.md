@@ -36,6 +36,7 @@ First, install forge if you don't have it already:
 To execute a new task, run one of the following commands (depending on the type of change you're making):
 
 - For incident response commands: `make setup-incident network=<network> incident=<incident-name>`
+- For gas increase commands: `make setup-gas-increase network=<network>`
 - For full new deployment (of L1 contracts related to Base): `make setup-deploy network=<network>`
 - For contract calls, upgrades, or one-off contract deployments: `make setup-task network=<network> task=<task-name>`
 
@@ -80,6 +81,16 @@ This template is used for deploying the L1 contracts in the OP stack to set up a
 1. See the example `make deploy` command. Modifications may need to be made if you're using a key for deployment that you do not have the private key for (e.g. a hardware wallet)
 1. Run `make deploy` command
 1. Check in files to GitHub. The files to ignore should already have been specified in the `.gitignore`, so you should be able to check in everything.
+
+## Using the gas limit increase template
+
+This template is increasing the throughput on Base Chain.
+
+1. Ensure you have followed the instructions above in `setup`
+1. Go to the folder that was created using the `make setup-gas-increase network=<network>` step
+1. Fill in all TODOs (search for "TODO" in the folder) in the `.env` and `README` files.
+1. Check in the task when it's ready to sign and collect signatures from signers
+1. Once executed, check in the records files and mark the task `DONE` in the README.
 
 ## Using the generic template
 
