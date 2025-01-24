@@ -73,7 +73,7 @@ contract UpgradeBalanceTracker is Script {
 
     function _preChecks() private view {
         require(balanceTracker.PROFIT_WALLET() == profitWallet, "Precheck: incorrect profit wallet");
-        require(balanceTracker.systemAddresses(0) == outputProposer, "Precheck: incorrect output proposer");
+        require(balanceTracker.systemAddresses(0) != outputProposer, "Precheck: incorrect output proposer");
         require(balanceTracker.systemAddresses(1) != batchSender, "Precheck: incorrect batch sender");
         require(
             balanceTracker.targetBalances(0) == outputProposerTargetBalance,
