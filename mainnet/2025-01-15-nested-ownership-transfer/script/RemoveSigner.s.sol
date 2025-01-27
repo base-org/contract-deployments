@@ -6,7 +6,6 @@ import "@base-contracts/script/universal/MultisigBuilder.sol";
 // Removes a signer from a multisig.
 contract RemoveSigner is MultisigBuilder {
     uint256 private constant _THRESHOLD = 1;
-    address internal constant SENTINEL_OWNERS = address(0x1);
 
     uint256 internal constant _EXPECTED_KEEPER_THRESHOLD = 3;
     uint256 internal constant _EXPECTED_KEEPER_OWNER_COUNT = 6;
