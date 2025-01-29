@@ -6,10 +6,9 @@ Status: READY TO SIGN
 
 We are updating the gas limit to improve TPS and reduce gas fees.
 
-This runbook invokes two scripts which allow our signers to sign two different calls for our Incident Multisig, which are both defined in the [base-org/contracts](https://github.com/base-org/contracts) repository:
+This runbook invokes the following script which allows our signers to sign the same call with two different sets of parameters for our Incident Multisig, as defined in the [base-org/contracts](https://github.com/base-org/contracts) repository:
 
-1. `UpgradeGasLimit` -- This script will update the gas limit to our new limit of 288M gas
-2. `RollbackGasLimit` -- This script establishes a rollback call in the case we need to revert to gas
+`SetGasLimit` -- This script will update the gas limit to our new limit of 288M gas if invoked as part of the "upgrade" process, or revert to the old limit of 264M gas if invoked as part of the "rollback" process.
 
 The values we are sending are statically defined in the `.env`.
 
