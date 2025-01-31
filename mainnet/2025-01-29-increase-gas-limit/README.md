@@ -1,14 +1,14 @@
 # Update Gas Limit in L1 `SystemConfig`
 
-Status: TODO[READY TO SIGN|DONE]
+Status: READY TO SIGN
 
 ## Objective
 
 We are updating the gas limit to improve TPS and reduce gas fees.
 
-This runbook invokes the following script which allows our signers to sign the same call with two different sets of parameters for our Incident Multisig, defined in the [base-org/contracts](https://github.com/base-org/contracts) repository:
+This runbook invokes the following script which allows our signers to sign the same call with two different sets of parameters for our Incident Multisig, as defined in the [base-org/contracts](https://github.com/base-org/contracts) repository:
 
-`SetGasLimit` -- This script will update the gas limit to our new limit of TODO gas if invoked as part of the "upgrade" process, or revert to the old limit of TODO gas if invoked as part of the "rollback" process.
+`SetGasLimit` -- This script will update the gas limit to our new limit of 288M gas if invoked as part of the "upgrade" process, or revert to the old limit of 264M gas if invoked as part of the "rollback" process.
 
 The values we are sending are statically defined in the `.env`.
 
@@ -24,7 +24,7 @@ The values we are sending are statically defined in the `.env`.
 ```
 cd contract-deployments
 git pull
-cd mainnet/TODO
+cd mainnet/2025-01-29-increase-gas-limit
 make deps
 ```
 
@@ -73,20 +73,20 @@ validate integrity of the simulation, we need to check the following:
 
 Now click on the "State" tab. Verify that:
 
-1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from TODO to TODO:
+1. Verify that the nonce is incremented for the Incident Multisig under the "GnosisSafeProxy" at address `0x14536667Cd30e52C0b458BaACcB9faDA7046E056`. We should see the nonce increment from 49 to 50:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: TODO
-After: TODO
+Before: 0x0000000000000000000000000000000000000000000000000000000000000031
+After: 0x0000000000000000000000000000000000000000000000000000000000000032
 ```
 
-2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from TODO to TODO:
+2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`. We should see that the gas limit has been changed from 264000000 to 288000000:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000068
-Before: TODO
-After: TODO
+Before: 0x000000000000000000000000000000000000000000000000000000000fbc5200
+After: 0x00000000000000000000000000000000000000000000000000000000112a8800
 ```
 
 #### 3.3. Extract the domain hash and the message hash to approve.
@@ -198,16 +198,16 @@ Now click on the "State" tab. Verify that:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000005
-Before: TODO
-After: TODO
+Before: 0x0000000000000000000000000000000000000000000000000000000000000032
+After: 0x0000000000000000000000000000000000000000000000000000000000000033
 ```
 
 2. Verify that gas limit value is appropriately updated under "Proxy" at address `0x73a79fab69143498ed3712e519a88a918e1f4072`:
 
 ```
 Key: 0x0000000000000000000000000000000000000000000000000000000000000068
-Before: TODO
-After: TODO
+Before: 0x00000000000000000000000000000000000000000000000000000000112a8800
+After: 0x000000000000000000000000000000000000000000000000000000000fbc5200
 ```
 
 #### 3.3. Extract the domain hash and the message hash to approve.
