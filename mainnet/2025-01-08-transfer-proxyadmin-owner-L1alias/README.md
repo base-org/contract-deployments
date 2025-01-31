@@ -56,7 +56,7 @@ message hash to approve on your Ledger:
 Make sure you are on the "Overview" tab of the tenderly simulation, to
 validate integrity of the simulation, we need to check the following:
 
-1. "Network": Check the network is Ethereum mainnet or Sepolia. This must match the `<NETWORK_DIR>` from above.
+1. "Network": Check the network is Base.
 2. "Timestamp": Check the simulation is performed on a block with a
    recent timestamp (i.e. close to when you run the script).
 3. "Sender": Check the address shown is your signer account. If not see the derivation path Note above.
