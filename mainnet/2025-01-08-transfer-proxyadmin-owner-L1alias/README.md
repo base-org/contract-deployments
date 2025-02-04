@@ -1,5 +1,7 @@
 # Transfer Proxy Admin Owner L1 Alias
 
+Status: EXECUTED https://basescan.org/tx/0x54d61996fe28795556fe87e57fcecb7d38d35aa0c58fa7b7ae42709453c0ff2c
+
 ## Description
 
 This script transfers the ownership of the L2 ProxyAdmin contract to the alias address of the L1ProxyAdminOwner. You can read more about address aliasing [here](https://docs.optimism.io/stack/differences#address-aliasing). This allows us to use the same multisig for both L1 and L2 ProxyAdmin owners.
